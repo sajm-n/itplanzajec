@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791932786130,
+  "rev": 1791932789022,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -157,16 +157,6 @@
       "e": "20:00",
       "room": "Ox 28",
       "person": "mgr inż. K. Mróz"
-    },
-    {
-      "id": "o01",
-      "name": "Przysposobienie biblioteczne",
-      "type": "x",
-      "date": "2026-10-23",
-      "s": "11:30",
-      "e": "13:00",
-      "room": "s. 11, WM",
-      "person": ""
     },
     {
       "id": "kmv7aiittl3zv1",
