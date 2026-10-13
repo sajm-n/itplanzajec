@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791933236138,
+  "rev": 1791933331709,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -167,6 +167,17 @@
       "e": "13:00",
       "room": "s. 11, WM",
       "person": ""
+    },
+    {
+      "id": "kmv7au7ss5cr4f",
+      "name": "Zajęcia z gowna",
+      "type": "w",
+      "wd": 3,
+      "weeks": "all",
+      "s": "08:00",
+      "e": "09:30",
+      "room": "gowno",
+      "person": "cwel"
     }
   ],
   "exceptions": [
