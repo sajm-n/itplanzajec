@@ -1,0 +1,173 @@
+{
+  "v": 1,
+  "rev": 0,
+  "start": "2026-10-05",
+  "startWeek": "B",
+  "classes": [
+    {
+      "id": "c01",
+      "name": "Podstawy programowania",
+      "type": "l",
+      "wd": 0,
+      "weeks": "all",
+      "s": "08:00",
+      "e": "11:15",
+      "room": "s. 202, WBiA",
+      "person": "mgr inż. P. Juszczyński"
+    },
+    {
+      "id": "c02",
+      "name": "Wprowadzenie do informatyki technicznej",
+      "type": "l",
+      "wd": 0,
+      "weeks": "all",
+      "s": "11:30",
+      "e": "13:00",
+      "room": "s. R515, CI",
+      "person": "mgr P. Miazek"
+    },
+    {
+      "id": "c03",
+      "name": "Grafika inżynierska i projektowanie w środowisku CAD",
+      "type": "w",
+      "wd": 0,
+      "weeks": "A",
+      "s": "15:00",
+      "e": "16:30",
+      "room": "Aula WZ/WMiIT",
+      "person": "dr inż. A. Urzędowski"
+    },
+    {
+      "id": "c04",
+      "name": "Język angielski I",
+      "type": "c",
+      "wd": 1,
+      "weeks": "all",
+      "s": "08:00",
+      "e": "09:30",
+      "room": "Ox 9",
+      "person": ""
+    },
+    {
+      "id": "c05",
+      "name": "Podstawy programowania",
+      "type": "w",
+      "wd": 1,
+      "weeks": "all",
+      "s": "09:45",
+      "e": "11:15",
+      "room": "Aula I, WM",
+      "person": "dr hab. P. Karczmarek"
+    },
+    {
+      "id": "c06",
+      "name": "Matematyka I",
+      "type": "w",
+      "wd": 1,
+      "weeks": "all",
+      "s": "11:30",
+      "e": "13:00",
+      "room": "Ox 130",
+      "person": "dr I. Gorgol"
+    },
+    {
+      "id": "c07",
+      "name": "Zielone technologie w IT",
+      "type": "l",
+      "wd": 1,
+      "weeks": "all",
+      "s": "13:15",
+      "e": "14:45",
+      "room": "Ox 28",
+      "person": "dr inż. J. Szulżyk-Cieplak"
+    },
+    {
+      "id": "c08",
+      "name": "Grafika inżynierska i projektowanie w środowisku CAD",
+      "type": "l",
+      "wd": 1,
+      "weeks": "all",
+      "s": "15:00",
+      "e": "17:30",
+      "room": "Ox 213",
+      "person": "dr inż. A. Urzędowski"
+    },
+    {
+      "id": "c09",
+      "name": "Kreowanie wizerunku i techniki autoprezentacji",
+      "type": "l",
+      "wd": 2,
+      "weeks": "all",
+      "s": "09:45",
+      "e": "11:15",
+      "room": "s. 10, AS",
+      "person": "mgr inż. M. Paśnikowska-Łukaszuk"
+    },
+    {
+      "id": "c10",
+      "name": "Wprowadzenie do informatyki technicznej",
+      "type": "w",
+      "wd": 2,
+      "weeks": "A",
+      "s": "11:30",
+      "e": "13:00",
+      "room": "Aula WZ/WMiIT",
+      "person": "dr hab. A. Kiersztyn"
+    },
+    {
+      "id": "c11",
+      "name": "Zielone technologie w IT",
+      "type": "w",
+      "wd": 2,
+      "weeks": "A",
+      "s": "13:15",
+      "e": "14:45",
+      "room": "Ox 15",
+      "person": "dr inż. J. Szulżyk-Cieplak"
+    },
+    {
+      "id": "c12",
+      "name": "Bezpieczeństwo i higiena pracy",
+      "type": "w",
+      "wd": 2,
+      "weeks": "B",
+      "s": "13:15",
+      "e": "14:45",
+      "room": "Ox 15",
+      "person": "mgr inż. A. Prus"
+    },
+    {
+      "id": "c13",
+      "name": "Matematyka I",
+      "type": "c",
+      "wd": 4,
+      "weeks": "all",
+      "s": "15:50",
+      "e": "18:15",
+      "room": "s. M402, WM",
+      "person": "mgr inż. M. Wieczorek"
+    },
+    {
+      "id": "c14",
+      "name": "Technologie informacyjne",
+      "type": "l",
+      "wd": 4,
+      "weeks": "all",
+      "s": "18:30",
+      "e": "20:00",
+      "room": "Ox 28",
+      "person": "mgr inż. K. Mróz"
+    },
+    {
+      "id": "o01",
+      "name": "Przysposobienie biblioteczne",
+      "type": "x",
+      "date": "2026-10-23",
+      "s": "11:30",
+      "e": "13:00",
+      "room": "s. 11, WM",
+      "person": ""
+    }
+  ],
+  "exceptions": []
+}
