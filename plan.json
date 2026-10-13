@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791935861304,
+  "rev": 1791935876513,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -162,8 +162,7 @@
       "id": "kmv7aiittl3zv1",
       "name": "Przysposobienie biblioteczne",
       "type": "x",
-      "wd": 4,
-      "weeks": "A",
+      "date": "2026-10-23",
       "s": "11:30",
       "e": "13:00",
       "room": "s. 11, WM",
