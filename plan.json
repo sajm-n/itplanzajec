@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791933099264,
+  "rev": 1791933236138,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -167,17 +167,6 @@
       "e": "13:00",
       "room": "s. 11, WM",
       "person": ""
-    },
-    {
-      "id": "kmv7ap8fzpwuh2",
-      "name": "test",
-      "type": "l",
-      "wd": 3,
-      "weeks": "B",
-      "s": "08:00",
-      "e": "16:30",
-      "room": "test",
-      "person": "ja"
     }
   ],
   "exceptions": [
