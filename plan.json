@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792007452468,
+  "rev": 1792007454957,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -208,20 +208,6 @@
       "at": 0,
       "note": "",
       "done": false
-    },
-    {
-      "id": "kmv8iu8temdeoc",
-      "kind": "online",
-      "text": "zadanie testowe",
-      "sid": "",
-      "cid": "",
-      "date": "",
-      "due": "2026-10-15",
-      "time": "21:48",
-      "url": "",
-      "at": 1792007236130,
-      "note": "",
-      "done": true
     }
   ]
 }
