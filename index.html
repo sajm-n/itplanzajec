@@ -681,14 +681,14 @@ function openDetail(cid,date,focus){
   const base=cache.plan.classes.find(x=>x.id===cid);if(!base)return;
   const d=fromDK(date)||day0(new Date()),it=items(d).find(x=>x.id===cid)||{c:base},c=it.c;
   ctx={cid,date:dk(d),view:"detail"};
-  const list=tasksOf(cid,dk(d)),after=d<day0(new Date())?day0(new Date()):d,nx=nextOccurrence(cache.plan,cid,after);
+  const list=tasksOf(cid,dk(d));
   const rows=list.map(t=>'<div class="tk-row'+(t.done?" done":"")+(isLate(t)?" late":"")+'"><button type="button" class="tk-cb" role="checkbox" aria-checked="'+(t.done?"true":"false")+'" aria-label="Ukończone: '+esc(t.text)+'" data-sh="tg:'+esc(t.id)+'"><i>'+(t.done?"✓":"")+'</i></button>'
     +'<div class="tk-body"><span class="tk-tx">'+esc(t.text)+'</span><span class="tk-meta">'+esc(taskMeta(t))+'</span></div>'
     +'<button type="button" class="tk-del" aria-label="Usuń zadanie: '+esc(t.text)+'" data-sh="td:'+esc(t.id)+'">×</button></div>').join("");
   openSheet(base.name,'<p class="shsub">'+esc(dlong(d))+", "+esc(fmtT(c.s))+"–"+esc(fmtT(c.e))+'</p>'
     +'<h3 class="sec">Zadania</h3>'+(list.length?'<div class="tk-list">'+rows+'</div>':'<p class="tk-empty">Brak zadań.</p>')
     +'<form id="tf" novalidate autocomplete="off"><label class="fl">Nowe zadanie<input name="text" maxlength="300" placeholder="np. Zadania 1-5 str. 40"></label>'
-    +'<p class="hint">'+(nx?"Termin: następne zajęcia, "+esc(nx.date.toLocaleDateString("pl-PL",{weekday:"long",day:"numeric",month:"long"}))+", "+esc(fmtT(nx.s))+".":"Brak kolejnych zajęć, zadanie będzie bez terminu.")+'</p>'
+    +'<p class="hint">'+"Termin: "+esc(d.toLocaleDateString("pl-PL",{weekday:"long",day:"numeric",month:"long"}))+", "+esc(fmtT(c.s))+" (dzień i godzina tych zajęć)."+'</p>'
     +'<p id="tfErr" class="msg bad" role="alert"></p>'
     +'<div class="acts"><button type="submit" class="btn pri">Dodaj zadanie</button><button type="button" class="btn" data-sh="close">Zamknij</button></div></form>',focus);
   const f=$("tf");
@@ -696,8 +696,7 @@ function openDetail(cid,date,focus){
     ev.preventDefault();
     const text=f.elements.text.value.trim();
     if(!text){$("tfErr").textContent="Wpisz treść zadania.";f.elements.text.focus();return}
-    const nxt=nextOccurrence(cache.plan,cid,after);
-    const ok=change(p=>{p.tasks.push({id:uid(),kind:"onsite",sid:"",cid,date:dk(d),text,due:nxt?dk(nxt.date):"",time:nxt?nxt.s:"",url:"",note:"",done:false})});
+    const ok=change(p=>{p.tasks.push({id:uid(),kind:"onsite",sid:"",cid,date:dk(d),text,due:dk(d),time:c.s,url:"",note:"",done:false})});
     if(ok)rerenderDetail('input[name="text"]');
   };
 }
