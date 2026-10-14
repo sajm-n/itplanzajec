@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792011978406,
+  "rev": 1792011996523,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -238,6 +238,14 @@
     {
       "id": "kmv8lnvz95geqt",
       "name": "Bezpieczeństwo i higiena pracy",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "yes"
+    },
+    {
+      "id": "kmv8lo9yiq3idl",
+      "name": "Przysposobienie biblioteczne",
       "desc": "",
       "req": "",
       "forms": {},
