@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791988462095,
+  "rev": 1791988463853,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -203,7 +203,7 @@
       "time": "11:30",
       "url": "",
       "note": "",
-      "done": true
+      "done": false
     }
   ]
 }
