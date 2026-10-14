@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791969368299,
+  "rev": 1791974197448,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -188,6 +188,19 @@
       "date": "2026-10-19",
       "due": "2026-10-19",
       "time": "08:00",
+      "url": "",
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmv7z6407zmtzb",
+      "kind": "onsite",
+      "text": "Zapoznaj sie z innymi",
+      "sid": "",
+      "cid": "c10",
+      "date": "2026-10-28",
+      "due": "2026-10-28",
+      "time": "11:30",
       "url": "",
       "note": "",
       "done": false
