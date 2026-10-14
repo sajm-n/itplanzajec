@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792007520575,
+  "rev": 1792007522123,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -177,7 +177,7 @@
       "desc": "",
       "req": "",
       "forms": {},
-      "mac": "no"
+      "mac": "part"
     }
   ],
   "tasks": [
