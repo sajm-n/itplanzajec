@@ -326,7 +326,7 @@ function validatePlan(raw){
     const text=str(x.text,300);if(!text)continue;
     let due="";if(x.due!==undefined&&x.due!==null&&x.due!==""){if(!fromDK(x.due))continue;due=x.due}
     let id=okId(x.id)?x.id:uid();while(tids.has(id))id=uid();tids.add(id);
-    const t={id,kind,text,sid:sids.has(x.sid)?x.sid:"",cid:ids.has(x.cid)?x.cid:"",due,time:"",url:"",note:str(x.note,1000),done:x.done===true};
+    const t={id,kind,text,sid:sids.has(x.sid)?x.sid:"",cid:ids.has(x.cid)?x.cid:"",date:fromDK(x.date)?x.date:"",due,time:"",url:"",note:str(x.note,1000),done:x.done===true};
     if(x.time){const tm=normT(x.time);if(tm)t.time=tm}
     if(kind==="online"){const u=str(x.url,300);if(/^https?:\/\/\S+$/i.test(u))t.url=u}
     tasks.push(t);
@@ -523,13 +523,14 @@ let tab="plan";
 try{const t=localStorage.getItem(TAB_KEY);if(TABS[t])tab=t}catch(e){}
 let now=new Date(),sel=day0(now),mo=new Date(now.getFullYear(),now.getMonth(),1),vw="day",calOpen=false,lastFill={},editMode=false;
 
-const tasksOf=cid=>cache.plan.tasks.filter(t=>t.kind==="onsite"&&t.cid===cid).sort((a,b)=>(a.done-b.done)||(a.due?a.due+(a.time||""):"9").localeCompare(b.due?b.due+(b.time||""):"9"));
+/* Zadanie należy do konkretnego dnia zajęć (date); starsze zadania bez daty widać przy każdym terminie */
+const tasksOf=(cid,date)=>cache.plan.tasks.filter(t=>t.kind==="onsite"&&t.cid===cid&&(!t.date||t.date===date)).sort((a,b)=>(a.done-b.done)||(a.due?a.due+(a.time||""):"9").localeCompare(b.due?b.due+(b.time||""):"9"));
 function card(it,cls,badge){
   const c=it.c;
   const tags=[];
   if(c.date)tags.push('<span class="ev">jednorazowo</span>');else if(c.weeks!=="all")tags.push('<span class="ev">co 2 tyg.</span>');
   if(it.off)tags.push('<span class="ev warn">Odwołane</span>');else if(it.ex)tags.push('<span class="ev warn">Zmiana tego dnia</span>');
-  const open=tasksOf(it.id).filter(t=>!t.done);
+  const open=tasksOf(it.id,it.date).filter(t=>!t.done);
   if(open.length)tags.push('<span class="ev tk"><i></i>Do zrobienia: '+open.length+'</span>');
   const act=' role="button" tabindex="0" aria-label="'+(editMode?"Edytuj: ":"Szczegóły i zadania: ")+esc(c.name)+(open.length?", nieukończone zadania: "+open.length:"")+'"';
   const data=it.off?"":' data-s="'+mn(c.s)+'" data-e="'+mn(c.e)+'"';
@@ -680,7 +681,7 @@ function openDetail(cid,date,focus){
   const base=cache.plan.classes.find(x=>x.id===cid);if(!base)return;
   const d=fromDK(date)||day0(new Date()),it=items(d).find(x=>x.id===cid)||{c:base},c=it.c;
   ctx={cid,date:dk(d),view:"detail"};
-  const list=tasksOf(cid),after=d<day0(new Date())?day0(new Date()):d,nx=nextOccurrence(cache.plan,cid,after);
+  const list=tasksOf(cid,dk(d)),after=d<day0(new Date())?day0(new Date()):d,nx=nextOccurrence(cache.plan,cid,after);
   const rows=list.map(t=>'<div class="tk-row'+(t.done?" done":"")+(isLate(t)?" late":"")+'"><button type="button" class="tk-cb" role="checkbox" aria-checked="'+(t.done?"true":"false")+'" aria-label="Ukończone: '+esc(t.text)+'" data-sh="tg:'+esc(t.id)+'"><i>'+(t.done?"✓":"")+'</i></button>'
     +'<div class="tk-body"><span class="tk-tx">'+esc(t.text)+'</span><span class="tk-meta">'+esc(taskMeta(t))+'</span></div>'
     +'<button type="button" class="tk-del" aria-label="Usuń zadanie: '+esc(t.text)+'" data-sh="td:'+esc(t.id)+'">×</button></div>').join("");
@@ -696,7 +697,7 @@ function openDetail(cid,date,focus){
     const text=f.elements.text.value.trim();
     if(!text){$("tfErr").textContent="Wpisz treść zadania.";f.elements.text.focus();return}
     const nxt=nextOccurrence(cache.plan,cid,after);
-    const ok=change(p=>{p.tasks.push({id:uid(),kind:"onsite",sid:"",cid,text,due:nxt?dk(nxt.date):"",time:nxt?nxt.s:"",url:"",note:"",done:false})});
+    const ok=change(p=>{p.tasks.push({id:uid(),kind:"onsite",sid:"",cid,date:dk(d),text,due:nxt?dk(nxt.date):"",time:nxt?nxt.s:"",url:"",note:"",done:false})});
     if(ok)rerenderDetail('input[name="text"]');
   };
 }
