@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791983539497,
+  "rev": 1791983562619,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -201,19 +201,6 @@
       "date": "2026-10-28",
       "due": "2026-10-28",
       "time": "11:30",
-      "url": "",
-      "note": "",
-      "done": false
-    },
-    {
-      "id": "kmv84qcdkh4xsn",
-      "kind": "online",
-      "text": "dhaksjch",
-      "sid": "",
-      "cid": "",
-      "date": "",
-      "due": "2026-10-15",
-      "time": "23:59",
       "url": "",
       "note": "",
       "done": false
