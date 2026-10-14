@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791966674071,
+  "rev": 1791966768328,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -170,7 +170,14 @@
     }
   ],
   "exceptions": [],
-  "subjects": [],
+  "subjects": [
+    {
+      "id": "kmv7uqvnssj9xw",
+      "name": "Język angielski I",
+      "desc": "",
+      "req": ""
+    }
+  ],
   "tasks": [
     {
       "id": "kmv7uouxjhfkch",
@@ -181,6 +188,19 @@
       "date": "2026-10-19",
       "due": "2026-10-19",
       "time": "08:00",
+      "url": "",
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmv7uqvnsxpm2j",
+      "kind": "online",
+      "text": "ghhbbgfg",
+      "sid": "kmv7uqvnssj9xw",
+      "cid": "",
+      "date": "",
+      "due": "2026-10-20",
+      "time": "23:59",
       "url": "",
       "note": "",
       "done": false
