@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791974197448,
+  "rev": 1791982256763,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -46,7 +46,7 @@
       "s": "08:00",
       "e": "09:30",
       "room": "Ox 9",
-      "person": ""
+      "person": "mgr. M. Szabelska"
     },
     {
       "id": "c05",
