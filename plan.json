@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792020084500,
+  "rev": 1792020088339,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -280,20 +280,6 @@
       "at": 0,
       "note": "",
       "done": false
-    },
-    {
-      "id": "kmv8qgtyiiu3m7",
-      "kind": "online",
-      "text": "zadanie tesrowe",
-      "sid": "",
-      "cid": "",
-      "date": "",
-      "due": "2026-10-16",
-      "time": "01:21",
-      "url": "",
-      "at": 1792020047274,
-      "note": "",
-      "done": true
     }
   ]
 }
