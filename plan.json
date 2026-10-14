@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791937116060,
+  "rev": 1791937141262,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -167,16 +167,6 @@
       "e": "13:00",
       "room": "s. 11, WM",
       "person": ""
-    },
-    {
-      "id": "kmv7d3btnopc66",
-      "name": "Kreowanie wizerunku i techniki autoprezentacji",
-      "type": "l",
-      "date": "2026-10-15",
-      "s": "09:45",
-      "e": "11:15",
-      "room": "s. 10, AS",
-      "person": "mgr inż. M. Paśnikowska-Łukaszuk"
     }
   ],
   "exceptions": [
