@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791965805572,
+  "rev": 1791965820221,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -179,18 +179,5 @@
     }
   ],
   "subjects": [],
-  "tasks": [
-    {
-      "id": "kmv7u68sk5scwl",
-      "kind": "onsite",
-      "text": "test",
-      "sid": "",
-      "cid": "c09",
-      "due": "2026-10-21",
-      "time": "09:45",
-      "url": "",
-      "note": "",
-      "done": false
-    }
-  ]
+  "tasks": []
 }
