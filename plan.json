@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792011959845,
+  "rev": 1792011961651,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -190,6 +190,14 @@
     {
       "id": "kmv8lnhnpuc08o",
       "name": "Technologie informacyjne",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "yes"
+    },
+    {
+      "id": "kmv8lnj1uflozc",
+      "name": "Wprowadzenie do informatyki technicznej",
       "desc": "",
       "req": "",
       "forms": {},
