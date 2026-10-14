@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792007532111,
+  "rev": 1792011954390,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -178,6 +178,14 @@
       "req": "",
       "forms": {},
       "mac": ""
+    },
+    {
+      "id": "kmv8lndg5adb0g",
+      "name": "Podstawy programowania",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "yes"
     }
   ],
   "tasks": [
