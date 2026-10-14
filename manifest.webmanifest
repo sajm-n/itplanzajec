@@ -1,0 +1,11 @@
+{
+  "name": "eStudia",
+  "short_name": "eStudia",
+  "lang": "pl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef1f6",
+  "theme_color": "#1f3a8a",
+  "icons": [{ "src": "icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }]
+}

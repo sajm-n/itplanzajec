@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="eStudia">
 <meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f3a8a">
 <link rel="apple-touch-icon" href="data:image/png;base64,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">
 
@@ -127,7 +128,7 @@ h2{font-size:17px;font-weight:800;margin:20px 0 8px}
 .sec{margin:18px 0 6px;font-size:15px;font-weight:800}
 .sec:first-of-type{margin-top:8px}
 .hint{font-size:12px;color:var(--mut);margin:0 0 10px}
-.toast{position:fixed;left:50%;transform:translate(-50%,20px);bottom:calc(env(safe-area-inset-bottom,0px) + 84px);width:max-content;z-index:60;display:flex;align-items:center;gap:12px;max-width:min(92vw,520px);padding:11px 16px;border-radius:14px;background:var(--tx);color:var(--bg);font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.toast{position:fixed;left:50%;transform:translate(-50%,20px);bottom:calc(env(safe-area-inset-bottom,0px) + 92px);width:max-content;z-index:60;display:flex;align-items:center;gap:12px;max-width:min(92vw,520px);padding:11px 16px;border-radius:14px;background:var(--tx);color:var(--bg);font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
 .toast[hidden]{display:none}
 .toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 .toast button{color:inherit;font-weight:800;text-decoration:underline;padding:2px 4px}
@@ -196,6 +197,33 @@ body.edit .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 164px)}
 .fl textarea:focus{outline:2px solid var(--ac);outline-offset:1px}
 h3.sec.grp{margin:14px 0 8px}
 .dseg button{padding:8px 4px;font-size:13px;white-space:nowrap}
+
+/* ----- Przypomnienia, MacBook, szlify ----- */
+#alerts{display:grid;gap:6px;margin:0 0 12px}
+#alerts[hidden]{display:none}
+.al{display:flex;align-items:stretch;border:1px solid var(--bad);border-radius:12px;background:var(--card);background:color-mix(in srgb,var(--bad) 10%,var(--card));overflow:hidden}
+.alm{flex:1;min-width:0;text-align:left;padding:9px 12px;color:var(--tx);font-size:14px;line-height:1.35;font-weight:600;overflow-wrap:anywhere}
+.alm b{color:var(--bad);margin-right:6px;letter-spacing:1px}
+.alm small{display:block;color:var(--mut);font-size:12px;font-weight:400;margin-top:1px}
+.ald{flex:none;padding:0 14px;font-size:13px;font-weight:700;color:var(--bad);border-left:1px solid var(--bd)}
+.al.more{display:block;padding:7px 12px;border-style:dashed;color:var(--mut);font-size:13px}
+.nthint{display:block;width:100%;margin:0 0 10px;padding:11px 14px;text-align:left;border:1px dashed var(--ac);border-radius:12px;color:var(--ac);font-size:14px;font-weight:600}
+.nthint[hidden]{display:none}
+.ev.mac.yes{color:var(--ok);border-color:var(--ok)}
+.ev.mac.part{color:var(--warn);border-color:var(--warn)}
+.ev.mac.no{color:var(--bad);border-color:var(--bad)}
+.macrow{display:flex;flex-direction:column;gap:6px;margin:0 0 10px;font-size:13px;font-weight:600;color:var(--mut)}
+.macseg button{flex:1;padding:6px 4px;font-size:13px;white-space:nowrap}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.bnav button{transition:background-color .2s,color .2s}
+.view:not([hidden]){animation:vin .22s ease-out}
+@keyframes vin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (hover:hover){
+  .bnav button:not([aria-current]):hover{background:color-mix(in srgb,var(--tx) 7%,transparent);color:var(--tx)}
+  .sbi:hover,.tk-row:hover,.c[data-cid]:hover{border-color:var(--ac)}
+}
+@media (prefers-reduced-motion:reduce){.view:not([hidden]){animation:none}.bnav button{transition:none}}
+.tkseg button{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -211,6 +239,7 @@ h3.sec.grp{margin:14px 0 8px}
   <p class="sub" id="sub"></p>
   <button class="chip" id="chip" type="button" data-a="chip:"><i></i><span id="chipT"></span></button>
 </div>
+<div id="alerts" hidden></div>
 <section class="view" id="v-plan" aria-label="Plan zajęć">
 <div class="cal" id="cal"></div>
 <div class="row">
@@ -223,12 +252,14 @@ h3.sec.grp{margin:14px 0 8px}
 <p class="sub" id="note" style="text-transform:none;margin-top:14px"></p>
 </section>
 <section class="view" id="v-tasks" aria-label="Zadania" hidden>
+  <button type="button" class="nthint" id="ntHint" data-a="nt:" hidden>Włącz powiadomienia o niewykonanych zadaniach</button>
   <div class="seg tkseg" role="group" aria-label="Rodzaj zadań"><button type="button" id="tv-onsite" data-a="tv:onsite">Zadania stacjonarne</button><button type="button" id="tv-online" data-a="tv:online">Zadania online</button></div>
   <div class="tkbar"><button type="button" class="sw" id="hdBtn" data-a="hd:" role="switch" aria-checked="false"><i></i>Ukryj ukończone</button></div>
   <div id="tkOnlineForm" class="olcard" hidden></div>
   <div id="tkLists"></div>
 </section>
 <section class="view" id="v-subj" aria-label="Przedmioty" hidden>
+  <div class="seg tkseg" id="macFilter" role="group" aria-label="Filtr MacBook"><button type="button" data-a="mf:all">Wszystkie</button><button type="button" data-a="mf:yes">Na MacBooku</button><button type="button" data-a="mf:no">Bez MacBooka</button></div>
   <h2 class="hh"><span>Wszystkie przedmioty</span><em id="sbN">0</em></h2>
   <div id="sbList" class="free"></div>
 </section>
@@ -345,7 +376,14 @@ function validatePlan(raw){
     if(!x||typeof x!=="object")continue;
     const name=str(x.name,120);if(!name)continue;
     let id=okId(x.id)?x.id:uid();while(sids.has(id))id=uid();sids.add(id);
-    subjects.push({id,name,desc:str(x.desc,3000),req:str(x.req,3000)});
+    /* forms: osobne wymagania i informacje dla wykładu / laboratorium / ćwiczeń (klucze jak w TYPES); mac: zgodność z MacBookiem */
+    const forms={};
+    if(x.forms&&typeof x.forms==="object"&&!Array.isArray(x.forms))for(const k of Object.keys(TYPES)){
+      const f=x.forms[k];if(!f||typeof f!=="object")continue;
+      const req=str(f.req,3000),desc=str(f.desc,3000);
+      if(req||desc)forms[k]={req,desc};
+    }
+    subjects.push({id,name,desc:str(x.desc,3000),req:str(x.req,3000),forms,mac:["yes","part","no"].includes(x.mac)?x.mac:""});
   }
   /* Zadania: "onsite" (stacjonarne) i "online"; powiązania z przedmiotem (sid) i zajęciami (cid) są opcjonalne */
   const tids=new Set(),tasks=[];
@@ -355,7 +393,7 @@ function validatePlan(raw){
     const text=str(x.text,300);if(!text)continue;
     let due="";if(x.due!==undefined&&x.due!==null&&x.due!==""){if(!fromDK(x.due))continue;due=x.due}
     let id=okId(x.id)?x.id:uid();while(tids.has(id))id=uid();tids.add(id);
-    const t={id,kind,text,sid:sids.has(x.sid)?x.sid:"",cid:ids.has(x.cid)?x.cid:"",date:fromDK(x.date)?x.date:"",due,time:"",url:"",note:str(x.note,1000),done:x.done===true};
+    const t={id,kind,text,sid:sids.has(x.sid)?x.sid:"",cid:ids.has(x.cid)?x.cid:"",date:fromDK(x.date)?x.date:"",due,time:"",url:"",at:Number.isFinite(x.at)&&x.at>0?Math.floor(x.at):0,note:str(x.note,1000),done:x.done===true};
     if(x.time){const tm=normT(x.time);if(tm)t.time=tm}
     if(kind==="online"){const u=str(x.url,300);if(/^https?:\/\/\S+$/i.test(u))t.url=u}
     tasks.push(t);
@@ -409,6 +447,28 @@ function nextOccurrence(plan,cid,after){
     if(it)return{date:d,s:it.c.s};
   }
   return null;
+}
+
+/* ===== Przypomnienia o nieukończonych zadaniach =====
+   Stacjonarne: dzień przed terminem (dniem zajęć) o 18:00. Online: dokładnie 24 h przed terminem.
+   Przypomnienie dotyczy tylko zadań, które istniały w chwili jego wyzwolenia (pole at = czas utworzenia),
+   więc zadanie dodane już po 18:00 dnia poprzedniego nie alarmuje od razu. */
+function taskTrigger(t){
+  if(!t.due)return null;
+  const d=fromDK(t.due);if(!d)return null;
+  const p=(t.time||(t.kind==="online"?"23:59":"00:00")).split(":").map(Number);
+  const end=new Date(d.getFullYear(),d.getMonth(),d.getDate(),p[0],p[1]);
+  const start=t.kind==="online"?new Date(end.getTime()-864e5):new Date(d.getFullYear(),d.getMonth(),d.getDate()-1,18,0);
+  return{start,end};
+}
+const OVERDUE_MS=7*864e5;
+function taskAlert(t,now){
+  if(t.done)return null;
+  const w=taskTrigger(t);if(!w)return null;
+  if(t.at&&w.start.getTime()<t.at)return null;
+  if(now<w.start)return null;
+  if(now<=w.end)return "soon";
+  return now-w.end<=OVERDUE_MS?"over":null;
 }
 
 /* ===== Ustawienia, pamięć lokalna, synchronizacja ===== */
@@ -668,6 +728,7 @@ function render(){
   const sw=cache.plan.startWeek,ow=sw==="A"?"B":"A";
   $("note").textContent="Tydzień "+sw+" zaczyna się "+dl(start)+", kolejne tygodnie zmieniają się na przemian ("+sw+", "+ow+", "+sw+"…).";
   renderSync();
+  renderAlerts();
   updateProgress();
 }
 
@@ -693,7 +754,7 @@ const tkKey=t=>t.due?t.due+(t.time||"00:00"):"9";
 function tkRow(t){
   const label=t.kind==="online"?(subjName(t.sid)||"Online"):((cache.plan.classes.find(c=>c.id===t.cid)||{}).name||"Zajęcia");
   return '<div class="tk-row'+(t.done?" done":"")+(isLate(t)?" late":"")+'"><button type="button" class="tk-cb" role="checkbox" aria-checked="'+(t.done?"true":"false")+'" aria-label="Ukończone: '+esc(t.text)+'" data-a="tg:'+esc(t.id)+'"><i>'+(t.done?"✓":"")+'</i></button>'
-   +'<button type="button" class="tk-body tkopen" data-a="to:'+esc(t.id)+'"><span class="tk-tx">'+esc(t.text)+'</span><span class="tk-meta">'+esc(label)+' · '+esc(taskMeta(t))+'</span></button></div>';
+   +'<button type="button" class="tk-body tkopen" data-a="to:'+esc(t.id)+'"><span class="tk-tx">'+esc(t.text)+'</span><span class="tk-meta">'+esc(label)+(macOf(label)?' · Mac: '+MAC_TXT[macOf(label)]:"")+' · '+esc(taskMeta(t))+'</span></button></div>';
 }
 function renderTasks(){
   $("tv-onsite").classList.toggle("on",tkView==="onsite");$("tv-online").classList.toggle("on",tkView==="online");
@@ -750,7 +811,7 @@ function initOlForm(){
   $("olf").onsubmit=ev=>{
     ev.preventDefault();
     const f=$("olf"),v=readOl(f,f.querySelector("[data-err]"));if(!v)return;
-    const ok=change(p=>{p.tasks.push({id:uid(),kind:"online",sid:applySubject(p,v.subj),cid:"",date:"",text:v.text,due:v.due,time:v.time,url:"",note:"",done:false})},"Dodano zadanie online");
+    const ok=change(p=>{p.tasks.push({id:uid(),kind:"online",sid:applySubject(p,v.subj),cid:"",at:Date.now(),date:"",text:v.text,due:v.due,time:v.time,url:"",note:"",done:false})},"Dodano zadanie online");
     if(ok){f.elements.text.value="";f.elements.text.focus()}
   };
 }
@@ -775,9 +836,93 @@ function openTask(id){
   };
 }
 function toggleTask(id){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done})}
+/* ----- Przypomnienia o nieukończonych zadaniach ----- */
+const SEEN_KEY="estudia.notified.v1";
+function taskLabel(t){
+  if(t.kind==="online")return subjName(t.sid)||"Online";
+  const c=cache.plan.classes.find(x=>x.id===t.cid);return c?c.name:"Zajęcia";
+}
+function whenWord(t){
+  const d=fromDK(t.due),td=day0(new Date()),tm=new Date(td.getFullYear(),td.getMonth(),td.getDate()+1);
+  return same(d,td)?"dziś":same(d,tm)?"jutro":dl(d);
+}
+/* Treść: stacjonarne "na jutro", online z terminem w godzinach */
+function alertTexts(a){
+  const t=a.t,w=whenWord(t);
+  if(a.s==="over")return{title:"!!! Zadanie po terminie: "+t.text+" !!!",body:taskLabel(t)+" · termin minął ("+dl(fromDK(t.due))+(t.time?", "+fmtT(t.time):"")+")",line:"po terminie ("+dl(fromDK(t.due))+")"};
+  if(t.kind==="online")return{title:"!!! Niewykonane zadanie online: "+t.text+" !!!",body:taskLabel(t)+" · termin: "+w+" o "+fmtT(t.time||"23:59"),line:"termin: "+w+" o "+fmtT(t.time||"23:59")};
+  return{title:"!!! Niewykonane zadanie "+(w==="dziś"?"na dziś":w==="jutro"?"na jutro":"na "+w)+": "+t.text+" !!!",body:taskLabel(t)+(t.time?" · zajęcia o "+fmtT(t.time):""),line:"zajęcia: "+w+(t.time?", "+fmtT(t.time):"")};
+}
+function activeAlerts(){
+  const n=new Date();
+  return cache.plan.tasks.map(t=>({t,s:taskAlert(t,n)})).filter(x=>x.s).sort((a,b)=>(a.s===b.s?0:a.s==="over"?1:-1)||tkKey(a.t).localeCompare(tkKey(b.t)));
+}
+function renderAlerts(){
+  const al=activeAlerts(),box=$("alerts");
+  box.hidden=!al.length;
+  box.innerHTML=al.slice(0,3).map(a=>'<div class="al"><button type="button" class="alm" data-a="tk:'+esc(a.t.id)+'"><b>!!!</b>'+esc(a.t.text)+'<small>'+esc(taskLabel(a.t))+' · '+esc(alertTexts(a).line)+'</small></button><button type="button" class="ald" data-a="tg:'+esc(a.t.id)+'" aria-label="Oznacz jako ukończone: '+esc(a.t.text)+'">Zrobione</button></div>').join("")
+    +(al.length>3?'<div class="al more">…i jeszcze '+(al.length-3)+' pilnych zadań</div>':"");
+  try{if(navigator.setAppBadge){const p=al.length?navigator.setAppBadge(al.length):navigator.clearAppBadge();if(p&&p.catch)p.catch(()=>{})}}catch(e){}
+  renderNotifState();
+  notifyDue();
+}
+function openAlertTask(id){
+  const t=cache.plan.tasks.find(x=>x.id===id);if(!t)return;
+  if(t.kind==="onsite"&&cache.plan.classes.some(c=>c.id===t.cid))openDetail(t.cid,t.date||t.due);
+  else openTask(id);
+}
+/* Powiadomienia systemowe (Web Notifications). Każde zadanie dostaje jedno; wysyłane, gdy aplikacja działa. */
+const notifState=()=>("Notification" in window)?Notification.permission:"unsupported";
+const loadSeen=()=>{try{const o=JSON.parse(localStorage.getItem(SEEN_KEY));if(o&&typeof o==="object")return o}catch(e){}return{}};
+const saveSeen=o=>{try{localStorage.setItem(SEEN_KEY,JSON.stringify(o))}catch(e){}};
+async function showNotif(title,body,tag){
+  try{
+    const reg=navigator.serviceWorker&&navigator.serviceWorker.getRegistration?await navigator.serviceWorker.getRegistration():null;
+    if(reg&&reg.showNotification){await reg.showNotification(title,{body,tag,lang:"pl"});return true}
+  }catch(e){}
+  try{new Notification(title,{body,tag,lang:"pl"});return true}catch(e){return false}
+}
+let notifying=false;
+async function notifyDue(){
+  if(notifying||notifState()!=="granted")return;
+  notifying=true;
+  try{
+    const seen=loadSeen(),live=new Set(cache.plan.tasks.map(t=>t.id));let ch=false;
+    for(const k in seen)if(!live.has(k)){delete seen[k];ch=true}
+    for(const a of activeAlerts()){
+      if(a.s!=="soon"||seen[a.t.id])continue;
+      const x=alertTexts(a);
+      if(await showNotif(x.title,x.body,a.t.id)){seen[a.t.id]=Date.now();ch=true}
+    }
+    if(ch)saveSeen(seen);
+  }finally{notifying=false}
+}
+function askNotif(){
+  if(!("Notification" in window))return;
+  try{
+    const r=Notification.requestPermission(()=>{});
+    if(r&&r.then)r.then(()=>{renderNotifState();notifyDue()},()=>renderNotifState());
+  }catch(e){renderNotifState()}
+}
+function renderNotifState(){
+  const st=notifState(),el=$("ntStat"),ac=$("ntActs"),h=$("ntHint");
+  if(h)h.hidden=st!=="default";
+  if(el){
+    el.textContent={unsupported:"Ta przeglądarka nie obsługuje powiadomień. Na iPhonie dodaj stronę do ekranu głównego (Udostępnij → Do ekranu początkowego) i otwieraj ją z ikony.",default:"Powiadomienia są wyłączone.",granted:"Powiadomienia są włączone.",denied:"Powiadomienia są zablokowane w ustawieniach przeglądarki lub systemu."}[st];
+    el.className="msg"+(st==="granted"?" ok":st==="denied"?" bad":"");
+  }
+  if(ac)ac.innerHTML=st==="default"?'<button type="button" class="btn pri" data-sh="notif">Włącz powiadomienia</button>':st==="granted"?'<button type="button" class="btn" data-sh="ntest">Wyślij powiadomienie testowe</button>':"";
+}
+
 /* ----- Katalog przedmiotów ----- */
 const nameLc=s=>String(s||"").toLowerCase();
-const TYPE_ORDER="wlc";
+const TYPE_ORDER="wlcx";
+const FORM_LABEL=t=>t==="x"?"Zajęcia":t==="g"?"Informacje":TYPES[t];
+const MAC_OPTS=[["yes","Tak"],["part","Częściowo"],["no","Nie"],["","Nie wiem"]];
+const MAC_TXT={yes:"tak",part:"częściowo",no:"nie"};
+const MF_KEY="estudia.macfilter.v1";
+let macFilter="all";
+try{const m=localStorage.getItem(MF_KEY);if(m==="yes"||m==="no")macFilter=m}catch(e){}
 function subjectList(){
   const map=new Map();
   const get=n=>{const k=nameLc(n);let e=map.get(k);if(!e){e={name:n,types:[],persons:[]};map.set(k,e)}return e};
@@ -791,28 +936,44 @@ function subjectList(){
   a.forEach(e=>e.types.sort((x,y)=>TYPE_ORDER.indexOf(x)-TYPE_ORDER.indexOf(y)));
   return a.sort((x,y)=>x.name.localeCompare(y.name,"pl"));
 }
+/* Formy zajęć przedmiotu (wykład, laboratorium, ćwiczenia…) z prowadzącymi z planu */
+function subjForms(name){
+  const k=nameLc(name),m=new Map();
+  for(const c of cache.plan.classes)if(nameLc(c.name)===k){
+    let e=m.get(c.type);if(!e)m.set(c.type,e={type:c.type,persons:[]});
+    if(c.person&&!e.persons.includes(c.person))e.persons.push(c.person);
+  }
+  return [...m.values()].sort((a,b)=>TYPE_ORDER.indexOf(a.type)-TYPE_ORDER.indexOf(b.type));
+}
 function subjTasks(name){
   const k=nameLc(name),cl=id=>{const c=cache.plan.classes.find(x=>x.id===id);return c?c.name:""};
   return cache.plan.tasks.filter(t=>nameLc(t.kind==="online"?subjName(t.sid):cl(t.cid))===k);
 }
 const subjRec=name=>cache.plan.subjects.find(s=>nameLc(s.name)===nameLc(name))||null;
+const hasNotes=r=>!!(r&&(r.req||r.desc||Object.keys(r.forms||{}).length));
+const macOf=name=>{const r=subjRec(name);return r?r.mac:""};
 function ensureSubject(p,name){
   let s=p.subjects.find(x=>nameLc(x.name)===nameLc(name));
-  if(!s){s={id:uid(),name,desc:"",req:""};p.subjects.push(s)}
+  if(!s){s={id:uid(),name,desc:"",req:"",forms:{},mac:""};p.subjects.push(s)}
   return s;
 }
+const macChip=m=>m?'<span class="ev mac '+m+'">MacBook: '+MAC_TXT[m]+'</span>':"";
 function renderSubjects(){
-  const list=subjectList(),box=$("sbList");
+  const all=subjectList();
+  const list=all.filter(e=>{const m=macOf(e.name);return macFilter==="all"||(macFilter==="yes"?m==="yes":m==="no"||m==="part")});
+  const box=$("sbList");
   $("sbN").textContent=list.length;
+  document.querySelectorAll("#macFilter button").forEach(b=>b.classList.toggle("on",b.dataset.a==="mf:"+macFilter));
   box.className=list.length?"":"free";
   box.innerHTML=list.length?list.map(e=>{
     const rec=subjRec(e.name),open=subjTasks(e.name).filter(t=>!t.done).length;
     return '<button type="button" class="sbi" data-a="sj:'+encodeURIComponent(e.name)+'"><span class="nm">'+esc(e.name)+'</span><span class="mt">'
       +e.types.map(t=>'<span class="ev">'+esc(TYPES[t])+'</span>').join("")
-      +(rec&&(rec.req||rec.desc)?'<span class="ev">Notatki</span>':"")
+      +macChip(rec?rec.mac:"")
+      +(hasNotes(rec)?'<span class="ev">Notatki</span>':"")
       +(open?'<span class="ev tk"><i></i>Do zrobienia: '+open+'</span>':"")
       +(e.persons.length?'<span class="pp">'+esc(e.persons.join(", "))+'</span>':"")+'</span><b class="chev" aria-hidden="true">›</b></button>';
-  }).join(""):"Brak przedmiotów. Dodaj zajęcia w planie, a pojawią się tutaj.";
+  }).join(""):(all.length?"Żaden przedmiot nie pasuje do filtra. Zgodność z MacBookiem oznaczysz w karcie przedmiotu.":"Brak przedmiotów. Dodaj zajęcia w planie, a pojawią się tutaj.");
 }
 let sjSave=null,sjT=0;
 function flushSave(){
@@ -821,8 +982,17 @@ function flushSave(){
   const s=sjSave;sjSave=null;
   const f=$("sjf");if(!f)return;
   const req=f.elements.req.value,desc=f.elements.desc.value,rec=subjRec(s.name);
-  if(rec?(rec.req===req.trim()&&rec.desc===desc.trim()):!req.trim()&&!desc.trim())return;
-  change(p=>{const x=ensureSubject(p,s.name);x.req=req;x.desc=desc});
+  const cur=s.form==="g"?(rec||{req:"",desc:""}):(rec&&rec.forms&&rec.forms[s.form])||(s.legacy&&rec?{req:rec.req,desc:rec.desc}:{req:"",desc:""});
+  if(cur.req===req.trim()&&cur.desc===desc.trim())return;
+  change(p=>{
+    const x=ensureSubject(p,s.name);
+    if(s.form==="g"){x.req=req;x.desc=desc}
+    else{
+      if(!x.forms)x.forms={};
+      if(req.trim()||desc.trim())x.forms[s.form]={req,desc};else delete x.forms[s.form];
+      if(s.legacy){x.req="";x.desc=""}
+    }
+  });
   const st=$("sjSt");if(st)st.textContent="Zapisano ✓";
 }
 function sjTaskRow(t){
@@ -832,30 +1002,40 @@ function sjTaskRow(t){
 }
 function openSubject(name,tab,focus){
   const e=subjectList().find(x=>nameLc(x.name)===nameLc(name));if(!e)return;
-  tab=tab==="tasks"?"tasks":"info";
-  const all=subjTasks(e.name),n=all.filter(t=>!t.done).length;
+  const forms=subjForms(e.name),keys=forms.length?forms.map(f=>f.type):["g"];
+  if(tab!=="tasks"&&!keys.includes(tab))tab=keys[0];
+  const all=subjTasks(e.name),n=all.filter(t=>!t.done).length,rec=subjRec(e.name)||{req:"",desc:"",forms:{},mac:""};
   ctx={view:"subj",sname:e.name,stab:tab};
-  const forms=[...new Set(cache.plan.classes.filter(c=>nameLc(c.name)===nameLc(e.name)).map(c=>(c.type!=="x"?TYPES[c.type]:"Zajęcia")+(c.person?" · "+c.person:"")))];
-  const seg='<div class="seg dseg" role="tablist"><button type="button" role="tab" aria-selected="'+(tab==="info")+'" class="'+(tab==="info"?"on":"")+'" data-sh="stab:info">Wymagania i Informacje</button><button type="button" role="tab" aria-selected="'+(tab==="tasks")+'" class="'+(tab==="tasks"?"on":"")+'" data-sh="stab:tasks">Wszystkie zadania'+(n?" ("+n+")":"")+'</button></div>';
-  let body;
-  if(tab==="info"){
-    const rec=subjRec(e.name)||{req:"",desc:""};
-    body='<form id="sjf" novalidate autocomplete="off"><label class="fl">Wymagania i zasady zaliczenia<textarea name="req" rows="6" maxlength="3000" placeholder="np. zasady zaliczenia, liczba i terminy kolokwiów, progi punktowe">'+esc(rec.req)+'</textarea></label>'
-      +'<label class="fl">Informacje i ustalenia z prowadzącym<textarea name="desc" rows="5" maxlength="3000" placeholder="np. kontakt do wykładowcy, konsultacje, ustalenia z zajęć">'+esc(rec.desc)+'</textarea></label>'
-      +'<p class="msg ok" id="sjSt" role="status">Zmiany zapisują się automatycznie.</p>'
-      +'<div class="acts"><button type="button" class="btn" data-sh="close">Zamknij</button></div></form>';
-  }else{
+  const tabBtn=(k,label)=>'<button type="button" role="tab" aria-selected="'+(tab===k)+'" class="'+(tab===k?"on":"")+'" data-sh="stab:'+k+'">'+esc(label)+'</button>';
+  const seg='<div class="seg dseg" role="tablist">'+keys.map(k=>tabBtn(k,FORM_LABEL(k))).join("")+tabBtn("tasks","Zadania"+(n?" ("+n+")":""))+'</div>';
+  const mac='<div class="macrow"><span id="macLbl">Działa na MacBooku?</span><div class="seg macseg" role="group" aria-labelledby="macLbl">'
+    +MAC_OPTS.map(o=>'<button type="button" class="'+(rec.mac===o[0]?"on":"")+'" aria-pressed="'+(rec.mac===o[0])+'" data-sh="mac:'+o[0]+'">'+o[1]+'</button>').join("")+'</div></div>';
+  let body,sub="";
+  if(tab==="tasks"){
     const groups=GROUPS.map(g=>{
       const arr=all.filter(t=>taskGroup(t)===g[0]).sort((a,b)=>g[0]==="done"?tkKey(b).localeCompare(tkKey(a)):tkKey(a).localeCompare(tkKey(b)));
       return arr.length?'<h3 class="sec grp'+(g[0]==="over"?" over":"")+'">'+g[1]+' ('+arr.length+')</h3><div class="tk-list">'+arr.map(sjTaskRow).join("")+'</div>':"";
     }).join("");
     body=(all.length?groups:'<p class="tk-empty">Brak zadań dla tego przedmiotu. Stacjonarne dodasz w oknie zajęć na planie, online w zakładce „Zadania”.</p>')
       +'<div class="acts"><button type="button" class="btn" data-sh="close">Zamknij</button></div>';
+    sub=forms.length?forms.map(f=>FORM_LABEL(f.type)).join(" · "):"";
+  }else{
+    const f=forms.find(x=>x.type===tab);
+    let v={req:"",desc:"",legacy:false};
+    if(tab==="g")v={req:rec.req,desc:rec.desc,legacy:false};
+    else if(rec.forms&&rec.forms[tab])v={req:rec.forms[tab].req,desc:rec.forms[tab].desc,legacy:false};
+    else if(tab===keys[0]&&(rec.req||rec.desc)&&!Object.keys(rec.forms||{}).length)v={req:rec.req,desc:rec.desc,legacy:true};
+    sub=f&&f.persons.length?"Prowadzący: "+f.persons.join(", "):(f?"Brak prowadzącego w planie":"");
+    body='<form id="sjf" novalidate autocomplete="off"><label class="fl">Wymagania i zasady zaliczenia<textarea name="req" rows="6" maxlength="3000" placeholder="np. zasady zaliczenia, liczba i terminy kolokwiów, progi punktowe">'+esc(v.req)+'</textarea></label>'
+      +'<label class="fl">Informacje i ustalenia z prowadzącym<textarea name="desc" rows="5" maxlength="3000" placeholder="np. kontakt do prowadzącego, konsultacje, ustalenia z zajęć">'+esc(v.desc)+'</textarea></label>'
+      +'<p class="msg ok" id="sjSt" role="status">Zmiany zapisują się automatycznie.</p>'
+      +'<div class="acts"><button type="button" class="btn" data-sh="close">Zamknij</button></div></form>';
+    ctx.legacy=v.legacy;
   }
-  openSheet(e.name,(forms.length?'<p class="shsub">'+esc(forms.join(" · "))+'</p>':"")+seg+body,focus);
-  if(tab==="info"){
+  openSheet(e.name,(sub?'<p class="shsub">'+esc(sub)+'</p>':"")+mac+seg+body,focus);
+  if(tab!=="tasks"){
     sjSave=null;
-    const f=$("sjf"),mark=()=>{sjSave={name:e.name};$("sjSt").textContent="Zapisywanie…";clearTimeout(sjT);sjT=setTimeout(flushSave,700)};
+    const f=$("sjf"),legacy=ctx.legacy,mark=()=>{sjSave={name:e.name,form:tab,legacy};$("sjSt").textContent="Zapisywanie…";clearTimeout(sjT);sjT=setTimeout(flushSave,700)};
     f.addEventListener("input",mark);f.addEventListener("change",()=>{if(sjSave)flushSave()});
   }
 }
@@ -905,7 +1085,7 @@ function openDetail(cid,date,focus){
     ev.preventDefault();
     const text=f.elements.text.value.trim();
     if(!text){$("tfErr").textContent="Wpisz treść zadania.";f.elements.text.focus();return}
-    const ok=change(p=>{p.tasks.push({id:uid(),kind:"onsite",sid:"",cid,date:dk(d),text,due:dk(d),time:c.s,url:"",note:"",done:false})});
+    const ok=change(p=>{p.tasks.push({id:uid(),kind:"onsite",sid:"",cid,at:Date.now(),date:dk(d),text,due:dk(d),time:c.s,url:"",note:"",done:false})});
     if(ok)rerenderDetail('input[name="text"]');
   };
 }
@@ -1111,12 +1291,15 @@ function openSettings(){
   +'<h3 class="sec">Rytm tygodni A/B</h3>'
   +'<form id="abF" novalidate><div class="two"><label class="fl">Dowolny dzień tygodnia<input type="date" name="d" value="'+esc(p.start)+'"></label><label class="fl">Ten tydzień to<select name="w">'+selOpts([["A","Tydzień A"],["B","Tydzień B"]],p.startWeek)+'</select></label></div>'
   +'<p id="abMsg" class="msg" role="status"></p><div class="acts"><button type="submit" class="btn">Zapisz rytm</button></div></form>'
+  +'<h3 class="sec">Powiadomienia o zadaniach</h3>'
+  +'<p class="hint">Zadania stacjonarne: przypomnienie dzień przed zajęciami o 18:00. Zadania online: dokładnie 24 godziny przed terminem. Czerwony pasek na górze aplikacji pokazuje je zawsze. Powiadomienie systemowe przychodzi, gdy aplikacja jest otwarta lub działa w tle, a przy zamkniętej zobaczysz je po jej otwarciu.</p>'
+  +'<p id="ntStat" class="msg" role="status"></p><div class="acts" id="ntActs"></div>'
   +'<h3 class="sec">Kopia zapasowa</h3>'
   +'<div class="acts"><button type="button" class="btn" data-sh="export">Eksportuj plan</button><button type="button" class="btn" data-sh="import">Importuj plan</button><button type="button" class="btn dng" data-sh="reset">Przywróć plan domyślny</button></div>'
   +'<input type="file" id="impf" accept=".json,application/json" hidden>'
   +'<p id="bkMsg" class="msg" role="status" style="margin-top:8px"></p>'
   +'<div class="acts" style="margin-top:14px"><button type="button" class="btn" data-sh="close">Zamknij</button></div>');
-  renderSync();
+  renderSync();renderNotifState();
   $("cfgF").onsubmit=async ev=>{
     ev.preventDefault();
     const E=$("cfgF").elements,m=/^([\w.-]+)\/([\w.-]+)$/.exec(E.repo.value.trim());
@@ -1170,6 +1353,7 @@ function shAction(a){
   if(ci>0){
     const k=a.slice(0,ci),id=a.slice(ci+1);
     if(k==="stab")openSubject(ctx.sname,id);
+    else if(k==="mac"){const nm=ctx.sname,tb=ctx.stab;flushSave();change(p=>{ensureSubject(p,nm).mac=id});openSubject(nm,tb)}
     else if(k==="stg"){toggleTask(id);const st=$("sheet").scrollTop;openSubject(ctx.sname,"tasks",'[data-sh="stg:'+id+'"]');$("sheet").scrollTop=st}
     else if(k==="sto")openTask(id);
     else if(k==="tg"){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done});rerenderDetail('[data-sh="tg:'+id+'"]')}
@@ -1181,6 +1365,10 @@ function shAction(a){
   }
   switch(a){
     case "close":closeSheet();break;
+    case "notif":askNotif();break;
+    case "ntest":
+      showNotif("eStudia","To jest powiadomienie testowe.","test").then(ok=>setMsg("ntStat",ok?"Wysłano powiadomienie testowe.":"Nie udało się wysłać powiadomienia.",ok?"ok":"bad"));
+      break;
     case "oldel":{
       const t=cache.plan.tasks.find(x=>x.id===ctx.tid);if(!t)break;
       closeSheet();change(p=>{p.tasks=p.tasks.filter(x=>x.id!==t.id)},"Usunięto zadanie");break}
@@ -1262,6 +1450,9 @@ document.addEventListener("click",e=>{
   else if(k==="tg"){toggleTask(v);return}
   else if(k==="to"){openTask(v);return}
   else if(k==="sj"){openSubject(decodeURIComponent(v));return}
+  else if(k==="mf"){macFilter=v==="yes"||v==="no"?v:"all";lsSet(MF_KEY,macFilter)}
+  else if(k==="tk"){openAlertTask(v);return}
+  else if(k==="nt"){askNotif();return}
   else if(k==="set"){openSettings();return}
   else if(k==="add"){openForm({mode:"new"});return}
   else if(k==="chip"){if(conflict)openConflict();else openSettings();return}

@@ -1,6 +1,6 @@
 /* Service worker: aplikacja działa offline. Sieć ma pierwszeństwo, więc nowe wersje trafiają
    do telefonu przy najbliższym otwarciu z internetem; pamięć podręczna jest tylko zapasem. */
-const V = "plan-v3";
+const V = "plan-v4";
 const SHELL = ["./", "./index.html"];
 
 self.addEventListener("install", e => {
@@ -49,4 +49,15 @@ self.addEventListener("fetch", e => {
   } else if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
     e.respondWith(staleWhileRevalidate(req));
   }
+});
+
+/* Stuknięcie w powiadomienie otwiera aplikację */
+self.addEventListener("notificationclick", e => {
+  e.notification.close();
+  e.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then(list => {
+      for (const c of list) if ("focus" in c) return c.focus();
+      return self.clients.openWindow("./");
+    })
+  );
 });
