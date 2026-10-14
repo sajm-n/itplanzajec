@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791997247159,
+  "rev": 1792007236131,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -175,7 +175,9 @@
       "id": "kmv7uqvnssj9xw",
       "name": "Język angielski I",
       "desc": "",
-      "req": ""
+      "req": "",
+      "forms": {},
+      "mac": ""
     }
   ],
   "tasks": [
@@ -189,6 +191,7 @@
       "due": "2026-10-19",
       "time": "08:00",
       "url": "",
+      "at": 0,
       "note": "",
       "done": false
     },
@@ -202,6 +205,21 @@
       "due": "2026-10-28",
       "time": "11:30",
       "url": "",
+      "at": 0,
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmv8iu8temdeoc",
+      "kind": "online",
+      "text": "zadanie testowe",
+      "sid": "",
+      "cid": "",
+      "date": "",
+      "due": "2026-10-15",
+      "time": "12:59",
+      "url": "",
+      "at": 1792007236130,
       "note": "",
       "done": false
     }
