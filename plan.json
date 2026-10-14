@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791997238889,
+  "rev": 1791997247159,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -169,14 +169,7 @@
       "person": ""
     }
   ],
-  "exceptions": [
-    {
-      "id": "kmv8cvyw8bc78g",
-      "cid": "c13",
-      "date": "2026-10-23",
-      "off": true
-    }
-  ],
+  "exceptions": [],
   "subjects": [
     {
       "id": "kmv7uqvnssj9xw",
