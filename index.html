@@ -184,6 +184,18 @@ body.edit .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 164px)}
 .grp.over em{color:var(--bad);border-color:var(--bad)}
 .tkopen{text-align:left;color:var(--tx);font:inherit;min-width:0}
 @media (prefers-reduced-motion:reduce){.sw i,.sw i::after{transition:none}}
+
+/* ----- Katalog przedmiotów ----- */
+.sbi{position:relative;display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 38px 12px 14px;margin:0 0 8px;color:var(--tx)}
+.sbi .nm{display:block;font-weight:700;font-size:16px}
+.sbi .mt{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:13px;color:var(--mut)}
+.sbi .pp{flex-basis:100%}
+.sbi .chev{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--mut);font-weight:400}
+.sbi:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.fl textarea{display:block;width:100%;box-sizing:border-box;min-height:92px;margin-top:4px;padding:8px 10px;font:inherit;font-size:16px;line-height:1.4;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:10px;resize:vertical;-webkit-appearance:none;appearance:none}
+.fl textarea:focus{outline:2px solid var(--ac);outline-offset:1px}
+h3.sec.grp{margin:14px 0 8px}
+.dseg button{padding:8px 4px;font-size:13px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -217,8 +229,8 @@ body.edit .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 164px)}
   <div id="tkLists"></div>
 </section>
 <section class="view" id="v-subj" aria-label="Przedmioty" hidden>
-  <h2 class="hh"><span>Przedmioty</span><em id="sbN">0</em></h2>
-  <div class="free" id="sbList"></div>
+  <h2 class="hh"><span>Wszystkie przedmioty</span><em id="sbN">0</em></h2>
+  <div id="sbList" class="free"></div>
 </section>
 </main>
 <nav class="bnav" id="bnav" aria-label="Główne zakładki">
@@ -763,6 +775,90 @@ function openTask(id){
   };
 }
 function toggleTask(id){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done})}
+/* ----- Katalog przedmiotów ----- */
+const nameLc=s=>String(s||"").toLowerCase();
+const TYPE_ORDER="wlc";
+function subjectList(){
+  const map=new Map();
+  const get=n=>{const k=nameLc(n);let e=map.get(k);if(!e){e={name:n,types:[],persons:[]};map.set(k,e)}return e};
+  for(const c of cache.plan.classes){
+    const e=get(c.name);
+    if(c.type!=="x"&&!e.types.includes(c.type))e.types.push(c.type);
+    if(c.person&&!e.persons.includes(c.person))e.persons.push(c.person);
+  }
+  for(const s of cache.plan.subjects)get(s.name);
+  const a=[...map.values()];
+  a.forEach(e=>e.types.sort((x,y)=>TYPE_ORDER.indexOf(x)-TYPE_ORDER.indexOf(y)));
+  return a.sort((x,y)=>x.name.localeCompare(y.name,"pl"));
+}
+function subjTasks(name){
+  const k=nameLc(name),cl=id=>{const c=cache.plan.classes.find(x=>x.id===id);return c?c.name:""};
+  return cache.plan.tasks.filter(t=>nameLc(t.kind==="online"?subjName(t.sid):cl(t.cid))===k);
+}
+const subjRec=name=>cache.plan.subjects.find(s=>nameLc(s.name)===nameLc(name))||null;
+function ensureSubject(p,name){
+  let s=p.subjects.find(x=>nameLc(x.name)===nameLc(name));
+  if(!s){s={id:uid(),name,desc:"",req:""};p.subjects.push(s)}
+  return s;
+}
+function renderSubjects(){
+  const list=subjectList(),box=$("sbList");
+  $("sbN").textContent=list.length;
+  box.className=list.length?"":"free";
+  box.innerHTML=list.length?list.map(e=>{
+    const rec=subjRec(e.name),open=subjTasks(e.name).filter(t=>!t.done).length;
+    return '<button type="button" class="sbi" data-a="sj:'+encodeURIComponent(e.name)+'"><span class="nm">'+esc(e.name)+'</span><span class="mt">'
+      +e.types.map(t=>'<span class="ev">'+esc(TYPES[t])+'</span>').join("")
+      +(rec&&(rec.req||rec.desc)?'<span class="ev">Notatki</span>':"")
+      +(open?'<span class="ev tk"><i></i>Do zrobienia: '+open+'</span>':"")
+      +(e.persons.length?'<span class="pp">'+esc(e.persons.join(", "))+'</span>':"")+'</span><b class="chev" aria-hidden="true">›</b></button>';
+  }).join(""):"Brak przedmiotów. Dodaj zajęcia w planie, a pojawią się tutaj.";
+}
+let sjSave=null,sjT=0;
+function flushSave(){
+  if(!sjSave)return;
+  clearTimeout(sjT);
+  const s=sjSave;sjSave=null;
+  const f=$("sjf");if(!f)return;
+  const req=f.elements.req.value,desc=f.elements.desc.value,rec=subjRec(s.name);
+  if(rec?(rec.req===req.trim()&&rec.desc===desc.trim()):!req.trim()&&!desc.trim())return;
+  change(p=>{const x=ensureSubject(p,s.name);x.req=req;x.desc=desc});
+  const st=$("sjSt");if(st)st.textContent="Zapisano ✓";
+}
+function sjTaskRow(t){
+  const cls=t.kind==="online"?"Online":"Stacjonarne"+(()=>{const c=cache.plan.classes.find(x=>x.id===t.cid);return c&&c.type!=="x"?" ("+TYPES[c.type]+")":""})();
+  return '<div class="tk-row'+(t.done?" done":"")+(isLate(t)?" late":"")+'"><button type="button" class="tk-cb" role="checkbox" aria-checked="'+(t.done?"true":"false")+'" aria-label="Ukończone: '+esc(t.text)+'" data-sh="stg:'+esc(t.id)+'"><i>'+(t.done?"✓":"")+'</i></button>'
+   +'<button type="button" class="tk-body tkopen" data-sh="sto:'+esc(t.id)+'"><span class="tk-tx">'+esc(t.text)+'</span><span class="tk-meta">'+esc(cls)+' · '+esc(taskMeta(t))+'</span></button></div>';
+}
+function openSubject(name,tab,focus){
+  const e=subjectList().find(x=>nameLc(x.name)===nameLc(name));if(!e)return;
+  tab=tab==="tasks"?"tasks":"info";
+  const all=subjTasks(e.name),n=all.filter(t=>!t.done).length;
+  ctx={view:"subj",sname:e.name,stab:tab};
+  const forms=[...new Set(cache.plan.classes.filter(c=>nameLc(c.name)===nameLc(e.name)).map(c=>(c.type!=="x"?TYPES[c.type]:"Zajęcia")+(c.person?" · "+c.person:"")))];
+  const seg='<div class="seg dseg" role="tablist"><button type="button" role="tab" aria-selected="'+(tab==="info")+'" class="'+(tab==="info"?"on":"")+'" data-sh="stab:info">Wymagania i Informacje</button><button type="button" role="tab" aria-selected="'+(tab==="tasks")+'" class="'+(tab==="tasks"?"on":"")+'" data-sh="stab:tasks">Wszystkie zadania'+(n?" ("+n+")":"")+'</button></div>';
+  let body;
+  if(tab==="info"){
+    const rec=subjRec(e.name)||{req:"",desc:""};
+    body='<form id="sjf" novalidate autocomplete="off"><label class="fl">Wymagania i zasady zaliczenia<textarea name="req" rows="6" maxlength="3000" placeholder="np. zasady zaliczenia, liczba i terminy kolokwiów, progi punktowe">'+esc(rec.req)+'</textarea></label>'
+      +'<label class="fl">Informacje i ustalenia z prowadzącym<textarea name="desc" rows="5" maxlength="3000" placeholder="np. kontakt do wykładowcy, konsultacje, ustalenia z zajęć">'+esc(rec.desc)+'</textarea></label>'
+      +'<p class="msg ok" id="sjSt" role="status">Zmiany zapisują się automatycznie.</p>'
+      +'<div class="acts"><button type="button" class="btn" data-sh="close">Zamknij</button></div></form>';
+  }else{
+    const groups=GROUPS.map(g=>{
+      const arr=all.filter(t=>taskGroup(t)===g[0]).sort((a,b)=>g[0]==="done"?tkKey(b).localeCompare(tkKey(a)):tkKey(a).localeCompare(tkKey(b)));
+      return arr.length?'<h3 class="sec grp'+(g[0]==="over"?" over":"")+'">'+g[1]+' ('+arr.length+')</h3><div class="tk-list">'+arr.map(sjTaskRow).join("")+'</div>':"";
+    }).join("");
+    body=(all.length?groups:'<p class="tk-empty">Brak zadań dla tego przedmiotu. Stacjonarne dodasz w oknie zajęć na planie, online w zakładce „Zadania”.</p>')
+      +'<div class="acts"><button type="button" class="btn" data-sh="close">Zamknij</button></div>';
+  }
+  openSheet(e.name,(forms.length?'<p class="shsub">'+esc(forms.join(" · "))+'</p>':"")+seg+body,focus);
+  if(tab==="info"){
+    sjSave=null;
+    const f=$("sjf"),mark=()=>{sjSave={name:e.name};$("sjSt").textContent="Zapisywanie…";clearTimeout(sjT);sjT=setTimeout(flushSave,700)};
+    f.addEventListener("input",mark);f.addEventListener("change",()=>{if(sjSave)flushSave()});
+  }
+}
 function renderTabs(){
   const p=cache.plan;
   for(const k in TABS){
@@ -774,9 +870,7 @@ function renderTabs(){
   if(tab!=="plan"){$("ebar").hidden=true;$("fab").hidden=true}
   document.body.classList.toggle("edit",editMode&&tab==="plan");
   if(tab==="tasks")renderTasks();
-  $("sbN").textContent=p.subjects.length;
-  const e=$("sbList");e.className=p.subjects.length?"":"free";
-  e.innerHTML=p.subjects.length?p.subjects.map(s=>'<div class="c x"><div class="bd"><div class="nm">'+esc(s.name)+'</div>'+(s.desc?'<div class="mt"><span>'+esc(s.desc.slice(0,120))+'</span></div>':"")+'</div></div>').join(""):"Brak przedmiotów.";
+  if(tab==="subj")renderSubjects();
 }
 function setTab(k){
   if(!TABS[k]||k===tab)return;
@@ -821,6 +915,7 @@ function rerenderDetail(focus){const st=$("sheet").scrollTop;openDetail(ctx.cid,
 let shOpen=null,shTok=0,askRes=null,ctx={};
 function openSheet(title,html,focusSel){
   const bg=$("shbg");
+  flushSave();
   if(askRes){const r=askRes;askRes=null;r(false)}
   $("shT").textContent=title;$("shBody").innerHTML=html;
   if(!shOpen){
@@ -835,6 +930,7 @@ function openSheet(title,html,focusSel){
 }
 function closeSheet(){
   if(!shOpen)return;
+  flushSave();
   if(askRes){const r=askRes;askRes=null;r(false)}
   const bg=$("shbg"),s=shOpen;shOpen=null;const t=++shTok;
   bg.classList.remove("open");
@@ -1073,7 +1169,10 @@ function shAction(a){
   const ci=a.indexOf(":");
   if(ci>0){
     const k=a.slice(0,ci),id=a.slice(ci+1);
-    if(k==="tg"){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done});rerenderDetail('[data-sh="tg:'+id+'"]')}
+    if(k==="stab")openSubject(ctx.sname,id);
+    else if(k==="stg"){toggleTask(id);const st=$("sheet").scrollTop;openSubject(ctx.sname,"tasks",'[data-sh="stg:'+id+'"]');$("sheet").scrollTop=st}
+    else if(k==="sto")openTask(id);
+    else if(k==="tg"){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done});rerenderDetail('[data-sh="tg:'+id+'"]')}
     else if(k==="td"){
       const t=cache.plan.tasks.find(x=>x.id===id);if(!t)return;
       change(p=>{p.tasks=p.tasks.filter(x=>x.id!==id)},"Usunięto zadanie");rerenderDetail('input[name="text"]');
@@ -1162,6 +1261,7 @@ document.addEventListener("click",e=>{
   else if(k==="hd"){hideDone=!hideDone;lsSet(HD_KEY,hideDone?"1":"0")}
   else if(k==="tg"){toggleTask(v);return}
   else if(k==="to"){openTask(v);return}
+  else if(k==="sj"){openSubject(decodeURIComponent(v));return}
   else if(k==="set"){openSettings();return}
   else if(k==="add"){openForm({mode:"new"});return}
   else if(k==="chip"){if(conflict)openConflict();else openSettings();return}
