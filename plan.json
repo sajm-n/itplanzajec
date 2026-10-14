@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792011970686,
+  "rev": 1792011972663,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -214,6 +214,14 @@
     {
       "id": "kmv8lnq0tiw98x",
       "name": "Matematyka I",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "yes"
+    },
+    {
+      "id": "kmv8lnrjrf9uka",
+      "name": "Kreowanie wizerunku i techniki autoprezentacji",
       "desc": "",
       "req": "",
       "forms": {},
