@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1791966315506,
+  "rev": 1791966674071,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -159,7 +159,7 @@
       "person": "mgr inż. K. Mróz"
     },
     {
-      "id": "kmv7aiittl3zv1",
+      "id": "o01",
       "name": "Przysposobienie biblioteczne",
       "type": "x",
       "date": "2026-10-23",
@@ -169,15 +169,21 @@
       "person": ""
     }
   ],
-  "exceptions": [
-    {
-      "id": "kmv79zv2jg9zmt",
-      "cid": "c14",
-      "date": "2026-10-09",
-      "s": "13:30",
-      "e": "15:00"
-    }
-  ],
+  "exceptions": [],
   "subjects": [],
-  "tasks": []
+  "tasks": [
+    {
+      "id": "kmv7uouxjhfkch",
+      "kind": "onsite",
+      "text": "Zadania z Teamsa",
+      "sid": "",
+      "cid": "c01",
+      "date": "2026-10-19",
+      "due": "2026-10-19",
+      "time": "08:00",
+      "url": "",
+      "note": "",
+      "done": false
+    }
+  ]
 }
