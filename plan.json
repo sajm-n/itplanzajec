@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792011974574,
+  "rev": 1792011976689,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -222,6 +222,14 @@
     {
       "id": "kmv8lnrjrf9uka",
       "name": "Kreowanie wizerunku i techniki autoprezentacji",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "yes"
+    },
+    {
+      "id": "kmv8lnunksezj5",
+      "name": "Grafika inżynierska i projektowanie w środowisku CAD",
       "desc": "",
       "req": "",
       "forms": {},
