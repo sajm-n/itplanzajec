@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792099148399,
+  "rev": 1792099152613,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -173,6 +173,12 @@
     {
       "id": "kmv9vyuqvwijzv",
       "cid": "c06",
+      "date": "2026-10-13",
+      "off": true
+    },
+    {
+      "id": "kmva1kc11b7eak",
+      "cid": "c05",
       "date": "2026-10-13",
       "off": true
     }
