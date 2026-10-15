@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792099407295,
+  "rev": 1792099555020,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -166,6 +166,17 @@
       "s": "11:30",
       "e": "13:00",
       "room": "s. 11, WM",
+      "person": ""
+    },
+    {
+      "id": "kmva1syj04f32j",
+      "name": "Otrzęsiny Politechniki Lubelskiej",
+      "type": "x",
+      "wd": 4,
+      "weeks": "all",
+      "s": "21:00",
+      "e": "23:59",
+      "room": "Kazik",
       "person": ""
     }
   ],
