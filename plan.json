@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792104704855,
+  "rev": 1792104747550,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -171,7 +171,7 @@
     {
       "id": "kmva1syj04f32j",
       "name": "Otrzęsiny Politechniki Lubelskiej",
-      "type": "x",
+      "type": "l",
       "wd": 4,
       "weeks": "all",
       "s": "21:00",
