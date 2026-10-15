@@ -21,6 +21,7 @@ box-sizing:border-box}
 :root[data-theme="dark"]{--bg:#10151f;--card:#19212f;--tx:#eaeef6;--mut:#9aa6ba;--bd:#2a3446;--ac:#9db4f5;--acx:#10151f;--wyk:#3a5486;--lab:#7d6a12;--cw:#3f7440;--oth:#4b5363;--tint:#eaeef6;--ok:#7bd88f;--warn:#f0c36a;--bad:#ff9b92;--ovl:rgba(0,0,0,.6)}
 /* Stały układ: strona się nie przewija, przewija się tylko #scroller. Dolne menu nigdy nie zmienia pozycji
    (pasek przeglądarki nie chowa się i nie pojawia przy przełączaniu zakładek). */
+html{background:var(--bg)}
 html,body{height:100%;overflow:hidden;overscroll-behavior:none}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.35}
 .scroller{position:fixed;inset:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding-top:env(safe-area-inset-top,0px);box-sizing:border-box;scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -1451,8 +1452,14 @@ function openSettings(){
   +'<div class="acts"><button type="button" class="btn" data-sh="export">Eksportuj plan</button><button type="button" class="btn" data-sh="import">Importuj plan</button><button type="button" class="btn dng" data-sh="reset">Przywróć plan domyślny</button></div>'
   +'<input type="file" id="impf" accept=".json,application/json" hidden>'
   +'<p id="bkMsg" class="msg" role="status" style="margin-top:8px"></p>'
+  +'<p class="hint" id="diag" style="margin-top:14px"></p>'
   +'<div class="acts" style="margin-top:14px"><button type="button" class="btn" data-sh="close">Zamknij</button></div>');
   renderSync();renderNotifState();
+  try{
+    const pr=document.createElement("div");pr.style.cssText="position:fixed;left:0;top:0;visibility:hidden;padding-bottom:env(safe-area-inset-bottom,0px)";document.body.appendChild(pr);
+    const ib=pr.offsetHeight;pr.remove();
+    $("diag").textContent="Ekran: okno "+innerWidth+"×"+innerHeight+", ekran "+screen.width+"×"+screen.height+", dolny margines "+ib+", tryb "+((navigator.standalone||matchMedia("(display-mode: standalone)").matches)?"aplikacja":"przeglądarka");
+  }catch(e){}
   $("cfgF").onsubmit=async ev=>{
     ev.preventDefault();
     const E=$("cfgF").elements,m=/^([\w.-]+)\/([\w.-]+)$/.exec(E.repo.value.trim());
