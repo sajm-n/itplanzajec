@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792104642945,
+  "rev": 1792104679843,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -207,7 +207,7 @@
       "desc": "",
       "req": "",
       "forms": {},
-      "mac": "yes"
+      "mac": ""
     },
     {
       "id": "kmva1lv76ygz0j",
