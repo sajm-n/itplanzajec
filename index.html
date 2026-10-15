@@ -553,7 +553,7 @@ function loadCache(){
 let cfg=loadCfg(),cache=loadCache();
 let conflict=null,pushing=false,pushAgain=false,pulling=false,pushTimer=0;
 let sync={state:"idle",msg:"",at:0};
-const hooks={sync(){},changed(){},conflict(){}};
+const hooks={sync(){},changed(){},conflict(){},adopted(){}};
 /* Tryb pracy: bez tokena = lokalny (tylko pamięć tej przeglądarki, żadnych zapytań do serwera);
    z tokenem = serwerowy (pełna synchronizacja z GitHubem) */
 const mode=()=>cfg.token?"cloud":"local";
@@ -610,6 +610,13 @@ async function pull(){
     if(remote.sha===cache.sha){setSync("ok");return}
     if(JSON.stringify(remote.plan)===JSON.stringify(cache.plan)){cache.sha=remote.sha;cache.dirty=false;persist();setSync("ok");return}
     if(!cache.dirty){cache.plan=remote.plan;cache.sha=remote.sha;persist();hooks.changed();setSync("ok");return}
+    /* To urządzenie nigdy nie pobrało tego pliku (brak znanej wersji, np. nowa przeglądarka albo świeżo podany token):
+       jego lokalny plan nie jest „zmianą względem GitHuba”, więc nie wolno nim nadpisać danych. Wygrywa GitHub, lokalne dane trafiają do kopii. */
+    if(!cache.sha){
+      const prev=cache.plan;
+      cache.plan=remote.plan;cache.sha=remote.sha;cache.dirty=false;persist();
+      hooks.changed();setSync("ok");hooks.adopted(prev);return;
+    }
     conflict=remote;setSync("conflict");hooks.conflict();
   }finally{pulling=false}
 }
@@ -1589,7 +1596,14 @@ function shAction(a){
       });
       break;
     case "cremote":resolveConflict("remote");conflictShown=false;closeSheet();toast("Wczytano wersję z GitHuba");break;
-    case "clocal":resolveConflict("local");conflictShown=false;closeSheet();toast("Wysyłam Twoją wersję na GitHuba");break;
+    case "clocal":{
+      const cnt=q=>q.subjects.length+" przedmiotów, "+q.tasks.length+" zadań, "+q.classes.length+" zajęć";
+      if(!conflict)break;
+      ask("Nadpisać GitHuba wersją z tego urządzenia? Na GitHubie jest: "+cnt(conflict.plan)+". Na tym urządzeniu: "+cnt(cache.plan)+". Wszystko, czego nie ma na tym urządzeniu, zostanie usunięte z GitHuba.","Nadpisz GitHuba").then(ok=>{
+        if(!ok){openConflict();return}
+        resolveConflict("local");conflictShown=false;closeSheet();toast("Wysyłam Twoją wersję na GitHuba");
+      });
+      break}
   }
 }
 
@@ -1709,6 +1723,7 @@ function shiftWeek(n){
   c.addEventListener("touchcancel",()=>{on=false},{passive:true});
 })();
 
+hooks.adopted=prev=>{toast("Wczytano plan z GitHuba. To, co było tylko na tym urządzeniu, można przywrócić.","Przywróć",()=>{try{commit(prev)}catch(e){}})};
 hooks.sync=renderSync;
 hooks.changed=()=>{lastFill={};render()};
 hooks.conflict=()=>{if(!shOpen&&!conflictShown)openConflict()};

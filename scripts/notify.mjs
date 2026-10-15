@@ -1,6 +1,7 @@
 // Wysyła powiadomienia push o zadaniach, gdy aplikacja jest zamknięta. Uruchamia go GitHub Actions co 5 minut.
 // Logikę terminów bierze wprost z index.html (blok CORE), więc zawsze zgadza się z tym, co pokazuje aplikacja.
 import fs from "node:fs";
+import crypto from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { sendPush } from "./webpush.mjs";
@@ -62,11 +63,18 @@ const stateBefore = JSON.stringify(state), subsBefore = JSON.stringify(subs);
 
 const live = new Set(plan.tasks.map((t) => t.id));
 for (const k of Object.keys(state.sent)) if (!live.has(k)) delete state.sent[k];
+if (!state.fail || typeof state.fail !== "object") state.fail = {};
+
+/* Dostarczenie śledzimy osobno dla każdego urządzenia: zadanie dotarło do telefonu albo nie, niezależnie od tego, co z innymi.
+   Dawny format (liczba) oznaczał „wysłano”, więc dla zgodności traktujemy go jako dostarczone wszędzie. */
+const dev = (s) => crypto.createHash("sha256").update(s.endpoint).digest("hex").slice(0, 12);
+const delivered = (id, s) => { const v = state.sent[id]; return typeof v === "number" || !!(v && v[dev(s)]); };
+const markSent = (id, s) => { if (typeof state.sent[id] === "number" || !state.sent[id]) state.sent[id] = {}; state.sent[id][dev(s)] = Date.now(); };
 
 const jobs = TEST
   ? [{ id: "test", payload: { title: "eStudia", body: "To jest testowe powiadomienie push — działa przy zamkniętej aplikacji.", tag: "test", url: "./" } }]
   : plan.tasks
-      .filter((t) => core.taskAlert(t, now) === "soon" && !state.sent[t.id])
+      .filter((t) => core.taskAlert(t, now) === "soon" && subs.some((s) => !delivered(t.id, s)))
       .map((t) => ({ id: t.id, payload: Object.assign(buildTexts(plan, t), { tag: t.id, url: "./" }) }));
 
 console.log(now.toString() + " · zadań do powiadomienia: " + jobs.length + " · urządzeń: " + subs.length);
@@ -80,21 +88,28 @@ if (!vapidPrivate) {
 
 let failed = false;
 const gone = new Set();
+const MAX_FAILS = 6; // tyle kolejnych odrzuceń z rzędu i subskrypcja uznawana jest za martwą
 for (const j of jobs) {
   let okCount = 0;
   for (const s of subs) {
     if (gone.has(s.endpoint)) continue;
+    if (j.id !== "test" && delivered(j.id, s)) continue;
+    const d = dev(s), host = new URL(s.endpoint).host;
     try {
       const r = await sendPush(s, j.payload, { publicKey: vapidPublic, privateKey: vapidPrivate, subject });
-      if (r.ok) okCount++;
-      else if (r.gone) gone.add(s.endpoint);
-      else { failed = true; console.log("::warning::Push nie przyjęty (" + r.status + ") " + new URL(s.endpoint).host + " " + r.text); }
+      if (r.ok) { okCount++; delete state.fail[d]; if (j.id !== "test") markSent(j.id, s); }
+      else if (r.gone) { gone.add(s.endpoint); console.log("Urządzenie " + d + " (" + host + "): subskrypcja wygasła (" + r.status + ")."); }
+      else {
+        failed = true;
+        state.fail[d] = (state.fail[d] || 0) + 1;
+        console.log("::warning::Push nie przyjęty (" + r.status + ") " + host + " " + d + " " + r.text);
+        if (state.fail[d] >= MAX_FAILS) gone.add(s.endpoint);
+      }
     } catch (e) { failed = true; console.log("::warning::Błąd wysyłki: " + e.message); }
   }
-  if (j.id !== "test" && okCount > 0) state.sent[j.id] = Date.now();
-  console.log("Zadanie " + j.id + ": dostarczono na " + okCount + " urządzeń.");
+  console.log("Zadanie " + j.id + ": dostarczono teraz na " + okCount + " urządzeń.");
 }
-if (gone.size) { subs = subs.filter((s) => !gone.has(s.endpoint)); console.log("Usunięto wygasłe subskrypcje: " + gone.size); }
+if (gone.size) { for (const s of subs) if (gone.has(s.endpoint)) delete state.fail[dev(s)]; subs = subs.filter((s) => !gone.has(s.endpoint)); console.log("Usunięto martwe subskrypcje: " + gone.size); }
 finish(failed ? 1 : 0);
 
 function finish(code) {
