@@ -678,6 +678,8 @@ const reduced=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
 const wk=d=>weekOf(cache.plan,d),pre=d=>isPre(cache.plan,d),items=d=>itemsFor(cache.plan,d);
 const dl=d=>d.toLocaleDateString("pl-PL",{day:"numeric",month:"long"});
 const dlong=d=>d.toLocaleDateString("pl-PL",{weekday:"long",day:"numeric",month:"long"});
+/* Wersja aplikacji (pokazywana w Ustawieniach); podbijana przy każdej zmianie */
+const APP_VERSION="1.0";
 const TAB_KEY="estudia.tab.v1",TABS={plan:"Plan zajęć",tasks:"Zadania",subj:"Przedmioty"};
 let tab="plan";
 try{const t=localStorage.getItem(TAB_KEY);if(TABS[t])tab=t}catch(e){}
@@ -1490,7 +1492,8 @@ function openSettings(){
   +'<div class="acts"><button type="button" class="btn" data-sh="export">Eksportuj plan</button><button type="button" class="btn" data-sh="import">Importuj plan</button><button type="button" class="btn dng" data-sh="reset">Przywróć plan domyślny</button></div>'
   +'<input type="file" id="impf" accept=".json,application/json" hidden>'
   +'<p id="bkMsg" class="msg" role="status" style="margin-top:8px"></p>'
-  +'<p class="hint" id="diag" style="margin-top:14px"></p>'
+  +'<p class="hint" style="margin-top:14px"><b>Wersja aplikacji: '+APP_VERSION+'</b></p>'
+  +'<p class="hint" id="diag"></p>'
   +'<div class="acts" style="margin-top:14px"><button type="button" class="btn" data-sh="close">Zamknij</button></div>');
   renderSync();renderNotifState();
   try{
