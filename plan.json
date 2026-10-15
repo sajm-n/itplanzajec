@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792103314993,
+  "rev": 1792103350176,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -314,6 +314,20 @@
       "time": "21:00",
       "url": "",
       "at": 1792099572783,
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmva42aw0dfrmp",
+      "kind": "online",
+      "text": "fgg",
+      "sid": "",
+      "cid": "",
+      "date": "",
+      "due": "2026-10-17",
+      "time": "23:59",
+      "url": "",
+      "at": 1792103350176,
       "note": "",
       "done": false
     }
