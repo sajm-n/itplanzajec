@@ -1,14 +1,16 @@
 name: Powiadomienia o zadaniach
 
-# Co 5 minut sprawdza zadania z plan.json i wysyła powiadomienia push na zapisane urządzenia,
-# także gdy aplikacja jest zamknięta. Wymaga sekretu VAPID_PRIVATE_KEY (Settings → Secrets and variables → Actions).
+# Pętla działająca ~6 godzin: co minutę sprawdza zadania z plan.json i wysyła powiadomienia push na zapisane urządzenia,
+# także gdy aplikacja jest zamknięta. Co godzinę GitHub zgłasza kolejny przebieg; czeka on w kolejce i startuje, gdy poprzedni się skończy
+# (stąd w zakładce Actions widać też „anulowane" przebiegi: to normalne, w kolejce mieści się tylko jeden).
+# Wymaga sekretu VAPID_PRIVATE_KEY (Settings → Secrets and variables → Actions).
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "5 * * * *"
   workflow_dispatch:
     inputs:
       test:
-        description: "Wyślij testowe powiadomienie na wszystkie zapisane urządzenia"
+        description: "Wyślij testowe powiadomienie na wszystkie zapisane urządzenia (bez pętli)"
         type: boolean
         default: false
 
@@ -22,24 +24,19 @@ concurrency:
 jobs:
   send:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 358
     env:
       TZ: Europe/Warsaw
+      BRANCH: ${{ github.ref_name }}
+      VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
     steps:
       - uses: actions/checkout@v4
-      - name: Wyślij powiadomienia
+      - name: Powiadomienia
         env:
-          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           TEST: ${{ inputs.test }}
-        run: node scripts/notify.mjs
-      - name: Zapisz stan wysyłki
-        if: always()
         run: |
-          if [ -n "$(git status --porcelain push-state.json push-subscriptions.json)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add push-state.json push-subscriptions.json
-            git commit -m "Powiadomienia: stan wysyłki"
-            git pull --rebase origin "${{ github.ref_name }}"
-            git push
+          if [ "${TEST:-false}" = "true" ]; then
+            node scripts/notify.mjs || true
+          else
+            bash scripts/loop.sh
           fi

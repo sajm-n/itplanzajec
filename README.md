@@ -4,7 +4,7 @@ Aplikacja do planu zajęć na kierunu Informatyka Techniczna na Politechnice Lub
 ## Powiadomienia przy zamkniętej aplikacji
 
 Aplikacja jest statyczna (GitHub Pages), więc powiadomienia przy zamkniętej aplikacji wysyła workflow
-`.github/workflows/notify.yml` (co ok. 5 minut, Web Push). Jednorazowa konfiguracja:
+`.github/workflows/notify.yml` (pętla ok. 6 h sprawdzająca co minutę, Web Push; uruchamia ją co godzinę harmonogram GitHuba). Jednorazowa konfiguracja:
 
 1. W repozytorium: **Settings → Secrets and variables → Actions → New repository secret**, nazwa `VAPID_PRIVATE_KEY`
    (wartość to klucz prywatny pasujący do `VAPID_PUBLIC` w `index.html`).
