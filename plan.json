@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792103966354,
+  "rev": 1792104175491,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -268,6 +268,14 @@
     {
       "id": "kmva3jrowuv37x",
       "name": "Otrzęsiny Politechniki Lubelskiej",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": ""
+    },
+    {
+      "id": "kmva4jz2roety4",
+      "name": "Matematyka I",
       "desc": "",
       "req": "",
       "forms": {},
