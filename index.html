@@ -725,7 +725,7 @@ function dayHtml(d,live){
         if(nm>=mn(x.c.s)&&nm<mn(x.c.e)){cls="now";b='<span class="st">Teraz</span>'}
         else if(nm>=mn(x.c.e))cls="past";
         else if(x===nxItem)b='<span class="st nx">Następne</span>';
-      }
+      }else if(st==="p"&&!pre(d))cls="past";
     }
     return g+card(x,cls,b);
   }).join("");
@@ -1064,15 +1064,27 @@ const TYPE_ORDER="wlcx";
 const FORM_LABEL=t=>t==="x"?"Zajęcia":t==="g"?"Informacje":TYPES[t];
 const MAC_OPTS=[["yes","Tak"],["part","Częściowo"],["no","Nie"],["","Nie wiem"]];
 const MAC_TXT={yes:"tak",part:"częściowo",no:"nie"};
+/* Jednorazowe zajęcia, które już się odbyły (data minęła albo dziś po godzinie zakończenia) */
+function oneOffEnded(c){
+  if(!c.date)return false;
+  const t=dk(new Date()),n=new Date();
+  return c.date<t||(c.date===t&&mn(c.e)<=n.getHours()*60+n.getMinutes());
+}
 function subjectList(){
   const map=new Map();
   const get=n=>{const k=nameLc(n);let e=map.get(k);if(!e){e={name:n,types:[],persons:[]};map.set(k,e)}return e};
+  const live=new Set(),gone=new Set();
   for(const c of cache.plan.classes){
+    /* minione zajęcia jednorazowe nie tworzą przedmiotu, chyba że ma on jeszcze otwarte zadania (zostają widoczne, dopóki ich nie ukończysz) */
+    if(oneOffEnded(c)&&!subjTasks(c.name).some(t=>!t.done)){gone.add(nameLc(c.name));continue}
+    live.add(nameLc(c.name));
     const e=get(c.name);
     if(c.type!=="x"&&!e.types.includes(c.type))e.types.push(c.type);
     if(c.person&&!e.persons.includes(c.person))e.persons.push(c.person);
   }
-  for(const s of cache.plan.subjects)get(s.name);
+  /* wpis z zapisanymi notatkami/oznaczeniem MacBooka też znika, jeśli przedmiot miał wyłącznie minione zajęcia jednorazowe */
+  const hidden=n=>{const k=nameLc(n);return gone.has(k)&&!live.has(k)};
+  for(const s of cache.plan.subjects)if(!hidden(s.name))get(s.name);
   const a=[...map.values()];
   a.forEach(e=>e.types.sort((x,y)=>TYPE_ORDER.indexOf(x)-TYPE_ORDER.indexOf(y)));
   return a.sort((x,y)=>x.name.localeCompare(y.name,"pl"));
