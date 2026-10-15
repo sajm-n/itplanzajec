@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792099225974,
+  "rev": 1792099227875,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -190,6 +190,14 @@
     {
       "id": "kmva1lwmucyjj8",
       "name": "Język angielski I",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "yes"
+    },
+    {
+      "id": "kmva1ly3max7kf",
+      "name": "Kreowanie wizerunku i techniki autoprezentacji",
       "desc": "",
       "req": "",
       "forms": {},
