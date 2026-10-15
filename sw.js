@@ -1,6 +1,6 @@
 /* Service worker: aplikacja działa offline. Sieć ma pierwszeństwo, więc nowe wersje trafiają
    do telefonu przy najbliższym otwarciu z internetem; pamięć podręczna jest tylko zapasem. */
-const V = "plan-v4";
+const V = "plan-v5";
 const SHELL = ["./", "./index.html"];
 
 self.addEventListener("install", e => {
@@ -49,6 +49,20 @@ self.addEventListener("fetch", e => {
   } else if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
     e.respondWith(staleWhileRevalidate(req));
   }
+});
+
+/* Powiadomienie push (wysyłane przez GitHub Actions, także gdy aplikacja jest zamknięta) */
+self.addEventListener("push", e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (_) { d = { body: e.data ? e.data.text() : "" }; }
+  e.waitUntil(self.registration.showNotification(d.title || "eStudia", {
+    body: d.body || "",
+    tag: d.tag || undefined,
+    lang: "pl",
+    icon: "icon.png",
+    badge: "icon.png",
+    data: { url: d.url || "./" }
+  }));
 });
 
 /* Stuknięcie w powiadomienie otwiera aplikację */

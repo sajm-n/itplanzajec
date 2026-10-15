@@ -16,12 +16,15 @@
 <style>
 :root{color-scheme:light dark;--bg:#eef1f6;--card:#fff;--tx:#17202e;--mut:#5d6878;--bd:#d9dfe9;--ac:#1f3a8a;--acx:#fff;
 --wyk:#b4c7e7;--lab:#ffed9f;--cw:#a9d18e;--oth:#cfd4dc;--tint:#17202e;--ok:#1b6e3a;--warn:#8a5a00;--bad:#b3261e;--ovl:rgba(16,21,31,.45);
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+box-sizing:border-box}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151f;--card:#19212f;--tx:#eaeef6;--mut:#9aa6ba;--bd:#2a3446;--ac:#9db4f5;--acx:#10151f;--wyk:#3a5486;--lab:#7d6a12;--cw:#3f7440;--oth:#4b5363;--tint:#eaeef6;--ok:#7bd88f;--warn:#f0c36a;--bad:#ff9b92;--ovl:rgba(0,0,0,.6)}}
 :root[data-theme="dark"]{--bg:#10151f;--card:#19212f;--tx:#eaeef6;--mut:#9aa6ba;--bd:#2a3446;--ac:#9db4f5;--acx:#10151f;--wyk:#3a5486;--lab:#7d6a12;--cw:#3f7440;--oth:#4b5363;--tint:#eaeef6;--ok:#7bd88f;--warn:#f0c36a;--bad:#ff9b92;--ovl:rgba(0,0,0,.6)}
-html{scroll-padding-top:env(safe-area-inset-top,0px);height:auto}
+/* Stały układ: strona się nie przewija, przewija się tylko #scroller. Dolne menu nigdy nie zmienia pozycji
+   (pasek przeglądarki nie chowa się i nie pojawia przy przełączaniu zakładek). */
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.35}
-body.lock{overflow:hidden}
+.scroller{position:fixed;inset:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding-top:env(safe-area-inset-top,0px);box-sizing:border-box;scroll-padding-top:env(safe-area-inset-top,0px)}
+body.lock .scroller{overflow:hidden}
 main{max-width:560px;margin:0 auto;padding:18px 14px calc(104px + env(safe-area-inset-bottom,0px))}
 h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:0}
 .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -106,7 +109,7 @@ h2{font-size:17px;font-weight:800;margin:20px 0 8px}
 .shbg{position:fixed;inset:0;z-index:50;background:var(--ovl);display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .2s}
 .shbg[hidden]{display:none}
 .shbg.open{opacity:1}
-.sheet{width:100%;max-width:560px;max-height:92vh;max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain;background:var(--bg);border-radius:20px 20px 0 0;padding:10px 16px calc(18px + env(safe-area-inset-bottom,0px));box-sizing:border-box;transform:translateY(40px);transition:transform .25s cubic-bezier(.2,.8,.2,1);outline:none}
+.sheet{width:100%;max-width:560px;max-height:92vh;max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain;background:var(--bg);border-radius:20px 20px 0 0;padding:10px 16px calc(18px + env(safe-area-inset-bottom,0px));box-sizing:border-box;transform:translateY(100%);transition:transform .24s cubic-bezier(.2,.8,.2,1);outline:none}
 .shbg.open .sheet{transform:none}
 .grip{width:40px;height:4px;border-radius:2px;background:var(--bd);margin:0 auto 10px}
 .sheet h2{margin:4px 0 4px;font-size:20px;overflow-wrap:anywhere}
@@ -141,7 +144,7 @@ h2{font-size:17px;font-weight:800;margin:20px 0 8px}
 .bnav{position:fixed;left:0;right:0;margin:0 auto;bottom:calc(env(safe-area-inset-bottom,0px)*.45 + 10px);width:min(calc(100% - 28px),400px);z-index:30;display:flex;gap:4px;padding:6px;border-radius:28px;border:1px solid var(--bd);background:var(--card);background:color-mix(in srgb,var(--card) 76%,transparent);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 10px 30px rgba(10,20,40,.22),0 1px 3px rgba(10,20,40,.12)}
 .bnav button{flex:1;min-width:0;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:22px;color:var(--mut);font-size:12px;font-weight:600}
 .bnav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.bnav button[aria-current="page"]{color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent)}
+.bnav button[aria-current="page"]{color:var(--ac)}
 .bnav button:focus-visible{outline:2px solid var(--ac);outline-offset:-2px}
 body.edit .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 164px)}
 .tl-plain{display:block}
@@ -217,16 +220,47 @@ h3.sec.grp{margin:14px 0 8px}
 button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .bnav button{transition:background-color .2s,color .2s}
 .view:not([hidden]){animation:vin .22s ease-out}
-@keyframes vin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes vin{from{opacity:0}}
 @media (hover:hover){
   .bnav button:not([aria-current]):hover{background:color-mix(in srgb,var(--tx) 7%,transparent);color:var(--tx)}
   .sbi:hover,.tk-row:hover,.c[data-cid]:hover{border-color:var(--ac)}
 }
-@media (prefers-reduced-motion:reduce){.view:not([hidden]){animation:none}.bnav button{transition:none}}
 .tkseg button{white-space:nowrap}
+
+/* ----- Animacje ----- */
+/* Dolne menu: wskaźnik zakładki przesuwa się płynnie (pozycja menu jest stała) */
+.bnav button{position:relative;z-index:1}
+.bnav .ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 20px)/3);border-radius:22px;background:color-mix(in srgb,var(--ac) 14%,transparent);transform:translateX(calc(var(--i,0)*(100% + 4px)));pointer-events:none}
+.bnav.ready .ind{transition:transform .45s cubic-bezier(.34,1.35,.5,1)}
+.bnav button[aria-current="page"] svg{animation:navpop .45s cubic-bezier(.34,1.56,.5,1)}
+@keyframes navpop{0%{transform:scale(.7) translateY(3px)}100%{transform:none}}
+/* Wejście kart po zmianie zakładki, dnia lub filtra (kolejno, z lekkim opóźnieniem) */
+@keyframes cin{from{opacity:0;transform:translateY(14px) scale(.98)}}
+body.go .view :is(.c,.gp,.sbi,.tk-row,.free,.olcard,.hh){animation:cin .42s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--k,0)*45ms)}
+@keyframes daypop{from{transform:scale(.6)}}
+body.go .cg button.on{animation:daypop .4s cubic-bezier(.34,1.56,.5,1)}
+/* Trwające zajęcia delikatnie pulsują */
+@keyframes glow{50%{box-shadow:0 0 0 2px var(--ac),0 0 16px 3px color-mix(in srgb,var(--ac) 42%,transparent)}}
+.c.now{animation:glow 3s ease-in-out infinite}
+/* Reakcja na dotyk */
+.btn,.tbtn,.fab,.today,.cg button,.seg button,.sbi,.tk-cb,.chip,.nthint,.alm,.ald,.c[data-cid],.bnav button{transition:transform .14s ease,background-color .2s,color .2s,border-color .2s,box-shadow .2s}
+.btn:active,.tbtn:active,.cg button:active,.seg button:active,.tk-cb:active,.chip:active,.nthint:active,.today:active{transform:scale(.95)}
+.sbi:active,.c[data-cid]:active{transform:scale(.985)}
+.fab:active{transform:scale(.9)}
+.bnav button:active{transform:scale(.92)}
+/* Przycisk „+” i pasek edycji wjeżdżają przy włączeniu edycji */
+@keyframes fabin{from{opacity:0;transform:scale(.3) rotate(-90deg)}}
+.fab:not([hidden]){animation:fabin .4s cubic-bezier(.34,1.56,.5,1)}
+.ebar:not([hidden]){animation:cin .3s ease-out backwards}
+@media (prefers-reduced-motion:reduce){
+  .view:not([hidden]),body.go .view :is(.c,.gp,.sbi,.tk-row,.free,.olcard,.hh),body.go .cg button.on,.c.now,.fab:not([hidden]),.ebar:not([hidden]),.bnav button[aria-current="page"] svg{animation:none}
+  .bnav.ready .ind,.btn,.tbtn,.fab,.today,.cg button,.seg button,.sbi,.tk-cb,.chip,.nthint,.alm,.ald,.c[data-cid],.bnav button{transition:none}
+  .btn:active,.tbtn:active,.cg button:active,.seg button:active,.tk-cb:active,.chip:active,.nthint:active,.today:active,.sbi:active,.c[data-cid]:active,.fab:active,.bnav button:active{transform:none}
+}
 </style>
 </head>
 <body>
+<div class="scroller" id="scroller">
 <main id="main">
 <div class="top">
   <h1 id="ttl">Plan zajęć</h1>
@@ -259,12 +293,13 @@ button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
   <div id="tkLists"></div>
 </section>
 <section class="view" id="v-subj" aria-label="Przedmioty" hidden>
-  <div class="seg tkseg" id="macFilter" role="group" aria-label="Filtr MacBook"><button type="button" data-a="mf:all">Wszystkie</button><button type="button" data-a="mf:yes">Na MacBooku</button><button type="button" data-a="mf:no">Bez MacBooka</button></div>
   <h2 class="hh"><span>Wszystkie przedmioty</span><em id="sbN">0</em></h2>
   <div id="sbList" class="free"></div>
 </section>
 </main>
+</div>
 <nav class="bnav" id="bnav" aria-label="Główne zakładki">
+  <i class="ind" aria-hidden="true"></i>
   <button type="button" data-a="tab:plan" id="nv-plan"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Plan zajęć</span></button>
   <button type="button" data-a="tab:tasks" id="nv-tasks"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8 12.5l3 3 5-6"/></svg><span>Zadania</span></button>
   <button type="button" data-a="tab:subj" id="nv-subj"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h10.5A3.5 3.5 0 0 1 19 8v12H8.5A3.5 3.5 0 0 1 5 16.5z"/><path d="M5 16.5A3.5 3.5 0 0 1 8.5 13H19"/></svg><span>Przedmioty</span></button>
@@ -835,7 +870,7 @@ function openTask(id){
     if(ok)closeSheet();
   };
 }
-function toggleTask(id){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done})}
+function toggleTask(id){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done});popCb(id)}
 /* ----- Przypomnienia o nieukończonych zadaniach ----- */
 const SEEN_KEY="estudia.notified.v1";
 function taskLabel(t){
@@ -901,8 +936,80 @@ function askNotif(){
   if(!("Notification" in window))return;
   try{
     const r=Notification.requestPermission(()=>{});
-    if(r&&r.then)r.then(()=>{renderNotifState();notifyDue()},()=>renderNotifState());
+    if(r&&r.then)r.then(()=>{renderNotifState();notifyDue();ensurePush()},()=>renderNotifState());
   }catch(e){renderNotifState()}
+}
+
+/* ----- Powiadomienia przy zamkniętej aplikacji (Web Push) =====
+   Urządzenie zapisuje swoją subskrypcję push w repozytorium (push-subscriptions.json, przez token z ustawień).
+   Workflow GitHub Actions (.github/workflows/notify.yml) co kilka minut sprawdza zadania w plan.json
+   i wysyła powiadomienia na zapisane urządzenia. Klucz publiczny VAPID poniżej pasuje do sekretu VAPID_PRIVATE_KEY w repozytorium. */
+const VAPID_PUBLIC="BOm41TPW5hbB-ypZP0X9IBhNfDlK_J-ptAKPWvc6byYghp4LRQ6wzjmK2LR-RRlWy9JZbZ8VwOsccX4928x_27M";
+const PUSH_FILE="push-subscriptions.json",PUSH_KEY="estudia.pushsub.v1";
+const pushSupported=()=>"serviceWorker" in navigator&&"PushManager" in window&&"Notification" in window;
+const keyBytes=s=>{const b=(s+"=".repeat((4-s.length%4)%4)).replace(/-/g,"+").replace(/_/g,"/"),r=atob(b);return Uint8Array.from(r,c=>c.charCodeAt(0))};
+function swReady(){return Promise.race([navigator.serviceWorker.ready,new Promise((_,rej)=>setTimeout(()=>rej(new Error("Usługa działająca w tle nie jest gotowa. Otwórz aplikację ponownie z internetem.")),8000))])}
+function ghFile(path,method,body){
+  const h={Accept:"application/vnd.github+json",Authorization:"Bearer "+cfg.token};
+  let u="https://api.github.com/repos/"+encodeURIComponent(cfg.owner)+"/"+encodeURIComponent(cfg.repo)+"/contents/"+path.split("/").map(encodeURIComponent).join("/");
+  if(method==="GET")u+="?ref="+encodeURIComponent(cfg.branch)+"&_="+Date.now();else h["Content-Type"]="application/json";
+  return fetch(u,{method,headers:h,body:body?JSON.stringify(body):undefined,cache:"no-store"});
+}
+/* Dopisuje subskrypcję tego urządzenia do pliku w repozytorium (z ponowieniem przy równoczesnym zapisie z innego urządzenia) */
+async function savePushSub(sub){
+  const j=sub.toJSON(),mine={endpoint:j.endpoint,keys:{p256dh:j.keys.p256dh,auth:j.keys.auth},added:Date.now()};
+  for(let i=0;i<3;i++){
+    let list=[],sha=null;
+    const g=await ghFile(PUSH_FILE,"GET");
+    if(g.status===200){const o=await g.json();sha=o.sha;try{const a=JSON.parse(b64d(o.content||""));if(Array.isArray(a))list=a}catch(e){}}
+    else if(g.status===401)return{ok:false,msg:"Token jest nieprawidłowy lub wygasł."};
+    else if(g.status!==404)return{ok:false,msg:"GitHub zwrócił błąd "+g.status+"."};
+    list=list.filter(x=>x&&x.endpoint&&x.endpoint!==mine.endpoint);list.push(mine);list=list.slice(-10);
+    const body={message:"Powiadomienia: zapisano urządzenie",content:b64e(JSON.stringify(list,null,2)+"\n"),branch:cfg.branch};
+    if(sha)body.sha=sha;
+    const p=await ghFile(PUSH_FILE,"PUT",body);
+    if(p.ok)return{ok:true};
+    if(p.status===409||p.status===422)continue;
+    if(p.status===403)return{ok:false,msg:"Token nie ma uprawnienia do zapisu w repozytorium (Contents: Read and write)."};
+    return{ok:false,msg:"GitHub zwrócił błąd "+p.status+"."};
+  }
+  return{ok:false,msg:"Nie udało się zapisać urządzenia (konflikt zapisu). Spróbuj ponownie."};
+}
+async function enablePush(){
+  if(!pushSupported())return{ok:false,msg:"Ta przeglądarka nie obsługuje powiadomień push."};
+  if(!cfg.token)return{ok:false,msg:"Wymaga trybu serwerowego — podaj token GitHub w sekcji Synchronizacja."};
+  if(notifState()!=="granted")return{ok:false,msg:"Najpierw zezwól na powiadomienia."};
+  try{
+    const reg=await swReady();
+    let sub=await reg.pushManager.getSubscription();
+    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:keyBytes(VAPID_PUBLIC)});
+    const r=await savePushSub(sub);
+    if(r.ok)lsSet(PUSH_KEY,sub.endpoint);
+    return r;
+  }catch(e){return{ok:false,msg:"Nie udało się włączyć: "+(e&&e.message?e.message:e)}}
+}
+/* Po cichu dba o to, by to urządzenie było zapisane (po przyznaniu zgody i podaniu tokena) */
+let pushBusy=false;
+async function ensurePush(){
+  if(pushBusy||!pushSupported()||!cfg.token||notifState()!=="granted")return;
+  pushBusy=true;
+  try{
+    const reg=await swReady(),sub=await reg.pushManager.getSubscription();
+    let saved="";try{saved=localStorage.getItem(PUSH_KEY)||""}catch(e){}
+    if(!sub||sub.endpoint!==saved)await enablePush();
+  }catch(e){}finally{pushBusy=false;renderPushState()}
+}
+async function renderPushState(){
+  const st=$("pushStat"),ac=$("pushActs");if(!st||!ac)return;
+  const msg=(t,k)=>{st.textContent=t;st.className="msg"+(k?" "+k:"")};
+  if(!pushSupported()){msg("Przy zamkniętej aplikacji: ta przeglądarka nie obsługuje powiadomień push. Na iPhonie (iOS 16.4 lub nowszy) dodaj stronę do ekranu głównego i otwieraj ją z ikony.","");ac.innerHTML="";return}
+  if(!cfg.token){msg("Przy zamkniętej aplikacji: wymaga trybu serwerowego — podaj token GitHub w sekcji Synchronizacja.","");ac.innerHTML="";return}
+  if(notifState()!=="granted"){msg("Przy zamkniętej aplikacji: najpierw włącz powiadomienia powyżej.","");ac.innerHTML="";return}
+  let on=false;
+  try{const reg=await swReady(),sub=await reg.pushManager.getSubscription();on=!!sub&&sub.endpoint===(localStorage.getItem(PUSH_KEY)||"")}catch(e){}
+  if(!$("pushStat"))return;
+  msg(on?"Przy zamkniętej aplikacji: włączone na tym urządzeniu.":"Przy zamkniętej aplikacji: jeszcze nie włączone na tym urządzeniu.",on?"ok":"warn");
+  ac.innerHTML='<button type="button" class="btn'+(on?"":" pri")+'" data-sh="pushon">'+(on?"Odśwież zapis urządzenia":"Włącz powiadomienia przy zamkniętej aplikacji")+'</button>';
 }
 function renderNotifState(){
   const st=notifState(),el=$("ntStat"),ac=$("ntActs"),h=$("ntHint");
@@ -912,6 +1019,7 @@ function renderNotifState(){
     el.className="msg"+(st==="granted"?" ok":st==="denied"?" bad":"");
   }
   if(ac)ac.innerHTML=st==="default"?'<button type="button" class="btn pri" data-sh="notif">Włącz powiadomienia</button>':st==="granted"?'<button type="button" class="btn" data-sh="ntest">Wyślij powiadomienie testowe</button>':"";
+  renderPushState();
 }
 
 /* ----- Katalog przedmiotów ----- */
@@ -920,9 +1028,6 @@ const TYPE_ORDER="wlcx";
 const FORM_LABEL=t=>t==="x"?"Zajęcia":t==="g"?"Informacje":TYPES[t];
 const MAC_OPTS=[["yes","Tak"],["part","Częściowo"],["no","Nie"],["","Nie wiem"]];
 const MAC_TXT={yes:"tak",part:"częściowo",no:"nie"};
-const MF_KEY="estudia.macfilter.v1";
-let macFilter="all";
-try{const m=localStorage.getItem(MF_KEY);if(m==="yes"||m==="no")macFilter=m}catch(e){}
 function subjectList(){
   const map=new Map();
   const get=n=>{const k=nameLc(n);let e=map.get(k);if(!e){e={name:n,types:[],persons:[]};map.set(k,e)}return e};
@@ -959,11 +1064,9 @@ function ensureSubject(p,name){
 }
 const macChip=m=>m?'<span class="ev mac '+m+'">MacBook: '+MAC_TXT[m]+'</span>':"";
 function renderSubjects(){
-  const all=subjectList();
-  const list=all.filter(e=>{const m=macOf(e.name);return macFilter==="all"||(macFilter==="yes"?m==="yes":m==="no"||m==="part")});
+  const list=subjectList();
   const box=$("sbList");
   $("sbN").textContent=list.length;
-  document.querySelectorAll("#macFilter button").forEach(b=>b.classList.toggle("on",b.dataset.a==="mf:"+macFilter));
   box.className=list.length?"":"free";
   box.innerHTML=list.length?list.map(e=>{
     const rec=subjRec(e.name),open=subjTasks(e.name).filter(t=>!t.done).length;
@@ -973,7 +1076,7 @@ function renderSubjects(){
       +(hasNotes(rec)?'<span class="ev">Notatki</span>':"")
       +(open?'<span class="ev tk"><i></i>Do zrobienia: '+open+'</span>':"")
       +(e.persons.length?'<span class="pp">'+esc(e.persons.join(", "))+'</span>':"")+'</span><b class="chev" aria-hidden="true">›</b></button>';
-  }).join(""):(all.length?"Żaden przedmiot nie pasuje do filtra. Zgodność z MacBookiem oznaczysz w karcie przedmiotu.":"Brak przedmiotów. Dodaj zajęcia w planie, a pojawią się tutaj.");
+  }).join(""):"Brak przedmiotów. Dodaj zajęcia w planie, a pojawią się tutaj.";
 }
 let sjSave=null,sjT=0;
 function flushSave(){
@@ -1045,6 +1148,8 @@ function renderTabs(){
     $("v-"+k).hidden=tab!==k;
     const b=$("nv-"+k);if(tab===k)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
   }
+  $("bnav").style.setProperty("--i",Object.keys(TABS).indexOf(tab));
+  if(!$("bnav").classList.contains("ready"))requestAnimationFrame(()=>requestAnimationFrame(()=>$("bnav").classList.add("ready")));
   $("ttl").textContent=TABS[tab];
   $("ed").hidden=tab!=="plan";
   if(tab!=="plan"){$("ebar").hidden=true;$("fab").hidden=true}
@@ -1052,11 +1157,30 @@ function renderTabs(){
   if(tab==="tasks")renderTasks();
   if(tab==="subj")renderSubjects();
 }
+/* Animacja wejścia kart: wywoływana tylko po działaniu użytkownika (nie przy odświeżaniu co minutę) */
+let goT=0;
+function playGo(){
+  if(reduced())return;
+  const b=document.body;
+  b.classList.remove("go");
+  let k=0;
+  document.querySelectorAll(".view:not([hidden]) :is(.c,.gp,.sbi,.tk-row,.free,.olcard,.hh)").forEach(el=>el.style.setProperty("--k",Math.min(k++,9)));
+  void b.offsetWidth;
+  b.classList.add("go");
+  clearTimeout(goT);goT=setTimeout(()=>b.classList.remove("go"),1100);
+}
+/* Sprężyste „stuknięcie” w znacznik ukończenia zadania */
+function popCb(id){
+  if(reduced())return;
+  document.querySelectorAll('.tk-cb[data-a="tg:'+id+'"] i,.tk-cb[data-sh="tg:'+id+'"] i,.tk-cb[data-sh="stg:'+id+'"] i').forEach(i=>{
+    if(i.animate)i.animate([{transform:"scale(.55)"},{transform:"scale(1.25)",offset:.6},{transform:"scale(1)"}],{duration:340,easing:"ease-out"});
+  });
+}
 function setTab(k){
   if(!TABS[k]||k===tab)return;
   tab=k;if(k!=="plan")editMode=false;
   try{localStorage.setItem(TAB_KEY,k)}catch(e){}
-  render();window.scrollTo(0,0);
+  render();$("scroller").scrollTo(0,0);playGo();
 }
 
 /* ----- Szczegóły zajęć i zadania stacjonarne ----- */
@@ -1292,8 +1416,9 @@ function openSettings(){
   +'<form id="abF" novalidate><div class="two"><label class="fl">Dowolny dzień tygodnia<input type="date" name="d" value="'+esc(p.start)+'"></label><label class="fl">Ten tydzień to<select name="w">'+selOpts([["A","Tydzień A"],["B","Tydzień B"]],p.startWeek)+'</select></label></div>'
   +'<p id="abMsg" class="msg" role="status"></p><div class="acts"><button type="submit" class="btn">Zapisz rytm</button></div></form>'
   +'<h3 class="sec">Powiadomienia o zadaniach</h3>'
-  +'<p class="hint">Zadania stacjonarne: przypomnienie dzień przed zajęciami o 18:00. Zadania online: dokładnie 24 godziny przed terminem. Czerwony pasek na górze aplikacji pokazuje je zawsze. Powiadomienie systemowe przychodzi, gdy aplikacja jest otwarta lub działa w tle, a przy zamkniętej zobaczysz je po jej otwarciu.</p>'
+  +'<p class="hint">Zadania stacjonarne: przypomnienie dzień przed zajęciami o 18:00. Zadania online: dokładnie 24 godziny przed terminem. Czerwony pasek na górze aplikacji pokazuje je zawsze. Gdy aplikacja jest otwarta, powiadomienie pojawia się od razu. Gdy jest zamknięta, wysyła je GitHub (sprawdza zadania co kilka minut, więc powiadomienie może przyjść z krótkim opóźnieniem); wymaga to trybu serwerowego i włączenia poniżej.</p>'
   +'<p id="ntStat" class="msg" role="status"></p><div class="acts" id="ntActs"></div>'
+  +'<p id="pushStat" class="msg" role="status" style="margin-top:10px"></p><div class="acts" id="pushActs"></div>'
   +'<h3 class="sec">Kopia zapasowa</h3>'
   +'<div class="acts"><button type="button" class="btn" data-sh="export">Eksportuj plan</button><button type="button" class="btn" data-sh="import">Importuj plan</button><button type="button" class="btn dng" data-sh="reset">Przywróć plan domyślny</button></div>'
   +'<input type="file" id="impf" accept=".json,application/json" hidden>'
@@ -1313,7 +1438,7 @@ function openSettings(){
     setMsg("cfgMsg","Sprawdzam…","");
     if(token){
       const r=await testToken(cfg);setMsg("cfgMsg",r.msg,r.ok?"ok":"bad");
-      if(r.ok)await syncAll();
+      if(r.ok){await syncAll();ensurePush()}
     }else{setMsg("cfgMsg","Zapisano. Tryb lokalny: dane zostają tylko w tej przeglądarce.","");await syncAll()}
     renderSync();
   };
@@ -1354,9 +1479,9 @@ function shAction(a){
     const k=a.slice(0,ci),id=a.slice(ci+1);
     if(k==="stab")openSubject(ctx.sname,id);
     else if(k==="mac"){const nm=ctx.sname,tb=ctx.stab;flushSave();change(p=>{ensureSubject(p,nm).mac=id});openSubject(nm,tb)}
-    else if(k==="stg"){toggleTask(id);const st=$("sheet").scrollTop;openSubject(ctx.sname,"tasks",'[data-sh="stg:'+id+'"]');$("sheet").scrollTop=st}
+    else if(k==="stg"){toggleTask(id);const st=$("sheet").scrollTop;openSubject(ctx.sname,"tasks",'[data-sh="stg:'+id+'"]');$("sheet").scrollTop=st;popCb(id)}
     else if(k==="sto")openTask(id);
-    else if(k==="tg"){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done});rerenderDetail('[data-sh="tg:'+id+'"]')}
+    else if(k==="tg"){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done});rerenderDetail('[data-sh="tg:'+id+'"]');popCb(id)}
     else if(k==="td"){
       const t=cache.plan.tasks.find(x=>x.id===id);if(!t)return;
       change(p=>{p.tasks=p.tasks.filter(x=>x.id!==id)},"Usunięto zadanie");rerenderDetail('input[name="text"]');
@@ -1366,6 +1491,10 @@ function shAction(a){
   switch(a){
     case "close":closeSheet();break;
     case "notif":askNotif();break;
+    case "pushon":
+      setMsg("pushStat","Włączam…","");
+      enablePush().then(r=>{renderPushState().then(()=>{if(!r.ok)setMsg("pushStat",r.msg,"bad")})});
+      break;
     case "ntest":
       showNotif("eStudia","To jest powiadomienie testowe.","test").then(ok=>setMsg("ntStat",ok?"Wysłano powiadomienie testowe.":"Nie udało się wysłać powiadomienia.",ok?"ok":"bad"));
       break;
@@ -1450,13 +1579,13 @@ document.addEventListener("click",e=>{
   else if(k==="tg"){toggleTask(v);return}
   else if(k==="to"){openTask(v);return}
   else if(k==="sj"){openSubject(decodeURIComponent(v));return}
-  else if(k==="mf"){macFilter=v==="yes"||v==="no"?v:"all";lsSet(MF_KEY,macFilter)}
   else if(k==="tk"){openAlertTask(v);return}
   else if(k==="nt"){askNotif();return}
   else if(k==="set"){openSettings();return}
   else if(k==="add"){openForm({mode:"new"});return}
   else if(k==="chip"){if(conflict)openConflict();else openSettings();return}
   render();
+  if(k==="s"||k==="v"||k==="today"||k==="tv"||k==="hd")playGo();
 });
 function toggleCal(){
   const c=$("cal"),h0=c.getBoundingClientRect().height;
@@ -1507,7 +1636,7 @@ function shiftWeek(n){
   const t=day0(new Date()),tMon=new Date(t.getFullYear(),t.getMonth(),t.getDate()-wd(t));
   sel=same(mon,tMon)?t:mon;
   mo=new Date(sel.getFullYear(),sel.getMonth(),1);
-  render();
+  render();playGo();
   const g=document.querySelector("#cal .cg");
   if(g&&g.animate&&!reduced())
     g.animate([{transform:"translateX("+(n*36)+"px)",opacity:.25},{transform:"none",opacity:1}],{duration:200,easing:"ease-out"});
@@ -1544,6 +1673,7 @@ addEventListener("pageshow",fresh);
 addEventListener("online",trySync);
 if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})});
 trySync();
+ensurePush();
 </script>
 </body>
 </html>

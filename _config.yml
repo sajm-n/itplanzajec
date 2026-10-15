@@ -1,2 +1,6 @@
 title: Plan zajęć Inforkatyka Techniczna
 theme: jekyll-theme-minimal
+exclude:
+  - scripts
+  - push-state.json
+  - push-subscriptions.json
