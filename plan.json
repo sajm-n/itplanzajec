@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792099246148,
+  "rev": 1792099248206,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -218,6 +218,14 @@
       "req": "",
       "forms": {},
       "mac": ""
+    },
+    {
+      "id": "kmva1mdse0l7qu",
+      "name": "Wprowadzenie do informatyki technicznej",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "yes"
     }
   ],
   "tasks": [
