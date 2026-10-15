@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792099248206,
+  "rev": 1792099251410,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -226,6 +226,14 @@
       "req": "",
       "forms": {},
       "mac": "yes"
+    },
+    {
+      "id": "kmva1mg9djjf1i",
+      "name": "Zielone technologie w IT",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "part"
     }
   ],
   "tasks": [
