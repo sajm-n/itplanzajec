@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792099234206,
+  "rev": 1792099238733,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -198,6 +198,14 @@
     {
       "id": "kmva1ly3max7kf",
       "name": "Kreowanie wizerunku i techniki autoprezentacji",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "yes"
+    },
+    {
+      "id": "kmva1m6h9dpd0q",
+      "name": "Podstawy programowania",
       "desc": "",
       "req": "",
       "forms": {},
