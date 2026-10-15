@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792099397486,
+  "rev": 1792099402758,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -281,20 +281,6 @@
       "time": "11:30",
       "url": "",
       "at": 1792099217760,
-      "note": "",
-      "done": false
-    },
-    {
-      "id": "kmva1pc35oacs8",
-      "kind": "onsite",
-      "text": "test 2",
-      "sid": "",
-      "cid": "c03",
-      "date": "2026-11-09",
-      "due": "2026-11-09",
-      "time": "15:00",
-      "url": "",
-      "at": 1792099385969,
       "note": "",
       "done": false
     }
