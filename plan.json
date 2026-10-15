@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792089752359,
+  "rev": 1792099148399,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -171,128 +171,12 @@
   ],
   "exceptions": [
     {
-      "id": "kmv9vyrbobaz3i",
-      "cid": "c05",
-      "date": "2026-10-13",
-      "off": true
-    },
-    {
       "id": "kmv9vyuqvwijzv",
       "cid": "c06",
       "date": "2026-10-13",
       "off": true
     }
   ],
-  "subjects": [
-    {
-      "id": "kmv7uqvnssj9xw",
-      "name": "Język angielski I",
-      "desc": "",
-      "req": "",
-      "forms": {},
-      "mac": "yes"
-    },
-    {
-      "id": "kmv8lndg5adb0g",
-      "name": "Podstawy programowania",
-      "desc": "",
-      "req": "",
-      "forms": {},
-      "mac": "yes"
-    },
-    {
-      "id": "kmv8lnhnpuc08o",
-      "name": "Technologie informacyjne",
-      "desc": "",
-      "req": "",
-      "forms": {},
-      "mac": "yes"
-    },
-    {
-      "id": "kmv8lnj1uflozc",
-      "name": "Wprowadzenie do informatyki technicznej",
-      "desc": "",
-      "req": "",
-      "forms": {},
-      "mac": "yes"
-    },
-    {
-      "id": "kmv8lnmlsud8nd",
-      "name": "Zielone technologie w IT",
-      "desc": "",
-      "req": "",
-      "forms": {},
-      "mac": "part"
-    },
-    {
-      "id": "kmv8lnq0tiw98x",
-      "name": "Matematyka I",
-      "desc": "",
-      "req": "",
-      "forms": {},
-      "mac": "yes"
-    },
-    {
-      "id": "kmv8lnrjrf9uka",
-      "name": "Kreowanie wizerunku i techniki autoprezentacji",
-      "desc": "",
-      "req": "",
-      "forms": {},
-      "mac": "yes"
-    },
-    {
-      "id": "kmv8lnunksezj5",
-      "name": "Grafika inżynierska i projektowanie w środowisku CAD",
-      "desc": "",
-      "req": "",
-      "forms": {},
-      "mac": "yes"
-    },
-    {
-      "id": "kmv8lnvz95geqt",
-      "name": "Bezpieczeństwo i higiena pracy",
-      "desc": "",
-      "req": "",
-      "forms": {},
-      "mac": "yes"
-    },
-    {
-      "id": "kmv8lo9yiq3idl",
-      "name": "Przysposobienie biblioteczne",
-      "desc": "",
-      "req": "",
-      "forms": {},
-      "mac": "yes"
-    }
-  ],
-  "tasks": [
-    {
-      "id": "kmv7uouxjhfkch",
-      "kind": "onsite",
-      "text": "Zadania z Teamsa",
-      "sid": "",
-      "cid": "c01",
-      "date": "2026-10-19",
-      "due": "2026-10-19",
-      "time": "08:00",
-      "url": "",
-      "at": 0,
-      "note": "",
-      "done": false
-    },
-    {
-      "id": "kmv7z6407zmtzb",
-      "kind": "onsite",
-      "text": "Zapoznaj sie z innymi",
-      "sid": "",
-      "cid": "c10",
-      "date": "2026-10-28",
-      "due": "2026-10-28",
-      "time": "11:30",
-      "url": "",
-      "at": 0,
-      "note": "",
-      "done": false
-    }
-  ]
+  "subjects": [],
+  "tasks": []
 }
