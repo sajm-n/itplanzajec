@@ -103,7 +103,7 @@ h2{font-size:17px;font-weight:800;margin:20px 0 8px}
 .fill.live::after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--bg)}
 .ebar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;padding:9px 12px;border:1px dashed var(--ac);border-radius:12px;font-size:13px;color:var(--mut)}
 .ebar button{font-weight:700;color:var(--ac);padding:4px 6px}
-.fab{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 96px);width:56px;height:56px;border-radius:50%;background:var(--ac);color:var(--acx);font-size:30px;line-height:1;box-shadow:0 6px 18px rgba(0,0,0,.28);z-index:20}
+.fab{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 84px);width:56px;height:56px;border-radius:50%;background:var(--ac);color:var(--acx);font-size:30px;line-height:1;box-shadow:0 6px 18px rgba(0,0,0,.28);z-index:20}
 .fab[hidden]{display:none}
 /* arkusz (okno wysuwane od dołu) */
 .shbg{position:fixed;inset:0;z-index:50;background:var(--ovl);display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .2s}
@@ -131,7 +131,7 @@ h2{font-size:17px;font-weight:800;margin:20px 0 8px}
 .sec{margin:18px 0 6px;font-size:15px;font-weight:800}
 .sec:first-of-type{margin-top:8px}
 .hint{font-size:12px;color:var(--mut);margin:0 0 10px}
-.toast{position:fixed;left:50%;transform:translate(-50%,20px);bottom:calc(env(safe-area-inset-bottom,0px) + 92px);width:max-content;z-index:60;display:flex;align-items:center;gap:12px;max-width:min(92vw,520px);padding:11px 16px;border-radius:14px;background:var(--tx);color:var(--bg);font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.toast{position:fixed;left:50%;transform:translate(-50%,20px);bottom:calc(env(safe-area-inset-bottom,0px) + 80px);width:max-content;z-index:60;display:flex;align-items:center;gap:12px;max-width:min(92vw,520px);padding:11px 16px;border-radius:14px;background:var(--tx);color:var(--bg);font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
 .toast[hidden]{display:none}
 .toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 .toast button{color:inherit;font-weight:800;text-decoration:underline;padding:2px 4px}
@@ -141,12 +141,12 @@ h2{font-size:17px;font-weight:800;margin:20px 0 8px}
 /* ----- Dolny pasek nawigacji ----- */
 .view[hidden]{display:none}
 .vgap{margin-top:22px}
-.bnav{position:fixed;left:0;right:0;margin:0 auto;bottom:calc(env(safe-area-inset-bottom,0px)*.45 + 10px);width:min(calc(100% - 28px),400px);z-index:30;display:flex;gap:4px;padding:6px;border-radius:28px;border:1px solid var(--bd);background:var(--card);background:color-mix(in srgb,var(--card) 76%,transparent);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 10px 30px rgba(10,20,40,.22),0 1px 3px rgba(10,20,40,.12)}
+.bnav{position:fixed;left:0;right:0;margin:0 auto;bottom:calc(env(safe-area-inset-bottom,0px)*.2 + 5px);width:min(calc(100% - 28px),400px);z-index:30;display:flex;gap:4px;padding:6px;border-radius:28px;border:1px solid var(--bd);background:var(--card);background:color-mix(in srgb,var(--card) 76%,transparent);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);box-shadow:0 10px 30px rgba(10,20,40,.22),0 1px 3px rgba(10,20,40,.12)}
 .bnav button{flex:1;min-width:0;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:22px;color:var(--mut);font-size:12px;font-weight:600}
 .bnav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .bnav button[aria-current="page"]{color:var(--ac)}
 .bnav button:focus-visible{outline:2px solid var(--ac);outline-offset:-2px}
-body.edit .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 164px)}
+body.edit .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 152px)}
 .tl-plain{display:block}
 #tkOnsite:not(.free) .c,#tkOnline:not(.free) .c,#sbList:not(.free) .c{padding:12px 14px}
 
@@ -248,12 +248,21 @@ body.go .cg button.on{animation:daypop .4s cubic-bezier(.34,1.56,.5,1)}
 .sbi:active,.c[data-cid]:active{transform:scale(.985)}
 .fab:active{transform:scale(.9)}
 .bnav button:active{transform:scale(.92)}
+/* Przełączniki w karcie przedmiotu (MacBook, rodzaj zajęć): wskaźnik płynnie przesuwa się do wybranej opcji */
+.seg.sl{position:relative}
+.seg.sl button{position:relative;z-index:1;transition:color .25s}
+.seg.sl button.on{background:none}
+.sind{position:absolute;top:3px;bottom:3px;left:0;z-index:0;border-radius:8px;background:var(--ac);pointer-events:none}
+/* Karta przedmiotu ma stały rozmiar niezależnie od zakładki (Zadania bez zadań nie zmniejsza jej) */
+.sheet.sj{min-height:min(560px,calc(100dvh - 24px))}
+@keyframes sjin{from{opacity:0;transform:translateY(10px)}}
+.sjb.in{animation:sjin .28s cubic-bezier(.2,.8,.2,1)}
 /* Przycisk „+” i pasek edycji wjeżdżają przy włączeniu edycji */
 @keyframes fabin{from{opacity:0;transform:scale(.3) rotate(-90deg)}}
 .fab:not([hidden]){animation:fabin .4s cubic-bezier(.34,1.56,.5,1)}
 .ebar:not([hidden]){animation:cin .3s ease-out backwards}
 @media (prefers-reduced-motion:reduce){
-  .view:not([hidden]),body.go .view :is(.c,.gp,.sbi,.tk-row,.free,.olcard,.hh),body.go .cg button.on,.c.now,.fab:not([hidden]),.ebar:not([hidden]),.bnav button[aria-current="page"] svg{animation:none}
+  .view:not([hidden]),body.go .view :is(.c,.gp,.sbi,.tk-row,.free,.olcard,.hh),body.go .cg button.on,.c.now,.fab:not([hidden]),.ebar:not([hidden]),.bnav button[aria-current="page"] svg,.sjb.in{animation:none}
   .bnav.ready .ind,.btn,.tbtn,.fab,.today,.cg button,.seg button,.sbi,.tk-cb,.chip,.nthint,.alm,.ald,.c[data-cid],.bnav button{transition:none}
   .btn:active,.tbtn:active,.cg button:active,.seg button:active,.tk-cb:active,.chip:active,.nthint:active,.today:active,.sbi:active,.c[data-cid]:active,.fab:active,.bnav button:active{transform:none}
 }
@@ -1078,7 +1087,21 @@ function renderSubjects(){
       +(e.persons.length?'<span class="pp">'+esc(e.persons.join(", "))+'</span>':"")+'</span><b class="chev" aria-hidden="true">›</b></button>';
   }).join(""):"Brak przedmiotów. Dodaj zajęcia w planie, a pojawią się tutaj.";
 }
-let sjSave=null,sjT=0;
+let sjSave=null,sjT=0,sjMin=0;
+/* Wsuwany wskaźnik w przełącznikach karty przedmiotu; animuje od poprzedniej pozycji, gdy karta była już otwarta */
+const segPos={};
+function slideSegs(fresh){
+  document.querySelectorAll("#shBody .seg.sl").forEach(seg=>{
+    const on=seg.querySelector("button.on"),ind=document.createElement("i");
+    ind.className="sind";seg.prepend(ind);
+    if(!on){ind.style.display="none";delete segPos[seg.dataset.k];return}
+    const k=seg.dataset.k,l=on.offsetLeft,w=on.offsetWidth,p=fresh?null:segPos[k];
+    ind.style.width=w+"px";ind.style.transform="translateX("+l+"px)";
+    if(p&&ind.animate&&!reduced()&&(p.l!==l||p.w!==w))
+      ind.animate([{transform:"translateX("+p.l+"px)",width:p.w+"px"},{transform:"translateX("+l+"px)",width:w+"px"}],{duration:340,easing:"cubic-bezier(.34,1.3,.5,1)"});
+    segPos[k]={l,w};
+  });
+}
 function flushSave(){
   if(!sjSave)return;
   clearTimeout(sjT);
@@ -1108,10 +1131,12 @@ function openSubject(name,tab,focus){
   const forms=subjForms(e.name),keys=forms.length?forms.map(f=>f.type):["g"];
   if(tab!=="tasks"&&!keys.includes(tab))tab=keys[0];
   const all=subjTasks(e.name),n=all.filter(t=>!t.done).length,rec=subjRec(e.name)||{req:"",desc:"",forms:{},mac:""};
+  const reopen=!!shOpen&&ctx.view==="subj"&&ctx.sname===e.name,fresh=!reopen,tabChanged=!reopen||ctx.stab!==tab;
+  if(fresh)sjMin=0;
   ctx={view:"subj",sname:e.name,stab:tab};
   const tabBtn=(k,label)=>'<button type="button" role="tab" aria-selected="'+(tab===k)+'" class="'+(tab===k?"on":"")+'" data-sh="stab:'+k+'">'+esc(label)+'</button>';
-  const seg='<div class="seg dseg" role="tablist">'+keys.map(k=>tabBtn(k,FORM_LABEL(k))).join("")+tabBtn("tasks","Zadania"+(n?" ("+n+")":""))+'</div>';
-  const mac='<div class="macrow"><span id="macLbl">Działa na MacBooku?</span><div class="seg macseg" role="group" aria-labelledby="macLbl">'
+  const seg='<div class="seg dseg sl" data-k="d" role="tablist">'+keys.map(k=>tabBtn(k,FORM_LABEL(k))).join("")+tabBtn("tasks","Zadania"+(n?" ("+n+")":""))+'</div>';
+  const mac='<div class="macrow"><span id="macLbl">Działa na MacBooku?</span><div class="seg macseg sl" data-k="m" role="group" aria-labelledby="macLbl">'
     +MAC_OPTS.map(o=>'<button type="button" class="'+(rec.mac===o[0]?"on":"")+'" aria-pressed="'+(rec.mac===o[0])+'" data-sh="mac:'+o[0]+'">'+o[1]+'</button>').join("")+'</div></div>';
   let body,sub="";
   if(tab==="tasks"){
@@ -1135,7 +1160,9 @@ function openSubject(name,tab,focus){
       +'<div class="acts"><button type="button" class="btn" data-sh="close">Zamknij</button></div></form>';
     ctx.legacy=v.legacy;
   }
-  openSheet(e.name,(sub?'<p class="shsub">'+esc(sub)+'</p>':"")+mac+seg+body,focus);
+  openSheet(e.name,(sub?'<p class="shsub">'+esc(sub)+'</p>':"")+mac+seg+'<div class="sjb'+(tabChanged&&!reduced()?" in":"")+'">'+body+'</div>',focus);
+  const sh=$("sheet");sh.classList.add("sj");sjMin=Math.max(sjMin,sh.offsetHeight);sh.style.minHeight=sjMin+"px";
+  slideSegs(fresh);
   if(tab!=="tasks"){
     sjSave=null;
     const f=$("sjf"),legacy=ctx.legacy,mark=()=>{sjSave={name:e.name,form:tab,legacy};$("sjSt").textContent="Zapisywanie…";clearTimeout(sjT);sjT=setTimeout(flushSave,700)};
@@ -1221,6 +1248,7 @@ function openSheet(title,html,focusSel){
   const bg=$("shbg");
   flushSave();
   if(askRes){const r=askRes;askRes=null;r(false)}
+  $("sheet").classList.remove("sj");$("sheet").style.minHeight="";
   $("shT").textContent=title;$("shBody").innerHTML=html;
   if(!shOpen){
     shTok++;
