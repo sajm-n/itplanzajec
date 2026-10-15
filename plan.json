@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792099555020,
+  "rev": 1792099572783,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -292,6 +292,20 @@
       "time": "11:30",
       "url": "",
       "at": 1792099217760,
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmva1tc8fdaltk",
+      "kind": "onsite",
+      "text": "Napierdol sie jak dziwka",
+      "sid": "",
+      "cid": "kmva1syj04f32j",
+      "date": "2026-10-16",
+      "due": "2026-10-16",
+      "time": "21:00",
+      "url": "",
+      "at": 1792099572783,
       "note": "",
       "done": false
     }
