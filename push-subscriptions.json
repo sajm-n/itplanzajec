@@ -22,5 +22,13 @@
       "auth": "vTNB9ejr8WzVUKgYZYuQfg"
     },
     "added": 1792058893849
+  },
+  {
+    "endpoint": "https://updates.push.services.mozilla.com/wpush/v2/gAAAAABq0UM6x_wvyIIqMpZiqVlZDjPbA41RmGRrP84fkwdl72zG_hdmpov5RPzdY4EHThlW8XgkOxUssRI9KuQpDfk2f3B1qXDqkNfZgBib74TepTEPXIHWjrVQ1LaJW6b6Eyar4VNMlBm-5iNa5KnsnfbVznq8rephCAwGz6_r26NoLza4Z4U",
+    "keys": {
+      "p256dh": "BCh39Ks8VSE1aLhNuYdtE6P9B3NNKWYY5VQrePfLeT-PRDopdEdudjhhlQD--rOD1qz9KknVpoAue_FPqxpCfbQ",
+      "auth": "AIO3Ve7gpkslA7fz16GoDA"
+    },
+    "added": 1792099124906
   }
 ]
