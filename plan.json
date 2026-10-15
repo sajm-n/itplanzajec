@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792099224114,
+  "rev": 1792099225974,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -182,6 +182,14 @@
     {
       "id": "kmva1lv76ygz0j",
       "name": "Grafika inżynierska i projektowanie w środowisku CAD",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "yes"
+    },
+    {
+      "id": "kmva1lwmucyjj8",
+      "name": "Język angielski I",
       "desc": "",
       "req": "",
       "forms": {},
