@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792101280794,
+  "rev": 1792102485489,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -264,6 +264,14 @@
       "req": "",
       "forms": {},
       "mac": "part"
+    },
+    {
+      "id": "kmva3jrowuv37x",
+      "name": "Otrzęsiny Politechniki Lubelskiej",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": ""
     }
   ],
   "tasks": [
@@ -306,6 +314,20 @@
       "time": "21:00",
       "url": "",
       "at": 1792099572783,
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmva3jrow59sug",
+      "kind": "online",
+      "text": "tesr",
+      "sid": "kmva3jrowuv37x",
+      "cid": "",
+      "date": "",
+      "due": "2026-10-17",
+      "time": "00:15",
+      "url": "",
+      "at": 1792102485488,
       "note": "",
       "done": false
     }
