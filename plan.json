@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792099221526,
+  "rev": 1792099224114,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -174,6 +174,14 @@
     {
       "id": "kmva1lt7abkv0h",
       "name": "Bezpieczeństwo i higiena pracy",
+      "desc": "",
+      "req": "",
+      "forms": {},
+      "mac": "yes"
+    },
+    {
+      "id": "kmva1lv76ygz0j",
+      "name": "Grafika inżynierska i projektowanie w środowisku CAD",
       "desc": "",
       "req": "",
       "forms": {},
