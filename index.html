@@ -1319,7 +1319,7 @@ function toast(msg,actLabel,act){
   t.innerHTML="<span>"+esc(msg)+"</span>"+(actLabel?'<button type="button" id="toastAct">'+esc(actLabel)+"</button>":"");
   t.hidden=false;void t.offsetWidth;t.classList.add("on");
   if(actLabel)$("toastAct").onclick=()=>{hideToast();act()};
-  clearTimeout(toastT);toastT=setTimeout(hideToast,actLabel?7000:3500);
+  clearTimeout(toastT);toastT=setTimeout(hideToast,actLabel?4000:3500);
 }
 function ask(msg,okLabel){
   return new Promise(res=>{
