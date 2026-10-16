@@ -679,7 +679,7 @@ const wk=d=>weekOf(cache.plan,d),pre=d=>isPre(cache.plan,d),items=d=>itemsFor(ca
 const dl=d=>d.toLocaleDateString("pl-PL",{day:"numeric",month:"long"});
 const dlong=d=>d.toLocaleDateString("pl-PL",{weekday:"long",day:"numeric",month:"long"});
 /* Wersja aplikacji (pokazywana w Ustawieniach); podbijana przy każdej zmianie */
-const APP_VERSION="1.0";
+const APP_VERSION="1.1";
 const TAB_KEY="estudia.tab.v1",TABS={plan:"Plan zajęć",tasks:"Zadania",subj:"Przedmioty"};
 let tab="plan";
 try{const t=localStorage.getItem(TAB_KEY);if(TABS[t])tab=t}catch(e){}
@@ -1321,7 +1321,7 @@ function toast(msg,actLabel,act){
   t.innerHTML="<span>"+esc(msg)+"</span>"+(actLabel?'<button type="button" id="toastAct">'+esc(actLabel)+"</button>":"");
   t.hidden=false;void t.offsetWidth;t.classList.add("on");
   if(actLabel)$("toastAct").onclick=()=>{hideToast();act()};
-  clearTimeout(toastT);toastT=setTimeout(hideToast,actLabel?4000:3500);
+  clearTimeout(toastT);toastT=setTimeout(hideToast,actLabel?3000:3500);
 }
 function ask(msg,okLabel){
   return new Promise(res=>{
@@ -1755,7 +1755,26 @@ setInterval(fresh,60000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){fresh();if(Date.now()-lastSync>30000)trySync()}});
 addEventListener("pageshow",fresh);
 addEventListener("online",trySync);
-if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})});
+if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))addEventListener("load",()=>{navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>{r.update().catch(()=>{})}).catch(()=>{})});
+
+/* Samoaktualizacja: przy otwarciu i powrocie do aplikacji porównuje wersję z najnowszym index.html na serwerze.
+   Aplikacja z ikony na iOS bywa wznawiana ze starą wersją w pamięci, więc bez tego trzeba by usuwać ikonę. */
+let updChecking=false;
+async function checkUpdate(){
+  if(updChecking||!/^https?:$/.test(location.protocol)||!navigator.onLine)return;
+  updChecking=true;
+  try{
+    const r=await fetch(location.pathname.replace(/[^\/]*$/,"")+"index.html?v="+Date.now(),{cache:"no-store"});
+    if(!r.ok)return;
+    const m=/const APP_VERSION="([^"]+)"/.exec(await r.text());
+    if(!m||m[1]===APP_VERSION)return;
+    /* nie przerywaj pracy: gdy otwarte jest okno albo trwa zapis, tylko podpowiedz */
+    if(shOpen||sjSave||cache.dirty){toast("Dostępna nowa wersja aplikacji ("+m[1]+").","Odśwież",()=>location.reload());return}
+    location.reload();
+  }catch(e){}finally{updChecking=false}
+}
+checkUpdate();
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)checkUpdate()});
 trySync();
 ensurePush();
 </script>

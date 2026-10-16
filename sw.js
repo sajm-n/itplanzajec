@@ -1,6 +1,6 @@
 /* Service worker: aplikacja działa offline. Sieć ma pierwszeństwo, więc nowe wersje trafiają
    do telefonu przy najbliższym otwarciu z internetem; pamięć podręczna jest tylko zapasem. */
-const V = "plan-v5";
+const V = "plan-v6";
 const SHELL = ["./", "./index.html"];
 
 self.addEventListener("install", e => {
@@ -17,7 +17,7 @@ self.addEventListener("activate", e => {
 
 function networkFirst(req) {
   return caches.open(V).then(cache => {
-    const net = fetch(req).then(res => {
+    const net = fetch(req, { cache: "no-cache" }).then(res => {
       if (res && res.ok) cache.put(req, res.clone());
       return res;
     });
