@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792151746386,
+  "rev": 1792151751129,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -321,6 +321,20 @@
       "time": "21:00",
       "url": "",
       "at": 1792099572783,
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmvawvpawd0svf",
+      "kind": "online",
+      "text": "dodaj",
+      "sid": "",
+      "cid": "",
+      "date": "",
+      "due": "2026-10-17",
+      "time": "23:59",
+      "url": "",
+      "at": 1792151751129,
       "note": "",
       "done": false
     }
