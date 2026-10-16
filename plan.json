@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792151756648,
+  "rev": 1792160261730,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -321,6 +321,20 @@
       "time": "21:00",
       "url": "",
       "at": 1792099572783,
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmvb1y44hodva8",
+      "kind": "online",
+      "text": "gówno",
+      "sid": "",
+      "cid": "",
+      "date": "",
+      "due": "2026-10-17",
+      "time": "16:18",
+      "url": "",
+      "at": 1792160261730,
       "note": "",
       "done": false
     }
