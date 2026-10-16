@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792160432309,
+  "rev": 1792161674127,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -214,7 +214,7 @@
       "desc": "",
       "req": "",
       "forms": {},
-      "mac": ""
+      "mac": "yes"
     },
     {
       "id": "kmva1lwmucyjj8",
@@ -230,7 +230,7 @@
       "desc": "",
       "req": "",
       "forms": {},
-      "mac": ""
+      "mac": "yes"
     },
     {
       "id": "kmva1m6h9dpd0q",
@@ -238,7 +238,7 @@
       "desc": "",
       "req": "",
       "forms": {},
-      "mac": ""
+      "mac": "yes"
     },
     {
       "id": "kmva1m9t0adpzi",
@@ -254,7 +254,7 @@
       "desc": "",
       "req": "",
       "forms": {},
-      "mac": ""
+      "mac": "yes"
     },
     {
       "id": "kmva1mg9djjf1i",
@@ -262,7 +262,7 @@
       "desc": "",
       "req": "",
       "forms": {},
-      "mac": ""
+      "mac": "part"
     },
     {
       "id": "kmva3jrowuv37x",
@@ -292,7 +292,7 @@
       "due": "2026-10-19",
       "time": "08:00",
       "url": "",
-      "at": 0,
+      "at": 1792099202436,
       "note": "",
       "done": false
     },
@@ -306,7 +306,7 @@
       "due": "2026-10-28",
       "time": "11:30",
       "url": "",
-      "at": 0,
+      "at": 1792099217760,
       "note": "",
       "done": false
     },
@@ -320,23 +320,9 @@
       "due": "2026-10-16",
       "time": "21:00",
       "url": "",
-      "at": 0,
+      "at": 1792099572783,
       "note": "",
       "done": false
-    },
-    {
-      "id": "kmvb1y44hodva8",
-      "kind": "online",
-      "text": "gówno",
-      "sid": "kmva1ly3max7kf",
-      "cid": "",
-      "date": "",
-      "due": "2026-10-17",
-      "time": "16:18",
-      "url": "",
-      "at": 0,
-      "note": "",
-      "done": true
     }
   ]
 }
