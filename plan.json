@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792353901434,
+  "rev": 1792365542957,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -294,7 +294,7 @@
       "url": "",
       "at": 1792099202436,
       "note": "",
-      "done": false
+      "done": true
     },
     {
       "id": "kmva1lqaoliw5q",
@@ -324,5 +324,16 @@
       "note": "",
       "done": true
     }
-  ]
+  ],
+  "notif": {
+    "onsite": {
+      "m": "day",
+      "days": 1,
+      "time": "18:00"
+    },
+    "online": {
+      "m": "rel",
+      "min": 1440
+    }
+  }
 }
