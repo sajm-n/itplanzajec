@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792365542957,
+  "rev": 1792365674429,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -323,6 +323,24 @@
       "at": 1792099572783,
       "note": "",
       "done": true
+    },
+    {
+      "id": "kmveg8tksjbx9t",
+      "kind": "online",
+      "text": "Zadzwoń do lekarza",
+      "sid": "",
+      "cid": "",
+      "date": "",
+      "due": "2026-10-20",
+      "time": "23:59",
+      "url": "",
+      "at": 1792365674428,
+      "note": "",
+      "done": false,
+      "rem": {
+        "m": "abs",
+        "at": "2026-10-19T13:15"
+      }
     }
   ],
   "notif": {
