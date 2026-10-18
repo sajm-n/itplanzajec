@@ -151,6 +151,22 @@ h2{font-size:17px;font-weight:800;margin:20px 0 8px}
 .sec{margin:18px 0 6px;font-size:15px;font-weight:800}
 .sec:first-of-type{margin-top:8px}
 .hint{font-size:12px;color:var(--mut);margin:0 0 10px}
+.hint:empty{display:none}
+.remb{margin:2px 0 12px}
+.remb .lbl{display:block;font-size:13px;font-weight:600;color:var(--mut);margin:0 0 6px}
+.remseg{margin:0 0 8px}
+.remseg button{flex:1;padding:8px 4px;font-size:13px;white-space:nowrap}
+.rchips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.rchips[hidden]{display:none}
+.rchips button{min-height:40px;padding:0 13px;border-radius:99px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-weight:600;font-size:14px;transition:transform .14s ease,background-color .2s,color .2s,border-color .2s}
+.rchips button:active{transform:scale(.95)}
+.rchips button.on{background:var(--ac);border-color:var(--ac);color:var(--acx)}
+.rprev{display:block;margin:0;padding:8px 11px;border-radius:10px;background:var(--bg);border:1px solid var(--bd);font-size:13px;font-weight:600;line-height:1.35;color:var(--tx)}
+.rprev:empty{display:none}
+.rprev.warn{color:var(--warn);border-color:var(--warn)}
+.rprev.bad{color:var(--bad);border-color:var(--bad)}
+.dfb{margin:0 0 4px}
+.dfb .fl{margin-bottom:8px}
 .toast{position:fixed;left:50%;transform:translate(-50%,20px);bottom:calc(env(safe-area-inset-bottom,0px) + 80px);width:max-content;z-index:60;display:flex;align-items:center;gap:12px;max-width:min(92vw,520px);padding:11px 16px;border-radius:14px;background:var(--tx);color:var(--bg);font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
 .toast[hidden]{display:none}
 .toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
@@ -284,7 +300,7 @@ body.go .cg button.on{animation:daypop .4s cubic-bezier(.34,1.56,.5,1)}
 @media (prefers-reduced-motion:reduce){
   .view:not([hidden]),body.go .view :is(.c,.gp,.sbi,.tk-row,.free,.olcard,.hh),body.go .cg button.on,.c.now,.fab:not([hidden]),.ebar:not([hidden]),.bnav button[aria-current="page"] svg,.sjb.in{animation:none}
   .bnav.ready .ind,.btn,.tbtn,.fab,.today,.cg button,.seg button,.sbi,.tk-cb,.chip,.nthint,.alm,.ald,.c[data-cid],.bnav button{transition:none}
-  .btn:active,.tbtn:active,.cg button:active,.seg button:active,.tk-cb:active,.chip:active,.nthint:active,.today:active,.sbi:active,.c[data-cid]:active,.fab:active,.bnav button:active{transform:none}
+  .btn:active,.tbtn:active,.cg button:active,.seg button:active,.tk-cb:active,.chip:active,.nthint:active,.today:active,.sbi:active,.c[data-cid]:active,.fab:active,.bnav button:active,.rchips button:active{transform:none}
 }
 </style>
 </head>
@@ -460,9 +476,13 @@ function validatePlan(raw){
     const t={id,kind,text,sid:sids.has(x.sid)?x.sid:"",cid:ids.has(x.cid)?x.cid:"",date:fromDK(x.date)?x.date:"",due,time:"",url:"",at:Number.isFinite(x.at)&&x.at>0?Math.floor(x.at):0,note:str(x.note,1000),done:x.done===true};
     if(x.time){const tm=normT(x.time);if(tm)t.time=tm}
     if(kind==="online"){const u=str(x.url,300);if(/^https?:\/\/\S+$/i.test(u))t.url=u}
+    const rem=normRule(x.rem,true);if(rem)t.rem=rem; /* własny termin powiadomienia; brak = reguła domyślna z ustawień */
     tasks.push(t);
   }
-  return {ok:true,plan:{v:1,rev:Number.isFinite(raw.rev)?raw.rev:0,start:raw.start,startWeek:raw.startWeek,classes,exceptions:[...byKey.values()],subjects,tasks}};
+  /* Domyślne terminy powiadomień (osobno dla zadań stacjonarnych i online); brak lub błąd = wartości startowe */
+  const rn=raw.notif&&typeof raw.notif==="object"?raw.notif:{};
+  const notif={onsite:normRule(rn.onsite)||clone(NOTIF_DEF.onsite),online:normRule(rn.online)||clone(NOTIF_DEF.online)};
+  return {ok:true,plan:{v:1,rev:Number.isFinite(raw.rev)?raw.rev:0,start:raw.start,startWeek:raw.startWeek,classes,exceptions:[...byKey.values()],subjects,tasks,notif}};
 }
 const serialize=p=>JSON.stringify(p,null,2)+"\n";
 
@@ -514,21 +534,44 @@ function nextOccurrence(plan,cid,after){
 }
 
 /* ===== Przypomnienia o nieukończonych zadaniach =====
-   Stacjonarne: dzień przed terminem (dniem zajęć) o 18:00. Online: dokładnie 24 h przed terminem.
+   Termin powiadomienia opisuje reguła:
+     {m:"rel",min:N}              N minut przed terminem zadania,
+     {m:"day",days:N,time:"GG:MM"} N dni przed dniem terminu, o stałej godzinie (tylko w ustawieniach domyślnych),
+     {m:"abs",at:"RRRR-MM-DDTGG:MM"} konkretna data i godzina (tylko w zadaniu).
+   Zadanie bez własnej reguły (pole rem) używa reguły domyślnej z ustawień (plan.notif) dla swojego rodzaju.
+   Wartości startowe: stacjonarne = dzień przed terminem (dniem zajęć) o 18:00, online = dokładnie 24 h przed terminem.
    Przypomnienie dotyczy tylko zadań, które istniały w chwili jego wyzwolenia (pole at = czas utworzenia),
-   więc zadanie dodane już po 18:00 dnia poprzedniego nie alarmuje od razu. */
-function taskTrigger(t){
+   więc zadanie dodane już po tej chwili nie alarmuje od razu. */
+const NOTIF_DEF={onsite:{m:"day",days:1,time:"18:00"},online:{m:"rel",min:1440}};
+const REM_MAX_MIN=60*1440; /* 60 dni w minutach */
+function normRule(x,task){
+  if(!x||typeof x!=="object")return null;
+  if(x.m==="rel"){const n=Math.round(+x.min);return Number.isFinite(n)&&n>=1&&n<=REM_MAX_MIN?{m:"rel",min:n}:null}
+  if(x.m==="day"&&!task){const n=Math.round(+x.days),tm=normT(x.time);return Number.isFinite(n)&&n>=0&&n<=60&&tm?{m:"day",days:n,time:tm}:null}
+  if(x.m==="abs"&&task){const m=/^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})$/.exec(String(x.at));if(m&&fromDK(m[1])&&normT(m[2])===m[2])return{m:"abs",at:x.at}}
+  return null;
+}
+function ruleStart(r,d,end){
+  if(r.m==="rel")return new Date(end.getTime()-r.min*6e4);
+  if(r.m==="day")return new Date(d.getFullYear(),d.getMonth(),d.getDate()-r.days,+r.time.slice(0,2),+r.time.slice(3,5));
+  const m=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(r.at);
+  return new Date(+m[1],+m[2]-1,+m[3],+m[4],+m[5]);
+}
+/* Reguła obowiązująca dla zadania: własna albo domyślna z ustawień */
+const ruleOf=(t,notif)=>t.rem||(notif&&notif[t.kind])||NOTIF_DEF[t.kind];
+function taskTrigger(t,notif){
   if(!t.due)return null;
   const d=fromDK(t.due);if(!d)return null;
   const p=(t.time||(t.kind==="online"?"23:59":"00:00")).split(":").map(Number);
   const end=new Date(d.getFullYear(),d.getMonth(),d.getDate(),p[0],p[1]);
-  const start=t.kind==="online"?new Date(end.getTime()-864e5):new Date(d.getFullYear(),d.getMonth(),d.getDate()-1,18,0);
+  let start=ruleStart(ruleOf(t,notif),d,end);
+  if(start>end)start=end; /* powiadomienie nie może przyjść po terminie */
   return{start,end};
 }
 const OVERDUE_MS=7*864e5;
-function taskAlert(t,now){
+function taskAlert(t,now,notif){
   if(t.done)return null;
-  const w=taskTrigger(t);if(!w)return null;
+  const w=taskTrigger(t,notif);if(!w)return null;
   if(t.at&&w.start.getTime()<t.at)return null;
   if(now<w.start)return null;
   if(now<=w.end)return "soon";
@@ -679,7 +722,7 @@ const wk=d=>weekOf(cache.plan,d),pre=d=>isPre(cache.plan,d),items=d=>itemsFor(ca
 const dl=d=>d.toLocaleDateString("pl-PL",{day:"numeric",month:"long"});
 const dlong=d=>d.toLocaleDateString("pl-PL",{weekday:"long",day:"numeric",month:"long"});
 /* Wersja aplikacji (pokazywana w Ustawieniach); podbijana przy każdej zmianie */
-const APP_VERSION="1.1";
+const APP_VERSION="1.2";
 const TAB_KEY="estudia.tab.v1",TABS={plan:"Plan zajęć",tasks:"Zadania",subj:"Przedmioty"};
 let tab="plan";
 try{const t=localStorage.getItem(TAB_KEY);if(TABS[t])tab=t}catch(e){}
@@ -862,33 +905,145 @@ function applySubject(p,val){
   }
   return val;
 }
+/* ----- Termin powiadomienia w formularzu zadania -----
+   Trzy sposoby: „Domyślne” (reguła z ustawień, zmienia się razem z nimi), „Przed terminem” (ile czasu przed)
+   i „Data i godzina” (konkretny moment). Pod spodem na żywo widać, kiedy dokładnie przyjdzie powiadomienie. */
+const REL_OPTS=[5,10,15,30,60,120,300];
+function fmtDur(m){
+  if(m>=1440&&m%1440===0){const n=m/1440;return n===1?"24 godz.":n+" dni"}
+  if(m>=60&&m%60===0)return m/60+" godz.";
+  if(m>=60)return Math.floor(m/60)+" godz. "+m%60+" min";
+  return m+" min";
+}
+function ruleLabel(r){
+  if(r.m==="rel")return fmtDur(r.min)+" przed terminem";
+  return (r.days===0?"w dniu terminu":r.days===1?"dzień przed terminem":r.days+" dni przed terminem")+", o "+fmtT(r.time);
+}
+const hm=d=>pad(d.getHours())+":"+pad(d.getMinutes());
+const fmtLocal=d=>dk(d)+"T"+hm(d);
+function whenWordAt(d){
+  const diff=Math.round((day0(d)-day0(new Date()))/864e5);
+  return (diff===0?"dziś":diff===1?"jutro":diff===2?"pojutrze":diff===-1?"wczoraj":dlong(d))+" o "+fmtT(hm(d));
+}
+function endOf(due,time){
+  const d=fromDK(due),tm=normT(time);
+  return d&&tm?new Date(d.getFullYear(),d.getMonth(),d.getDate(),+tm.slice(0,2),+tm.slice(3,5)):null;
+}
+function remHtml(rem){
+  const mode=!rem?"def":rem.m==="abs"?"abs":"rel",mins=REL_OPTS.slice();
+  if(rem&&rem.m==="rel"&&!mins.includes(rem.min)){mins.push(rem.min);mins.sort((a,b)=>a-b)}
+  return '<div class="remb" data-rem><span class="lbl">Powiadomienie</span>'
+    +'<div class="seg remseg" role="group" aria-label="Jak ustawić termin powiadomienia">'
+    +[["def","Domyślne"],["rel","Przed terminem"],["abs","Data i godzina"]].map(o=>'<button type="button" data-rm="'+o[0]+'" class="'+(o[0]===mode?"on":"")+'" aria-pressed="'+(o[0]===mode)+'">'+o[1]+'</button>').join("")+'</div>'
+    +'<div class="rchips" data-rp="rel" role="group" aria-label="Ile czasu przed terminem"'+(mode==="rel"?"":" hidden")+'>'
+    +mins.map(m=>{const on=!!rem&&rem.m==="rel"&&rem.min===m;return '<button type="button" data-rmin="'+m+'" class="'+(on?"on":"")+'" aria-pressed="'+on+'">'+fmtDur(m)+'</button>'}).join("")+'</div>'
+    +'<label class="fl" data-rp="abs"'+(mode==="abs"?"":" hidden")+'>Data i godzina powiadomienia<input type="datetime-local" name="remAt" value="'+esc(rem&&rem.m==="abs"?rem.at:"")+'"></label>'
+    +'<p class="hint" data-rinfo></p><p class="rprev" data-rprev role="status" aria-live="polite"></p></div>';
+}
+/* Podpina blok powiadomienia w formularzu; getEnd() zwraca chwilę terminu zadania (Date) albo null, gdy nie da się jej jeszcze ustalić */
+function remBind(form,kind,getEnd,isNew){
+  const box=form.querySelector("[data-rem]"),at=box.querySelector('[name="remAt"]'),info=box.querySelector("[data-rinfo]"),prev=box.querySelector("[data-rprev]");
+  let mode=box.querySelector("[data-rm].on").dataset.rm,min=0;
+  const cur=box.querySelector("[data-rmin].on");if(cur)min=+cur.dataset.rmin;
+  function calc(){
+    const end=getEnd();let rule=null,eff,err="";
+    if(mode==="def")eff=ruleOf({kind},cache.plan.notif);
+    else if(mode==="rel"){if(min)rule=eff={m:"rel",min};else err="Wybierz, ile czasu przed terminem ma przyjść powiadomienie."}
+    else{
+      const m=/^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/.exec(at.value);
+      if(m&&fromDK(m[1]))rule=eff={m:"abs",at:m[1]+"T"+m[2]};else err="Wybierz datę i godzinę powiadomienia."
+    }
+    let start=null;
+    if(eff&&end){
+      start=ruleStart(eff,day0(end),end);
+      if(start>end){
+        if(mode==="abs")err="Powiadomienie musi przyjść przed terminem zadania ("+whenWordAt(end)+").";
+        else start=end;
+      }
+    }
+    return{end,rule,eff,err,start};
+  }
+  function update(){
+    const c=calc();
+    info.textContent=mode==="def"?"Wg ustawień domyślnych: "+ruleLabel(c.eff)+".":"";
+    let txt="",cls="rprev";
+    if(c.err){txt=c.err;cls+=" bad"}
+    else if(!c.end)txt="Wybierz termin zadania, aby zobaczyć, kiedy przyjdzie powiadomienie.";
+    else if(c.start<new Date()){txt="Ten moment ("+whenWordAt(c.start)+") już minął"+(isNew?", więc powiadomienie dla tego zadania nie zostanie wysłane.":".");cls+=" warn"}
+    else txt="Powiadomienie przyjdzie: "+whenWordAt(c.start);
+    prev.textContent=txt;prev.className=cls;
+  }
+  function paint(){
+    box.querySelectorAll("[data-rm]").forEach(b=>{const on=b.dataset.rm===mode;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+    box.querySelectorAll("[data-rmin]").forEach(b=>{const on=+b.dataset.rmin===min;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+    box.querySelectorAll("[data-rp]").forEach(e=>{e.hidden=e.dataset.rp!==mode});
+    update();
+  }
+  box.addEventListener("click",e=>{
+    const b=e.target.closest("button");if(!b||!box.contains(b))return;
+    if(b.dataset.rm){
+      mode=b.dataset.rm;
+      if(mode==="rel"&&!min)min=60;
+      if(mode==="abs"&&!at.value){
+        /* podpowiedź: dotychczasowy termin (domyślny), a gdy już minął, godzina przed terminem zadania */
+        const end=getEnd();
+        if(end){let s=ruleStart(ruleOf({kind},cache.plan.notif),day0(end),end);if(s>end||s<=new Date())s=new Date(end.getTime()-36e5);at.value=fmtLocal(s)}
+      }
+      paint();
+    }else if(b.dataset.rmin){min=+b.dataset.rmin;paint()}
+  });
+  form.addEventListener("input",update);form.addEventListener("change",update);
+  update();
+  return{
+    update,
+    reset(){mode="def";min=0;at.value="";paint()},
+    /* {ok:true,rem} (rem puste = reguła domyślna) albo {ok:false,err,el} */
+    read(){const c=calc();return c.err?{ok:false,err:c.err,el:mode==="abs"?at:null}:{ok:true,rem:c.rule||undefined}}
+  };
+}
+/* Zapisuje własny termin powiadomienia w zadaniu; zmiana „odnawia” zadanie (at), więc moment z przeszłości nie wywoła alarmu od razu */
+function setRem(x,rem){
+  const a=JSON.stringify(x.rem||null),b=JSON.stringify(rem||null);
+  if(rem)x.rem=rem;else delete x.rem;
+  if(a!==b)x.at=Date.now();
+}
 const olFields=v=>'<label class="fl">Treść zadania<input name="text" maxlength="300" value="'+esc(v.text)+'" placeholder="np. Quiz na platformie, rozdział 3"></label>'
   +'<label class="fl">Przedmiot<select name="subj">'+selOpts(subjPairs(),v.subj)+'</select></label>'
   +'<div class="two"><label class="fl">Termin oddania<input type="date" name="due" value="'+esc(v.due)+'"></label><label class="fl">Godzina<input type="time" name="time" value="'+esc(v.time)+'"></label></div>'
+  +remHtml(v.rem)
   +'<p class="msg bad" data-err role="alert"></p>';
-function readOl(f,errEl){
+const olEnd=f=>()=>endOf(f.elements.due.value,f.elements.time.value.trim()||"23:59");
+function readOl(f,errEl,rb){
   const E=f.elements,text=E.text.value.trim(),due=E.due.value,tv=E.time.value.trim()||"23:59";
   const err=(m,el)=>{errEl.textContent=m;if(el)el.focus();return null};
   if(!text)return err("Wpisz treść zadania.",E.text);
   if(!fromDK(due))return err("Wybierz termin oddania (datę).",E.due);
   if(!normT(tv))return err("Podaj poprawną godzinę.",E.time);
+  const r=rb.read();
+  if(!r.ok)return err(r.err,r.el);
   errEl.textContent="";
-  return{text,due,time:normT(tv),subj:E.subj.value};
+  return{text,due,time:normT(tv),subj:E.subj.value,rem:r.rem};
 }
 const tomorrowDK=()=>{const x=new Date();return dk(new Date(x.getFullYear(),x.getMonth(),x.getDate()+1))};
-let olSig="";
+let olSig="",olRem=null;
 function initOlForm(){
   const box=$("tkOnlineForm");
   box.innerHTML='<form id="olf" novalidate autocomplete="off">'+olFields({text:"",subj:"",due:tomorrowDK(),time:"23:59"})+'<div class="acts"><button type="submit" class="btn pri">Dodaj zadanie online</button></div></form>';
   olSig=JSON.stringify(subjPairs());
+  olRem=remBind($("olf"),"online",olEnd($("olf")),true);
   $("olf").onsubmit=ev=>{
     ev.preventDefault();
-    const f=$("olf"),v=readOl(f,f.querySelector("[data-err]"));if(!v)return;
-    const ok=change(p=>{p.tasks.push({id:uid(),kind:"online",sid:applySubject(p,v.subj),cid:"",at:Date.now(),date:"",text:v.text,due:v.due,time:v.time,url:"",note:"",done:false})},"Dodano zadanie online");
-    if(ok){f.elements.text.value="";f.elements.text.focus()}
+    const f=$("olf"),v=readOl(f,f.querySelector("[data-err]"),olRem);if(!v)return;
+    const ok=change(p=>{
+      const t={id:uid(),kind:"online",sid:applySubject(p,v.subj),cid:"",at:Date.now(),date:"",text:v.text,due:v.due,time:v.time,url:"",note:"",done:false};
+      if(v.rem)t.rem=v.rem;
+      p.tasks.push(t);
+    },"Dodano zadanie online");
+    if(ok){f.elements.text.value="";olRem.reset();f.elements.text.focus()}
   };
 }
 function refreshOlForm(){
+  if(olRem)olRem.update(); /* domyślny termin mógł się zmienić w ustawieniach */
   const sig=JSON.stringify(subjPairs());if(sig===olSig)return;
   olSig=sig;const s=$("olf").elements.subj,cur=s.value;
   s.innerHTML=selOpts(subjPairs(),cur);
@@ -898,15 +1053,38 @@ function openTask(id){
   if(t.kind==="onsite"){if(cache.plan.classes.some(c=>c.id===t.cid))openDetail(t.cid,t.date||t.due);return}
   let sv="";if(t.sid&&cache.plan.subjects.some(s=>s.id===t.sid))sv=t.sid;
   ctx={tid:id,view:"oledit"};
-  openSheet("Zadanie online",'<form id="ole" novalidate autocomplete="off">'+olFields({text:t.text,subj:sv,due:t.due,time:t.time||"23:59"})
+  openSheet("Zadanie online",'<form id="ole" novalidate autocomplete="off">'+olFields({text:t.text,subj:sv,due:t.due,time:t.time||"23:59",rem:t.rem})
     +'<div class="acts"><button type="submit" class="btn pri">Zapisz</button><button type="button" class="btn" data-sh="close">Anuluj</button><button type="button" class="btn dng" data-sh="oldel">Usuń</button></div></form>');
-  const f=$("ole");
+  const f=$("ole"),rb=remBind(f,"online",olEnd(f),false);
   f.onsubmit=ev=>{
     ev.preventDefault();
-    const v=readOl(f,f.querySelector("[data-err]"));if(!v)return;
-    const ok=change(p=>{const x=p.tasks.find(y=>y.id===id);if(x){x.text=v.text;x.due=v.due;x.time=v.time;x.sid=applySubject(p,v.subj)}});
+    const v=readOl(f,f.querySelector("[data-err]"),rb);if(!v)return;
+    const ok=change(p=>{const x=p.tasks.find(y=>y.id===id);if(x){x.text=v.text;x.due=v.due;x.time=v.time;x.sid=applySubject(p,v.subj);setRem(x,v.rem)}});
     if(ok)closeSheet();
   };
+}
+/* Edycja zadania stacjonarnego (treść i termin powiadomienia); termin zadania wynika z zajęć */
+function openOnsiteTask(id){
+  const t=cache.plan.tasks.find(x=>x.id===id&&x.kind==="onsite");if(!t)return;
+  const cl=cache.plan.classes.find(c=>c.id===t.cid);
+  ctx={tid:id,cid:t.cid,date:t.date||t.due,view:"osedit"};
+  openSheet("Zadanie stacjonarne",'<form id="ose" novalidate autocomplete="off"><p class="shsub">'+esc(cl?cl.name:"Zajęcia")+' · '+esc(taskMeta(t))+'</p>'
+    +'<label class="fl">Treść zadania<input name="text" maxlength="300" value="'+esc(t.text)+'"></label>'
+    +remHtml(t.rem)+'<p class="msg bad" data-err role="alert"></p>'
+    +'<div class="acts"><button type="submit" class="btn pri">Zapisz</button><button type="button" class="btn" data-sh="osback">Wróć</button></div></form>');
+  const f=$("ose"),rb=remBind(f,"onsite",()=>endOf(t.due,t.time||"00:00"),false);
+  f.onsubmit=ev=>{
+    ev.preventDefault();
+    const text=f.elements.text.value.trim(),er=f.querySelector("[data-err]");
+    if(!text){er.textContent="Wpisz treść zadania.";f.elements.text.focus();return}
+    const r=rb.read();
+    if(!r.ok){er.textContent=r.err;if(r.el)r.el.focus();return}
+    const ok=change(p=>{const x=p.tasks.find(y=>y.id===id);if(x){x.text=text;setRem(x,r.rem)}});
+    if(ok)osBack();
+  };
+}
+function osBack(){
+  if(cache.plan.classes.some(c=>c.id===ctx.cid))openDetail(ctx.cid,ctx.date);else closeSheet();
 }
 function toggleTask(id){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done});popCb(id)}
 /* ----- Przypomnienia o nieukończonych zadaniach ----- */
@@ -928,7 +1106,7 @@ function alertTexts(a){
 }
 function activeAlerts(){
   const n=new Date();
-  return cache.plan.tasks.map(t=>({t,s:taskAlert(t,n)})).filter(x=>x.s).sort((a,b)=>(a.s===b.s?0:a.s==="over"?1:-1)||tkKey(a.t).localeCompare(tkKey(b.t)));
+  return cache.plan.tasks.map(t=>({t,s:taskAlert(t,n,cache.plan.notif)})).filter(x=>x.s).sort((a,b)=>(a.s===b.s?0:a.s==="over"?1:-1)||tkKey(a.t).localeCompare(tkKey(b.t)));
 }
 function renderAlerts(){
   const al=activeAlerts(),box=$("alerts");
@@ -963,7 +1141,10 @@ async function notifyDue(){
     const seen=loadSeen(),live=new Set(cache.plan.tasks.map(t=>t.id));let ch=false;
     for(const k in seen)if(!live.has(k)){delete seen[k];ch=true}
     for(const a of activeAlerts()){
-      if(a.s!=="soon"||seen[a.t.id])continue;
+      if(a.s!=="soon")continue;
+      /* zadanie, któremu przesunięto termin powiadomienia na później niż poprzednie wysłanie, dostaje powiadomienie ponownie */
+      const w=taskTrigger(a.t,cache.plan.notif),sn=seen[a.t.id];
+      if(sn&&(!w||sn>=w.start.getTime()))continue;
       const x=alertTexts(a);
       if(await showNotif(x.title,x.body,a.t.id)){seen[a.t.id]=Date.now();ch=true}
     }
@@ -1264,20 +1445,27 @@ function openDetail(cid,date,focus){
   ctx={cid,date:dk(d),view:"detail"};
   const list=tasksOf(cid,dk(d));
   const rows=list.map(t=>'<div class="tk-row'+(t.done?" done":"")+(isLate(t)?" late":"")+'"><button type="button" class="tk-cb" role="checkbox" aria-checked="'+(t.done?"true":"false")+'" aria-label="Ukończone: '+esc(t.text)+'" data-sh="tg:'+esc(t.id)+'"><i>'+(t.done?"✓":"")+'</i></button>'
-    +'<div class="tk-body"><span class="tk-tx">'+esc(t.text)+'</span><span class="tk-meta">'+esc(taskMeta(t))+'</span></div>'
+    +'<button type="button" class="tk-body tkopen" aria-label="Edytuj zadanie: '+esc(t.text)+'" data-sh="oe:'+esc(t.id)+'"><span class="tk-tx">'+esc(t.text)+'</span><span class="tk-meta">'+esc(taskMeta(t))+'</span></button>'
     +'<button type="button" class="tk-del" aria-label="Usuń zadanie: '+esc(t.text)+'" data-sh="td:'+esc(t.id)+'">×</button></div>').join("");
   openSheet(base.name,'<p class="shsub">'+esc(dlong(d))+", "+esc(fmtT(c.s))+"–"+esc(fmtT(c.e))+'</p>'
     +'<h3 class="sec">Zadania</h3>'+(list.length?'<div class="tk-list">'+rows+'</div>':'<p class="tk-empty">Brak zadań.</p>')
     +'<form id="tf" novalidate autocomplete="off"><label class="fl">Nowe zadanie<input name="text" maxlength="300" placeholder="np. Zadania 1-5 str. 40"></label>'
     +'<p class="hint">'+"Termin: "+esc(d.toLocaleDateString("pl-PL",{weekday:"long",day:"numeric",month:"long"}))+", "+esc(fmtT(c.s))+" (dzień i godzina tych zajęć)."+'</p>'
+    +remHtml()
     +'<p id="tfErr" class="msg bad" role="alert"></p>'
     +'<div class="acts"><button type="submit" class="btn pri">Dodaj zadanie</button><button type="button" class="btn" data-sh="close">Zamknij</button></div></form>',focus);
-  const f=$("tf");
+  const f=$("tf"),rb=remBind(f,"onsite",()=>endOf(dk(d),c.s),true);
   f.onsubmit=ev=>{
     ev.preventDefault();
     const text=f.elements.text.value.trim();
     if(!text){$("tfErr").textContent="Wpisz treść zadania.";f.elements.text.focus();return}
-    const ok=change(p=>{p.tasks.push({id:uid(),kind:"onsite",sid:"",cid,at:Date.now(),date:dk(d),text,due:dk(d),time:c.s,url:"",note:"",done:false})});
+    const r=rb.read();
+    if(!r.ok){$("tfErr").textContent=r.err;if(r.el)r.el.focus();return}
+    const ok=change(p=>{
+      const t={id:uid(),kind:"onsite",sid:"",cid,at:Date.now(),date:dk(d),text,due:dk(d),time:c.s,url:"",note:"",done:false};
+      if(r.rem)t.rem=r.rem;
+      p.tasks.push(t);
+    });
     if(ok)rerenderDetail('input[name="text"]');
   };
 }
@@ -1468,6 +1656,53 @@ function download(name,text){
   const b=new Blob([text],{type:"application/json"}),u=URL.createObjectURL(b),a=document.createElement("a");
   a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
 }
+/* ----- Domyślne powiadomienia (Ustawienia): osobna reguła dla zadań stacjonarnych i online, zapisywana w planie ----- */
+const DF_DAYS=[1,0,2,3,7],DF_REL=[5,10,15,30,60,120,300,720,1440,2880,4320,10080];
+const dfKey=r=>r.m==="day"?"day:"+r.days:"rel:"+r.min;
+const dfDays=n=>n===0?"W dniu terminu":n===1?"Dzień przed terminem":n===7?"Tydzień przed terminem":n+" dni przed terminem";
+function dfSelect(r){
+  const day=DF_DAYS.map(n=>["day:"+n,dfDays(n)]),rel=DF_REL.map(m=>["rel:"+m,fmtDur(m)+" przed terminem"]),k=dfKey(r);
+  if(!day.concat(rel).some(o=>o[0]===k))(r.m==="day"?day:rel).push([k,r.m==="day"?dfDays(r.days):fmtDur(r.min)+" przed terminem"]);
+  return '<optgroup label="O stałej godzinie">'+selOpts(day,k)+'</optgroup><optgroup label="Ile czasu przed terminem">'+selOpts(rel,k)+'</optgroup>';
+}
+function dfRead(kind){
+  const E=$("dfF").elements,v=E[kind].value.split(":"),n=+v[1];
+  if(v[0]==="rel")return{m:"rel",min:n};
+  const tm=normT(E[kind+"T"].value);
+  return tm?{m:"day",days:n,time:tm}:null;
+}
+const WD_IN=["w poniedziałek","we wtorek","w środę","w czwartek","w piątek","w sobotę","w niedzielę"];
+/* Przykład na stałym dniu tygodnia (najbliższy poniedziałek za co najmniej 3 dni, godz. 10:00), żeby nie mieszać „wczoraj/dziś/jutro” */
+function dfExample(kind,r){
+  const x=day0(new Date());let end=new Date(x.getFullYear(),x.getMonth(),x.getDate()+3,10,0);
+  while(wd(end)!==0)end=new Date(end.getFullYear(),end.getMonth(),end.getDate()+1,10,0);
+  let s=ruleStart(r,day0(end),end);if(s>end)s=end;
+  return "Przykład: "+(kind==="onsite"?"zajęcia":"termin")+" "+WD_IN[0]+" o 10:00 → powiadomienie "+WD_IN[wd(s)]+" o "+fmtT(hm(s))+".";
+}
+function dfRender(){
+  const box=$("dfBox");if(!box)return;
+  const n=cache.plan.notif,rows=[["onsite","Zadania stacjonarne"],["online","Zadania online"]];
+  box.innerHTML=rows.map(o=>{
+    const r=n[o[0]];
+    return '<div class="dfb"><label class="fl">'+o[1]+'<select name="'+o[0]+'">'+dfSelect(r)+'</select></label>'
+      +'<label class="fl" data-tm="'+o[0]+'"'+(r.m==="day"?"":" hidden")+'>Godzina powiadomienia<input type="time" name="'+o[0]+'T" value="'+esc(r.m==="day"?r.time:"18:00")+'"></label>'
+      +'<p class="hint" data-ex="'+o[0]+'">'+esc(dfExample(o[0],r))+'</p></div>';
+  }).join("");
+  const save=kind=>{
+    const E=$("dfF").elements,r=dfRead(kind);
+    box.querySelector('[data-tm="'+kind+'"]').hidden=E[kind].value.startsWith("rel:"); /* godzinę podaje się tylko przy regule „o stałej godzinie” */
+    if(!r){setMsg("dfMsg","Podaj godzinę powiadomienia.","bad");return}
+    box.querySelector('[data-ex="'+kind+'"]').textContent=dfExample(kind,r);
+    if(JSON.stringify(cache.plan.notif[kind])===JSON.stringify(r)){if($("dfMsg").classList.contains("bad"))setMsg("dfMsg","");return}
+    const ok=change(p=>{p.notif[kind]=r});
+    setMsg("dfMsg",ok?"Zapisano ✓":"Nie udało się zapisać.",ok?"ok":"bad");
+  };
+  for(const kind of["onsite","online"]){
+    const E=$("dfF").elements;
+    E[kind].onchange=()=>save(kind);
+    E[kind+"T"].onchange=()=>save(kind);
+  }
+}
 function openSettings(){
   const c=cfg,p=cache.plan;
   openSheet("Ustawienia",
@@ -1485,9 +1720,13 @@ function openSettings(){
   +'<form id="abF" novalidate><div class="two"><label class="fl">Dowolny dzień tygodnia<input type="date" name="d" value="'+esc(p.start)+'"></label><label class="fl">Ten tydzień to<select name="w">'+selOpts([["A","Tydzień A"],["B","Tydzień B"]],p.startWeek)+'</select></label></div>'
   +'<p id="abMsg" class="msg" role="status"></p><div class="acts"><button type="submit" class="btn">Zapisz rytm</button></div></form>'
   +'<h3 class="sec">Powiadomienia o zadaniach</h3>'
-  +'<p class="hint">Zadania stacjonarne: przypomnienie dzień przed zajęciami o 18:00. Zadania online: dokładnie 24 godziny przed terminem. Czerwony pasek na górze aplikacji pokazuje je zawsze. Gdy aplikacja jest otwarta, powiadomienie pojawia się od razu. Gdy jest zamknięta, wysyła je GitHub (sprawdza zadania co kilka minut, więc powiadomienie może przyjść z krótkim opóźnieniem); wymaga to trybu serwerowego i włączenia poniżej.</p>'
+  +'<p class="hint">Kiedy przyjdzie przypomnienie, ustawisz w formularzu zadania, a domyślny termin dla nowych zadań w sekcji „Domyślne powiadomienia” poniżej. Czerwony pasek na górze aplikacji pokazuje pilne zadania zawsze. Gdy aplikacja jest otwarta, powiadomienie pojawia się od razu. Gdy jest zamknięta, wysyła je GitHub (sprawdza zadania co kilka minut, więc powiadomienie może przyjść z krótkim opóźnieniem); wymaga to trybu serwerowego i włączenia poniżej.</p>'
   +'<p id="ntStat" class="msg" role="status"></p><div class="acts" id="ntActs"></div>'
   +'<p id="pushStat" class="msg" role="status" style="margin-top:10px"></p><div class="acts" id="pushActs"></div>'
+  +'<h3 class="sec">Domyślne powiadomienia</h3>'
+  +'<p class="hint">Nowe zadanie dostaje taki termin powiadomienia, dopóki w jego formularzu nie wybierzesz innego (przycisk „Domyślne”). Zmiana obejmuje też istniejące zadania bez własnego terminu.</p>'
+  +'<form id="dfF" novalidate autocomplete="off"><div id="dfBox"></div><p id="dfMsg" class="msg" role="status"></p>'
+  +'<div class="acts"><button type="button" class="btn" data-sh="dfreset">Przywróć wartości startowe</button></div></form>'
   +'<h3 class="sec">Kopia zapasowa</h3>'
   +'<div class="acts"><button type="button" class="btn" data-sh="export">Eksportuj plan</button><button type="button" class="btn" data-sh="import">Importuj plan</button><button type="button" class="btn dng" data-sh="reset">Przywróć plan domyślny</button></div>'
   +'<input type="file" id="impf" accept=".json,application/json" hidden>'
@@ -1495,7 +1734,7 @@ function openSettings(){
   +'<p class="hint" style="margin-top:14px"><b>Wersja aplikacji: '+APP_VERSION+'</b></p>'
   +'<p class="hint" id="diag"></p>'
   +'<div class="acts" style="margin-top:14px"><button type="button" class="btn" data-sh="close">Zamknij</button></div>');
-  renderSync();renderNotifState();
+  renderSync();renderNotifState();dfRender();
   try{
     const pr=document.createElement("div");pr.style.cssText="position:fixed;left:0;top:0;visibility:hidden;padding-bottom:env(safe-area-inset-bottom,0px)";document.body.appendChild(pr);
     const ib=pr.offsetHeight;pr.remove();
@@ -1557,6 +1796,7 @@ function shAction(a){
     else if(k==="mac"){const nm=ctx.sname,tb=ctx.stab;flushSave();change(p=>{ensureSubject(p,nm).mac=id});openSubject(nm,tb)}
     else if(k==="stg"){toggleTask(id);const st=$("sheet").scrollTop;openSubject(ctx.sname,"tasks",'[data-sh="stg:'+id+'"]');$("sheet").scrollTop=st;popCb(id)}
     else if(k==="sto")openTask(id);
+    else if(k==="oe")openOnsiteTask(id);
     else if(k==="tg"){change(p=>{const t=p.tasks.find(x=>x.id===id);if(t)t.done=!t.done});rerenderDetail('[data-sh="tg:'+id+'"]');popCb(id)}
     else if(k==="td"){
       const t=cache.plan.tasks.find(x=>x.id===id);if(!t)return;
@@ -1573,6 +1813,10 @@ function shAction(a){
       break;
     case "ntest":
       showNotif("eStudia","To jest powiadomienie testowe.","test").then(ok=>setMsg("ntStat",ok?"Wysłano powiadomienie testowe.":"Nie udało się wysłać powiadomienia.",ok?"ok":"bad"));
+      break;
+    case "osback":osBack();break;
+    case "dfreset":
+      if(change(p=>{p.notif=clone(NOTIF_DEF)})){dfRender();setMsg("dfMsg","Przywrócono wartości startowe.","ok")}
       break;
     case "oldel":{
       const t=cache.plan.tasks.find(x=>x.id===ctx.tid);if(!t)break;

@@ -1,6 +1,18 @@
 # sajm-m.github.io
 Aplikacja do planu zajęć na kierunu Informatyka Techniczna na Politechnice Lubelskiej
 
+## Termin powiadomień
+
+Każde zadanie może mieć własny termin powiadomienia (formularz zadania, pole „Powiadomienie”):
+
+- **Domyślne**: reguła z Ustawień → „Domyślne powiadomienia” (start: zadania stacjonarne dzień przed zajęciami o 18:00, online 24 godziny przed terminem),
+- **Przed terminem**: 5, 10, 15, 30 min, 1, 2 lub 5 godz. przed terminem zadania,
+- **Data i godzina**: konkretny moment (musi być przed terminem zadania).
+
+Pod polem widać na żywo, kiedy dokładnie przyjdzie powiadomienie. Własny termin zapisuje się w zadaniu (`rem`), a domyślne reguły w planie (`notif`) w `plan.json`;
+te same dane czyta skrypt wysyłający powiadomienia, więc aplikacja i GitHub zawsze liczą ten sam moment. Zadanie, któremu przesunięto termin powiadomienia
+na później niż poprzednie wysłanie, dostaje powiadomienie ponownie.
+
 ## Powiadomienia przy zamkniętej aplikacji
 
 Aplikacja jest statyczna (GitHub Pages), więc powiadomienia przy zamkniętej aplikacji wysyła workflow

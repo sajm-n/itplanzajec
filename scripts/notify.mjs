@@ -20,7 +20,7 @@ const html = read("index.html");
 const a = html.indexOf("//#CORE-BEGIN"), b = html.indexOf("//#CORE-END");
 if (a < 0 || b < a) { console.error("Nie znaleziono bloku CORE w index.html."); process.exit(1); }
 const store = { getItem: () => null, setItem() {}, removeItem() {} };
-const core = new Function("localStorage", html.slice(a, b) + "\nreturn {validatePlan,taskAlert,fromDK,fmtT};")(store);
+const core = new Function("localStorage", html.slice(a, b) + "\nreturn {validatePlan,taskAlert,taskTrigger,fromDK,fmtT};")(store);
 
 const vapidPublic = process.env.VAPID_PUBLIC_KEY || (/const VAPID_PUBLIC="([^"]+)"/.exec(html) || [])[1];
 const vapidPrivate = process.env.VAPID_PRIVATE_KEY || "";
@@ -68,14 +68,22 @@ if (!state.fail || typeof state.fail !== "object") state.fail = {};
 /* Dostarczenie śledzimy osobno dla każdego urządzenia: zadanie dotarło do telefonu albo nie, niezależnie od tego, co z innymi.
    Dawny format (liczba) oznaczał „wysłano”, więc dla zgodności traktujemy go jako dostarczone wszędzie. */
 const dev = (s) => crypto.createHash("sha256").update(s.endpoint).digest("hex").slice(0, 12);
-const delivered = (id, s) => { const v = state.sent[id]; return typeof v === "number" || !!(v && v[dev(s)]); };
+/* Termin powiadomienia zadania (własny albo domyślny z ustawień). Zadanie, któremu przesunięto go na później niż ostatnie wysłanie,
+   dostaje powiadomienie ponownie; przesunięcie na wcześniej nie wysyła drugi raz. */
+const startOf = (t) => core.taskTrigger(t, plan.notif).start.getTime();
+const delivered = (t, s) => {
+  const v = state.sent[t.id];
+  if (typeof v === "number") return true;
+  const ts = v && v[dev(s)];
+  return !!ts && ts >= startOf(t);
+};
 const markSent = (id, s) => { if (typeof state.sent[id] === "number" || !state.sent[id]) state.sent[id] = {}; state.sent[id][dev(s)] = Date.now(); };
 
 const jobs = TEST
   ? [{ id: "test", payload: { title: "eStudia", body: "To jest testowe powiadomienie push — działa przy zamkniętej aplikacji.", tag: "test", url: "./" } }]
   : plan.tasks
-      .filter((t) => core.taskAlert(t, now) === "soon" && subs.some((s) => !delivered(t.id, s)))
-      .map((t) => ({ id: t.id, payload: Object.assign(buildTexts(plan, t), { tag: t.id, url: "./" }) }));
+      .filter((t) => core.taskAlert(t, now, plan.notif) === "soon" && subs.some((s) => !delivered(t, s)))
+      .map((t) => ({ id: t.id, task: t, payload: Object.assign(buildTexts(plan, t), { tag: t.id, url: "./" }) }));
 
 console.log(now.toString() + " · zadań do powiadomienia: " + jobs.length + " · urządzeń: " + subs.length);
 if (!jobs.length) finish(0);
@@ -93,7 +101,7 @@ for (const j of jobs) {
   let okCount = 0;
   for (const s of subs) {
     if (gone.has(s.endpoint)) continue;
-    if (j.id !== "test" && delivered(j.id, s)) continue;
+    if (j.id !== "test" && delivered(j.task, s)) continue;
     const d = dev(s), host = new URL(s.endpoint).host;
     try {
       const r = await sendPush(s, j.payload, { publicKey: vapidPublic, privateKey: vapidPrivate, subject });
