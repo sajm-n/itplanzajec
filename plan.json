@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792411163825,
+  "rev": 1792415489038,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -359,6 +359,20 @@
         "m": "abs",
         "at": "2026-10-19T20:00"
       }
+    },
+    {
+      "id": "kmvf9wirxpdzwd",
+      "kind": "onsite",
+      "text": "Zadania z Teamsa (lab2)",
+      "sid": "",
+      "cid": "c01",
+      "date": "2026-10-26",
+      "due": "2026-10-26",
+      "time": "08:00",
+      "url": "",
+      "at": 1792415489037,
+      "note": "",
+      "done": false
     }
   ],
   "notif": {
