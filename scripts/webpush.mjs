@@ -92,6 +92,7 @@ export async function sendPush(sub, payload, opts) {
   const body = encryptPayload(sub, JSON.stringify(payload));
   const jwt = vapidJwt(sub.endpoint, subject, publicKey, privateKey);
   const res = await fetch(sub.endpoint, {
+    signal: AbortSignal.timeout(20000),
     method: "POST",
     headers: {
       Authorization: "vapid t=" + jwt + ", k=" + publicKey,

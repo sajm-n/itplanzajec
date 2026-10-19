@@ -38,7 +38,8 @@ commit_state() {
 END=$(( $(date +%s) + LOOP_SECONDS ))
 while :; do
   sync_down || echo "::warning::Nie udało się pobrać repozytorium, używam poprzedniej wersji"
-  node scripts/notify.mjs || true
+  timeout 180 node scripts/notify.mjs; rc=$?
+  [ "$rc" -eq 124 ] && echo "::warning::notify.mjs przekroczył 180 s i został przerwany"
   commit_state || true
   [ "$(date +%s)" -ge "$END" ] && break
   sleep "$SLEEP"

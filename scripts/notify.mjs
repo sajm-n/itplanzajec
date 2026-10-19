@@ -72,6 +72,8 @@ const stateBefore = JSON.stringify(state), subsBefore = JSON.stringify(subs);
 const live = new Set(plan.tasks.map((t) => t.id));
 for (const k of Object.keys(state.sent)) if (!live.has(k)) delete state.sent[k];
 if (!state.fail || typeof state.fail !== "object") state.fail = {};
+/* Sygnał życia pętli: znacznik ostatniego sprawdzenia, odświeżany co ~30 min (nie przy każdym przebiegu, żeby nie zaśmiecać historii). */
+if (!TEST && !DRY && !(Date.parse(state.hb) > now.getTime() - 30 * 60 * 1000)) state.hb = now.toISOString();
 
 /* Dostarczenie śledzimy osobno dla każdego urządzenia: zadanie dotarło do telefonu albo nie, niezależnie od tego, co z innymi.
    Dawny format (liczba) oznaczał „wysłano”, więc dla zgodności traktujemy go jako dostarczone wszędzie. */
