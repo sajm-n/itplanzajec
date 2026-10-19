@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792398505393,
+  "rev": 1792398609638,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -340,24 +340,6 @@
       "rem": {
         "m": "abs",
         "at": "2026-10-19T13:15"
-      }
-    },
-    {
-      "id": "kmvezsi40hmllb",
-      "kind": "online",
-      "text": "testowe powiadomienie",
-      "sid": "kmva1lv76ygz0j",
-      "cid": "",
-      "date": "",
-      "due": "2026-10-20",
-      "time": "23:59",
-      "url": "",
-      "at": 1792398505392,
-      "note": "",
-      "done": false,
-      "rem": {
-        "m": "abs",
-        "at": "2026-10-19T10:29"
       }
     }
   ],
