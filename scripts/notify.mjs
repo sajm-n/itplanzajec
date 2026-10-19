@@ -4,7 +4,7 @@ import fs from "node:fs";
 import crypto from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { sendPush } from "./webpush.mjs";
+import { sendPush, resolveVapidPrivate } from "./webpush.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (f) => fs.readFileSync(path.join(ROOT, f), "utf8");
@@ -23,9 +23,17 @@ const store = { getItem: () => null, setItem() {}, removeItem() {} };
 const core = new Function("localStorage", html.slice(a, b) + "\nreturn {validatePlan,taskAlert,taskTrigger,fromDK,fmtT};")(store);
 
 const vapidPublic = process.env.VAPID_PUBLIC_KEY || (/const VAPID_PUBLIC="([^"]+)"/.exec(html) || [])[1];
-const vapidPrivate = process.env.VAPID_PRIVATE_KEY || "";
+const vapidPrivateRaw = process.env.VAPID_PRIVATE_KEY || "";
 const subject = process.env.VAPID_SUBJECT || "https://sajm-n.github.io/itplanzajec/";
 if (!vapidPublic) { console.error("Brak klucza publicznego VAPID w index.html."); process.exit(1); }
+
+/* Tryb --check (uruchamiany na starcie pętli): sprawdza, czy sekret pasuje do klucza publicznego. Zły sekret = czerwony przebieg
+   w Actions (i e-mail od GitHuba), a nie cicha awaria wysyłki przy każdym powiadomieniu. */
+if (process.argv.includes("--check")) {
+  if (!vapidPrivateRaw) { console.log("::error::Brak sekretu VAPID_PRIVATE_KEY (Settings → Secrets and variables → Actions)."); process.exit(1); }
+  try { resolveVapidPrivate(vapidPrivateRaw, vapidPublic); console.log("Klucz VAPID poprawny."); process.exit(0); }
+  catch (e) { console.log("::error::" + e.message); process.exit(1); }
+}
 
 /* ----- Treść powiadomień (zgodna z alertTexts w index.html) ----- */
 const dl = (d) => d.toLocaleDateString("pl-PL", { day: "numeric", month: "long" });
@@ -89,10 +97,13 @@ console.log(now.toString() + " · zadań do powiadomienia: " + jobs.length + " �
 if (!jobs.length) finish(0);
 if (!subs.length) { console.log("Brak zapisanych urządzeń — nic nie wysyłam (zadania zostaną wysłane, gdy urządzenie się zapisze)."); finish(0); }
 if (DRY) { for (const j of jobs) console.log("[DRY_RUN]", JSON.stringify(j.payload)); finish(0); }
-if (!vapidPrivate) {
-  console.log("::warning::Brak sekretu VAPID_PRIVATE_KEY — dodaj go w Settings → Secrets and variables → Actions. Powiadomienia nie zostały wysłane.");
-  finish(0);
+if (!vapidPrivateRaw) {
+  console.log("::error::Brak sekretu VAPID_PRIVATE_KEY — dodaj go w Settings → Secrets and variables → Actions. Powiadomienia nie zostały wysłane.");
+  finish(1);
 }
+let vapidPrivate;
+try { vapidPrivate = resolveVapidPrivate(vapidPrivateRaw, vapidPublic); }
+catch (e) { console.log("::error::" + e.message + " Powiadomienia nie zostały wysłane."); finish(1); }
 
 let failed = false;
 const gone = new Set();

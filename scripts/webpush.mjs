@@ -13,6 +13,42 @@ export function generateVapidKeys() {
   return { publicKey: b64u(pub), privateKey: j.d };
 }
 
+/**
+ * Wyciąga właściwy klucz prywatny VAPID (32 B, base64url) z wartości sekretu, nawet jeśli ma ona nadmiarowe znaki
+ * (cudzysłowy, spacje, nazwę zmiennej, drugi klucz, PEM, JWK). Kandydat jest przyjmowany dopiero wtedy, gdy wyliczony z niego
+ * klucz publiczny jest identyczny z kluczem publicznym z aplikacji, więc zły sekret nigdy nie przejdzie niezauważony.
+ * Błąd opisuje tylko długości, nigdy zawartość sekretu.
+ */
+export function resolveVapidPrivate(secret, publicKey) {
+  const raw = String(secret == null ? "" : secret);
+  const pub = unb64u(publicKey);
+  const decode = (s) => Buffer.from(String(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""), "base64url");
+  const derive = (d) => {
+    try { const e = crypto.createECDH("prime256v1"); e.setPrivateKey(d); return e.getPublicKey(); } catch { return null; }
+  };
+  const cands = [];
+  const add = (b) => { if (b && b.length >= 32 && b.length <= 400) cands.push(b); };
+  add(decode(raw.replace(/[^A-Za-z0-9_\-+/=]/g, "")));
+  for (const m of raw.match(/[A-Za-z0-9_\-+/=]{32,}/g) || []) add(decode(m));
+  for (const m of raw.match(/[A-Za-z0-9_\-+/]{32,}/g) || []) add(decode(m)); /* bez „=”: odcina prefiks typu NAZWA=klucz */
+  try { const j = JSON.parse(raw); if (j && typeof j.d === "string") add(decode(j.d)); } catch {}
+  try { if (/BEGIN/.test(raw)) add(unb64u(crypto.createPrivateKey(raw).export({ format: "jwk" }).d)); } catch {}
+  for (const b of cands) {
+    for (let i = 0; i + 32 <= b.length; i++) {
+      const d = b.subarray(i, i + 32), p = derive(d);
+      if (p && p.equals(pub)) return b64u(d);
+    }
+  }
+  const clean = raw.replace(/[^A-Za-z0-9_\-+/=]/g, "");
+  const looksPublic = cands.some((b) => b.equals(pub)) || clean === publicKey;
+  throw new Error(
+    "Sekret VAPID_PRIVATE_KEY nie pasuje do klucza publicznego z index.html (długość sekretu: " + raw.trim().length +
+    " znaków, po zdekodowaniu " + decode(clean).length + " B; poprawny klucz prywatny ma 43 znaki i 32 B)." +
+    (looksPublic ? " To wygląda na klucz PUBLICZNY wklejony zamiast prywatnego." : "") +
+    " Ustaw w Settings → Secrets and variables → Actions klucz prywatny pasujący do VAPID_PUBLIC."
+  );
+}
+
 function vapidJwt(endpoint, subject, publicKey, privateKey, now = Date.now()) {
   const pub = unb64u(publicKey);
   const key = crypto.createPrivateKey({

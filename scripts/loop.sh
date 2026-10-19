@@ -7,6 +7,12 @@ LOOP_SECONDS="${LOOP_SECONDS:-21000}"   # 350 min; limit zadania to 360 min
 SLEEP="${SLEEP:-60}"
 STATE_FILES="push-state.json push-subscriptions.json"
 
+# Zły lub brakujący sekret: przebieg kończy się na czerwono od razu (zamiast ~6 h cichych błędów wysyłki)
+if ! node scripts/notify.mjs --check; then
+  echo "::error::Powiadomienia nie mogą działać: popraw sekret VAPID_PRIVATE_KEY (szczegóły wyżej)."
+  exit 1
+fi
+
 git config user.name "github-actions[bot]"
 git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
