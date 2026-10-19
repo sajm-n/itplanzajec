@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792415489038,
+  "rev": 1792420227321,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -373,6 +373,24 @@
       "at": 1792415489037,
       "note": "",
       "done": false
+    },
+    {
+      "id": "kmvfcq2uwsv35e",
+      "kind": "online",
+      "text": "Zaświadczenie",
+      "sid": "",
+      "cid": "",
+      "date": "",
+      "due": "2026-10-20",
+      "time": "11:15",
+      "url": "",
+      "at": 1792420227320,
+      "note": "",
+      "done": false,
+      "rem": {
+        "m": "abs",
+        "at": "2026-10-20T11:15"
+      }
     }
   ],
   "notif": {
