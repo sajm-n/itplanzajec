@@ -722,7 +722,7 @@ const wk=d=>weekOf(cache.plan,d),pre=d=>isPre(cache.plan,d),items=d=>itemsFor(ca
 const dl=d=>d.toLocaleDateString("pl-PL",{day:"numeric",month:"long"});
 const dlong=d=>d.toLocaleDateString("pl-PL",{weekday:"long",day:"numeric",month:"long"});
 /* Wersja aplikacji (pokazywana w Ustawieniach); podbijana przy każdej zmianie */
-const APP_VERSION="1.2";
+const APP_VERSION="1.3";
 const TAB_KEY="estudia.tab.v1",TABS={plan:"Plan zajęć",tasks:"Zadania",subj:"Przedmioty"};
 let tab="plan";
 try{const t=localStorage.getItem(TAB_KEY);if(TABS[t])tab=t}catch(e){}
@@ -1163,10 +1163,16 @@ function askNotif(){
    Urządzenie zapisuje swoją subskrypcję push w repozytorium (push-subscriptions.json, przez token z ustawień).
    Workflow GitHub Actions (.github/workflows/notify.yml) co kilka minut sprawdza zadania w plan.json
    i wysyła powiadomienia na zapisane urządzenia. Klucz publiczny VAPID poniżej pasuje do sekretu VAPID_PRIVATE_KEY w repozytorium. */
-const VAPID_PUBLIC="BOm41TPW5hbB-ypZP0X9IBhNfDlK_J-ptAKPWvc6byYghp4LRQ6wzjmK2LR-RRlWy9JZbZ8VwOsccX4928x_27M";
-const PUSH_FILE="push-subscriptions.json",PUSH_KEY="estudia.pushsub.v1";
+const VAPID_PUBLIC="BDi4iXQXPrUX2rtlRytZfam2Hs4DjZMsPHG5cUIBUNM0mpyqsOroYBtUWJZnyqeH6m1BEepygv_ZC0Fx9_6PqFY";
+const PUSH_FILE="push-subscriptions.json",PUSH_KEY="estudia.pushsub.v1",PUSHVAPID_KEY="estudia.pushvapid.v1";
 const pushSupported=()=>"serviceWorker" in navigator&&"PushManager" in window&&"Notification" in window;
 const keyBytes=s=>{const b=(s+"=".repeat((4-s.length%4)%4)).replace(/-/g,"+").replace(/_/g,"/"),r=atob(b);return Uint8Array.from(r,c=>c.charCodeAt(0))};
+/* Subskrypcja zapisana pod innym kluczem VAPID (np. po wymianie klucza) nie przyjmie powiadomień: trzeba ją odnowić. Najpierw porównuje klucz zapisany w samej subskrypcji, a gdy przeglądarka go nie podaje, znacznik w pamięci lokalnej. */
+function pushKeyStale(sub){
+  const k=sub&&sub.options&&sub.options.applicationServerKey;
+  if(k){const a=new Uint8Array(k),b=keyBytes(VAPID_PUBLIC);return a.length!==b.length||a.some((v,i)=>v!==b[i])}
+  try{return localStorage.getItem(PUSHVAPID_KEY)!==VAPID_PUBLIC}catch(e){return false}
+}
 function swReady(){return Promise.race([navigator.serviceWorker.ready,new Promise((_,rej)=>setTimeout(()=>rej(new Error("Usługa działająca w tle nie jest gotowa. Otwórz aplikację ponownie z internetem.")),8000))])}
 function ghFile(path,method,body){
   const h={Accept:"application/vnd.github+json",Authorization:"Bearer "+cfg.token};
@@ -1201,9 +1207,10 @@ async function enablePush(){
   try{
     const reg=await swReady();
     let sub=await reg.pushManager.getSubscription();
+    if(sub&&pushKeyStale(sub)){try{await sub.unsubscribe()}catch(e){}sub=null}
     if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:keyBytes(VAPID_PUBLIC)});
     const r=await savePushSub(sub);
-    if(r.ok)lsSet(PUSH_KEY,sub.endpoint);
+    if(r.ok){lsSet(PUSH_KEY,sub.endpoint);lsSet(PUSHVAPID_KEY,VAPID_PUBLIC)}
     return r;
   }catch(e){return{ok:false,msg:"Nie udało się włączyć: "+(e&&e.message?e.message:e)}}
 }
@@ -1215,7 +1222,7 @@ async function ensurePush(){
   try{
     const reg=await swReady(),sub=await reg.pushManager.getSubscription();
     let saved="";try{saved=localStorage.getItem(PUSH_KEY)||""}catch(e){}
-    if(!sub||sub.endpoint!==saved)await enablePush();
+    if(!sub||sub.endpoint!==saved||pushKeyStale(sub))await enablePush();
   }catch(e){}finally{pushBusy=false;renderPushState()}
 }
 async function renderPushState(){
@@ -1225,7 +1232,7 @@ async function renderPushState(){
   if(!cfg.token){msg("Przy zamkniętej aplikacji: wymaga trybu serwerowego — podaj token GitHub w sekcji Synchronizacja.","");ac.innerHTML="";return}
   if(notifState()!=="granted"){msg("Przy zamkniętej aplikacji: najpierw włącz powiadomienia powyżej.","");ac.innerHTML="";return}
   let on=false;
-  try{const reg=await swReady(),sub=await reg.pushManager.getSubscription();on=!!sub&&sub.endpoint===(localStorage.getItem(PUSH_KEY)||"")}catch(e){}
+  try{const reg=await swReady(),sub=await reg.pushManager.getSubscription();on=!!sub&&sub.endpoint===(localStorage.getItem(PUSH_KEY)||"")&&!pushKeyStale(sub)}catch(e){}
   if(!$("pushStat"))return;
   msg(on?"Przy zamkniętej aplikacji: włączone na tym urządzeniu.":"Przy zamkniętej aplikacji: jeszcze nie włączone na tym urządzeniu.",on?"ok":"warn");
   ac.innerHTML='<button type="button" class="btn'+(on?"":" pri")+'" data-sh="pushon">'+(on?"Odśwież zapis urządzenia":"Włącz powiadomienia przy zamkniętej aplikacji")+'</button>';
