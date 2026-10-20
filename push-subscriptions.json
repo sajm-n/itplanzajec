@@ -6,5 +6,13 @@
       "auth": "dptdkdV_XiY1nslDi4exWw"
     },
     "added": 1792398110806
+  },
+  {
+    "endpoint": "https://updates.push.services.mozilla.com/wpush/v2/gAAAAABq19y6Ysukx4o8DY1BWf_jbcMLrdhuiNar64qS2k-0uiJdlPdiqkHQU-Zu1F7zc3Vv2nq3YtgN2EowW1jH9dMapyaGKZ9HY7wOBlGp-VpZ0EyHT4sgfKqhwsRF-KuFb6TzmGVyiKIXaILtLz_A3jqNnIkXAWzvBzva1mLVeYV7oH4ghV4",
+    "keys": {
+      "p256dh": "BCmKObVWAmP5D71bSJOBYXfBV_1I8RanIrHI5H4Qg8QrKof7J7zOUod3e8rHbL3YWqBrBMdGusr0X5QZsYUr4Ug",
+      "auth": "f1OGTJo29M5ZzxbsuvUSHA"
+    },
+    "added": 1792531640447
   }
 ]
