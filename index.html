@@ -212,11 +212,14 @@ body.edit .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 152px)}
 .tkseg{margin:0 0 10px}
 .tkseg button{flex:1;padding:8px 6px}
 .tkbar{display:flex;justify-content:space-between;align-items:center;margin:0 0 6px}
-.tkadd{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px 0 6px;border-radius:99px;background:var(--ac);color:var(--acx);font-size:14px;font-weight:700}
-.tkadd b{display:inline-block;width:28px;text-align:center;font-size:22px;line-height:1;font-weight:600;transition:transform .2s}
-.tkadd[aria-expanded="true"] b{transform:rotate(45deg)}
+.tkadd{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px 0 6px;border-radius:99px;background:var(--ac);color:var(--acx);font-size:14px;font-weight:700;box-shadow:0 3px 10px color-mix(in srgb,var(--ac) 38%,transparent);transition:transform .16s ease,box-shadow .2s}
+.tkadd b{display:inline-block;width:28px;text-align:center;font-size:22px;line-height:1;font-weight:600;transition:transform .32s cubic-bezier(.4,0,.2,1)}
+.tkadd[aria-expanded="true"] b{transform:rotate(135deg)}
 .tkadd[hidden]{display:none}
-.tkadd:active{transform:scale(.96)}
+.tkadd:active{transform:scale(1.07)}
+.olwrap{overflow:hidden}
+.olwrap[hidden]{display:none}
+.olwrap .olcard{margin:0 0 8px}
 @media (prefers-reduced-motion:reduce){.tkadd b{transition:none}.tkadd:active{transform:none}}
 .sw{display:inline-flex;align-items:center;gap:9px;min-height:40px;padding:0 4px;font-size:14px;font-weight:600;color:var(--tx)}
 .sw i{position:relative;width:42px;height:26px;border-radius:99px;background:var(--bd);transition:background .2s;flex:none}
@@ -306,11 +309,10 @@ body.go .cg button.on{animation:daypop .4s cubic-bezier(.34,1.56,.5,1)}
 /* Formularz zadania online: rozwija się płynnie pod przyciskiem „+”, pola wjeżdżają kolejno, nowy wiersz „wskakuje” na listę */
 @keyframes rowin{0%{background:color-mix(in srgb,var(--ac) 26%,var(--card))}100%{background:var(--card)}}
 .tk-row.new{animation:rowin 1.3s ease-out}
-.tkadd{box-shadow:0 3px 10px color-mix(in srgb,var(--ac) 38%,transparent);transition:transform .14s ease,box-shadow .2s}
-.tkadd:not([hidden]){animation:fabin .4s cubic-bezier(.34,1.56,.5,1)}
 @media (prefers-reduced-motion:reduce){
-  .tk-row.new,.tkadd:not([hidden]){animation:none}
-  .tkadd{transition:none}
+  .tk-row.new{animation:none}
+  .tkadd,.tkadd b{transition:none}
+  .tkadd:active{transform:none}
   .view:not([hidden]),body.go .view :is(.c,.gp,.sbi,.tk-row,.free,.olcard,.hh),body.go .cg button.on,.c.now,.fab:not([hidden]),.ebar:not([hidden]),.bnav button[aria-current="page"] svg,.sjb.in{animation:none}
   .bnav.ready .ind,.btn,.tbtn,.fab,.today,.cg button,.seg button,.sbi,.tk-cb,.chip,.nthint,.alm,.ald,.c[data-cid],.bnav button{transition:none}
   .btn:active,.tbtn:active,.cg button:active,.seg button:active,.tk-cb:active,.chip:active,.nthint:active,.today:active,.sbi:active,.c[data-cid]:active,.fab:active,.bnav button:active,.rchips button:active{transform:none}
@@ -347,7 +349,7 @@ body.go .cg button.on{animation:daypop .4s cubic-bezier(.34,1.56,.5,1)}
   <button type="button" class="nthint" id="ntHint" data-a="nt:" hidden>Włącz powiadomienia o niewykonanych zadaniach</button>
   <div class="seg tkseg" role="group" aria-label="Rodzaj zadań"><button type="button" id="tv-onsite" data-a="tv:onsite">Zadania stacjonarne</button><button type="button" id="tv-online" data-a="tv:online">Zadania online</button></div>
   <div class="tkbar"><button type="button" class="tkadd" id="olBtn" data-a="ol:" aria-expanded="false" aria-controls="tkOnlineForm" hidden><b aria-hidden="true">+</b>Dodaj zadanie</button><button type="button" class="sw" id="hdBtn" data-a="hd:" role="switch" aria-checked="false"><i></i>Ukryj ukończone</button></div>
-  <div id="tkOnlineForm" class="olcard" hidden></div>
+  <div id="tkOlWrap" class="olwrap" hidden><div id="tkOnlineForm" class="olcard"></div></div>
   <div id="tkLists"></div>
 </section>
 <section class="view" id="v-subj" aria-label="Przedmioty" hidden>
@@ -735,7 +737,7 @@ const wk=d=>weekOf(cache.plan,d),pre=d=>isPre(cache.plan,d),items=d=>itemsFor(ca
 const dl=d=>d.toLocaleDateString("pl-PL",{day:"numeric",month:"long"});
 const dlong=d=>d.toLocaleDateString("pl-PL",{weekday:"long",day:"numeric",month:"long"});
 /* Wersja aplikacji (pokazywana w Ustawieniach); podbijana przy każdej zmianie */
-const APP_VERSION="1.5";
+const APP_VERSION="1.6";
 const TAB_KEY="estudia.tab.v1",TABS={plan:"Plan zajęć",tasks:"Zadania",subj:"Przedmioty"};
 let tab="plan";
 try{const t=localStorage.getItem(TAB_KEY);if(TABS[t])tab=t}catch(e){}
@@ -889,8 +891,8 @@ function renderTasks(){
   $("tv-onsite").classList.toggle("on",tkView==="onsite");$("tv-online").classList.toggle("on",tkView==="online");
   $("hdBtn").setAttribute("aria-checked",hideDone?"true":"false");
   const showOl=tkView==="online"&&olOpen;
-  $("olBtn").hidden=tkView!=="online";$("olBtn").setAttribute("aria-expanded",showOl?"true":"false");
-  $("tkOnlineForm").hidden=!showOl;
+  $("olBtn").hidden=tkView!=="online";
+  if(!olAnim){$("olBtn").setAttribute("aria-expanded",showOl?"true":"false");$("tkOlWrap").hidden=!showOl}
   if(showOl)refreshOlForm();
   const all=cache.plan.tasks.filter(t=>t.kind===tkView),list=hideDone?all.filter(t=>!t.done):all,box=$("tkLists");
   const af=document.activeElement&&box.contains(document.activeElement)?document.activeElement.dataset.a:null;
@@ -1059,34 +1061,24 @@ function initOlForm(){
   };
 }
 let olAnim=null;
-const EASE_OUT="cubic-bezier(.2,.8,.2,1)";
 function toggleOl(open){
   olOpen=open;
-  const f=$("tkOnlineForm");
-  if(olAnim){olAnim.cancel();olAnim=null;f.style.overflow=""}
-  if(reduced()||!f.animate){renderTasks();if(open&&$("olf"))$("olf").elements.text.focus();return}
-  if(open){
-    renderTasks();                                   /* pokazuje formularz w docelowym rozmiarze */
-    const h=f.getBoundingClientRect().height;
-    f.style.overflow="hidden";
-    const a=olAnim=f.animate([{height:"0px",opacity:0,paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px"},{height:h+"px",opacity:1}],{duration:360,easing:EASE_OUT});
-    const done=()=>{if(olAnim===a){olAnim=null;f.style.overflow=""}};
-    a.onfinish=()=>{done();const t=$("olf")&&$("olf").elements.text;if(t&&olOpen)t.focus({preventScroll:true})};a.oncancel=done;
-    [...$("olf").children].forEach((el,i)=>el.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:300,delay:70+i*45,easing:EASE_OUT,fill:"backwards"}));
-  }else{
-    $("olBtn").setAttribute("aria-expanded","false");   /* plus od razu obraca się z powrotem */
-    const h=f.getBoundingClientRect().height;
-    f.style.overflow="hidden";
-    const a=olAnim=f.animate([{height:h+"px",opacity:1},{height:"0px",opacity:0,paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px"}],{duration:260,easing:"cubic-bezier(.4,0,.2,1)"});
-    const end=()=>{if(olAnim===a){olAnim=null;f.style.overflow="";if(!olOpen)renderTasks()}};
-    a.onfinish=end;a.oncancel=()=>{if(olAnim===a){olAnim=null;f.style.overflow=""}};
-  }
+  const w=$("tkOlWrap"),c=$("tkOnlineForm");
+  $("olBtn").setAttribute("aria-expanded",open?"true":"false");
+  if(olAnim){olAnim.cancel();olAnim=null}
+  if(reduced()||!w.animate){w.hidden=!open;if(open){refreshOlForm();$("olf").elements.text.focus()}return}
+  if(open){w.hidden=false;refreshOlForm()}
+  const h=w.scrollHeight;
+  const a=olAnim=w.animate(open?[{height:"0px"},{height:h+"px"}]:[{height:h+"px"},{height:"0px"}],{duration:open?340:280,easing:"cubic-bezier(.2,.8,.2,1)"});
+  c.animate(open?[{opacity:0,transform:"translateY(-8px)"},{opacity:1,transform:"none"}]:[{opacity:1,transform:"none"},{opacity:0,transform:"translateY(-8px)"}],{duration:open?300:200,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"});
+  const fin=()=>{if(olAnim!==a)return;olAnim=null;w.hidden=!olOpen;if(olOpen){const t=$("olf").elements.text;t.focus({preventScroll:true})}};
+  a.onfinish=fin;a.oncancel=()=>{if(olAnim===a)olAnim=null};
 }
 function flashTask(id){
   const row=document.querySelector('#tkLists [data-a="to:'+id+'"]');
   const r=row&&row.closest(".tk-row");if(!r)return;
   r.classList.add("new");setTimeout(()=>r.classList.remove("new"),1400);
-  if(r.animate&&!reduced())r.animate([{opacity:0,transform:"translateY(-12px) scale(.96)"},{opacity:1,transform:"none"}],{duration:480,delay:140,easing:"cubic-bezier(.34,1.56,.5,1)",fill:"backwards"});
+  if(r.animate&&!reduced())r.animate([{opacity:0,transform:"translateY(-10px)"},{opacity:1,transform:"none"}],{duration:380,delay:120,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"});
 }
 function refreshOlForm(){
   if(olRem)olRem.update(); /* domyślny termin mógł się zmienić w ustawieniach */
