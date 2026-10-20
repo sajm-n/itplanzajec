@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792496814963,
+  "rev": 1792502371064,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -87,7 +87,7 @@
       "type": "l",
       "wd": 1,
       "weeks": "all",
-      "s": "15:00",
+      "s": "15:15",
       "e": "17:30",
       "room": "Ox 213",
       "person": "dr inż. A. Urzędowski"
