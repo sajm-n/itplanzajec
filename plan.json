@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483486289,
+  "rev": 1792483500716,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -303,7 +303,7 @@
       "req": "",
       "forms": {
         "c": {
-          "req": "2 kolosy\nłączna sumaryczna liczba punktów",
+          "req": "2 kolosy\nłączna sumaryczna liczba punktów \n8-16:30 codziennie wykładowca jest na uczelni\npn-czw",
           "desc": ""
         }
       },
