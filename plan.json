@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792531730519,
+  "rev": 1792531734869,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -176,17 +176,6 @@
       "s": "21:00",
       "e": "23:59",
       "room": "Kazik",
-      "person": ""
-    },
-    {
-      "id": "kmvh73z9ygyyl7",
-      "name": "test",
-      "type": "l",
-      "wd": 6,
-      "weeks": "all",
-      "s": "08:00",
-      "e": "09:30",
-      "room": "",
       "person": ""
     }
   ],
