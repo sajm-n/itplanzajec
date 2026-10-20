@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483357708,
+  "rev": 1792483385927,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -213,7 +213,12 @@
       "name": "Grafika inżynierska i projektowanie w środowisku CAD",
       "desc": "",
       "req": "",
-      "forms": {},
+      "forms": {
+        "w": {
+          "req": "zaliczenie",
+          "desc": ""
+        }
+      },
       "mac": "yes"
     },
     {
