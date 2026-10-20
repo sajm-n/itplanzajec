@@ -1,6 +1,16 @@
 # sajm-m.github.io
 Aplikacja do planu zajęć na kierunu Informatyka Techniczna na Politechnice Lubelskiej
 
+## Komputer i iPad poziomo
+
+Na szerokim ekranie (od 900 px, orientacja pozioma) aplikacja przełącza się na układ desktopowy; w pionie i na telefonie wygląda jak dotąd:
+
+- boczne menu zamiast dolnego paska, kalendarz miesiąca po lewej i lista dnia po prawej,
+- „Cały tydzień” jako siatka godzinowa (sobota i niedziela pojawiają się tylko, gdy mają zajęcia), z linią bieżącej godziny,
+- okna zajęć, zadań i ustawień wysuwają się jako panel z prawej strony,
+- skróty klawiszowe: ←/→ poprzedni/następny dzień lub tydzień, T dziś, D dzień, W tydzień, 1–3 zakładki, N nowe zadanie online,
+- instalacja jako aplikacja (PWA) z ikon 192/512 px.
+
 ## Termin powiadomień
 
 Każde zadanie może mieć własny termin powiadomienia (formularz zadania, pole „Powiadomienie”):
