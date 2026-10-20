@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483313015,
+  "rev": 1792483351061,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -237,7 +237,12 @@
       "name": "Podstawy programowania",
       "desc": "",
       "req": "",
-      "forms": {},
+      "forms": {
+        "w": {
+          "req": "kilka pytań tekstowych i otwartych",
+          "desc": ""
+        }
+      },
       "mac": "yes"
     },
     {
