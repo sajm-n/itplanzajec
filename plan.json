@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483435958,
+  "rev": 1792483438199,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -216,7 +216,7 @@
       "forms": {
         "w": {
           "req": "zaliczenie - jedno zadanie z jednego z 15 rozdziałów\njeden przykład do rozwiązania \nkrok po kroku jak się to wykonuje w tym charakterze jak to jest w podręczniku",
-          "desc": ""
+          "desc": "126"
         }
       },
       "mac": "yes"
