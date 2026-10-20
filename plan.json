@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483205369,
+  "rev": 1792483211171,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -255,7 +255,7 @@
       "req": "",
       "forms": {
         "w": {
-          "req": "10 pytań abcd - 1 pkt x 10\n5 krótkich odp - 2 pkt x 5\n3 zad otwarte - 10pkt x 3\n(2 pseudokody z krokami co trzeba zrobić np. zadanie z obliczania pierwiastków \n\nLista obecności do wykładów\nRaczej nie ma okresu zerowego\nEgzamin z prezentacji",
+          "req": "10 pytań abcd - 1 pkt x 10\n5 krótkich odp - 2 pkt x 5\n3 zad otwarte - 10pkt x 3\n(2 pseudokody z krokami co trzeba zrobić np. zadanie z obliczania pierwiastków równania kwadratowego\n\nLista obecności do wykładów\nRaczej nie ma okresu zerowego\nEgzamin z prezentacji",
           "desc": ""
         }
       },
