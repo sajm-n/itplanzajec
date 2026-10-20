@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483394072,
+  "rev": 1792483400518,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -215,7 +215,7 @@
       "req": "",
       "forms": {
         "w": {
-          "req": "zaliczenie - jedno zadanie z jednego z 15 rozdziałów",
+          "req": "zaliczenie - jedno zadanie z jednego z 15 rozdziałów\njeden przykład do rozwiązania",
           "desc": ""
         }
       },
