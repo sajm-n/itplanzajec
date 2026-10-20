@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483456848,
+  "rev": 1792483479368,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -301,7 +301,12 @@
       "name": "Matematyka I",
       "desc": "",
       "req": "",
-      "forms": {},
+      "forms": {
+        "c": {
+          "req": "2 kolosy",
+          "desc": ""
+        }
+      },
       "mac": ""
     }
   ],
