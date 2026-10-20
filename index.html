@@ -303,7 +303,14 @@ body.go .cg button.on{animation:daypop .4s cubic-bezier(.34,1.56,.5,1)}
 @keyframes fabin{from{opacity:0;transform:scale(.3) rotate(-90deg)}}
 .fab:not([hidden]){animation:fabin .4s cubic-bezier(.34,1.56,.5,1)}
 .ebar:not([hidden]){animation:cin .3s ease-out backwards}
+/* Formularz zadania online: rozwija się płynnie pod przyciskiem „+”, pola wjeżdżają kolejno, nowy wiersz „wskakuje” na listę */
+@keyframes rowin{0%{background:color-mix(in srgb,var(--ac) 26%,var(--card))}100%{background:var(--card)}}
+.tk-row.new{animation:rowin 1.3s ease-out}
+.tkadd{box-shadow:0 3px 10px color-mix(in srgb,var(--ac) 38%,transparent);transition:transform .14s ease,box-shadow .2s}
+.tkadd:not([hidden]){animation:fabin .4s cubic-bezier(.34,1.56,.5,1)}
 @media (prefers-reduced-motion:reduce){
+  .tk-row.new,.tkadd:not([hidden]){animation:none}
+  .tkadd{transition:none}
   .view:not([hidden]),body.go .view :is(.c,.gp,.sbi,.tk-row,.free,.olcard,.hh),body.go .cg button.on,.c.now,.fab:not([hidden]),.ebar:not([hidden]),.bnav button[aria-current="page"] svg,.sjb.in{animation:none}
   .bnav.ready .ind,.btn,.tbtn,.fab,.today,.cg button,.seg button,.sbi,.tk-cb,.chip,.nthint,.alm,.ald,.c[data-cid],.bnav button{transition:none}
   .btn:active,.tbtn:active,.cg button:active,.seg button:active,.tk-cb:active,.chip:active,.nthint:active,.today:active,.sbi:active,.c[data-cid]:active,.fab:active,.bnav button:active,.rchips button:active{transform:none}
@@ -728,7 +735,7 @@ const wk=d=>weekOf(cache.plan,d),pre=d=>isPre(cache.plan,d),items=d=>itemsFor(ca
 const dl=d=>d.toLocaleDateString("pl-PL",{day:"numeric",month:"long"});
 const dlong=d=>d.toLocaleDateString("pl-PL",{weekday:"long",day:"numeric",month:"long"});
 /* Wersja aplikacji (pokazywana w Ustawieniach); podbijana przy każdej zmianie */
-const APP_VERSION="1.4";
+const APP_VERSION="1.5";
 const TAB_KEY="estudia.tab.v1",TABS={plan:"Plan zajęć",tasks:"Zadania",subj:"Przedmioty"};
 let tab="plan";
 try{const t=localStorage.getItem(TAB_KEY);if(TABS[t])tab=t}catch(e){}
@@ -1042,13 +1049,44 @@ function initOlForm(){
   $("olf").onsubmit=ev=>{
     ev.preventDefault();
     const f=$("olf"),v=readOl(f,f.querySelector("[data-err]"),olRem);if(!v)return;
+    let newId="";
     const ok=change(p=>{
       const t={id:uid(),kind:"online",sid:applySubject(p,v.subj),cid:"",at:Date.now(),date:"",text:v.text,due:v.due,time:v.time,url:"",note:"",done:false};
       if(v.rem)t.rem=v.rem;
-      p.tasks.push(t);
+      newId=t.id;p.tasks.push(t);
     },"Dodano zadanie online");
-    if(ok){f.elements.text.value="";olRem.reset();olOpen=false;renderTasks()}
+    if(ok){f.elements.text.value="";olRem.reset();toggleOl(false);flashTask(newId)}
   };
+}
+let olAnim=null;
+const EASE_OUT="cubic-bezier(.2,.8,.2,1)";
+function toggleOl(open){
+  olOpen=open;
+  const f=$("tkOnlineForm");
+  if(olAnim){olAnim.cancel();olAnim=null;f.style.overflow=""}
+  if(reduced()||!f.animate){renderTasks();if(open&&$("olf"))$("olf").elements.text.focus();return}
+  if(open){
+    renderTasks();                                   /* pokazuje formularz w docelowym rozmiarze */
+    const h=f.getBoundingClientRect().height;
+    f.style.overflow="hidden";
+    const a=olAnim=f.animate([{height:"0px",opacity:0,paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px"},{height:h+"px",opacity:1}],{duration:360,easing:EASE_OUT});
+    const done=()=>{if(olAnim===a){olAnim=null;f.style.overflow=""}};
+    a.onfinish=()=>{done();const t=$("olf")&&$("olf").elements.text;if(t&&olOpen)t.focus({preventScroll:true})};a.oncancel=done;
+    [...$("olf").children].forEach((el,i)=>el.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:300,delay:70+i*45,easing:EASE_OUT,fill:"backwards"}));
+  }else{
+    $("olBtn").setAttribute("aria-expanded","false");   /* plus od razu obraca się z powrotem */
+    const h=f.getBoundingClientRect().height;
+    f.style.overflow="hidden";
+    const a=olAnim=f.animate([{height:h+"px",opacity:1},{height:"0px",opacity:0,paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px"}],{duration:260,easing:"cubic-bezier(.4,0,.2,1)"});
+    const end=()=>{if(olAnim===a){olAnim=null;f.style.overflow="";if(!olOpen)renderTasks()}};
+    a.onfinish=end;a.oncancel=()=>{if(olAnim===a){olAnim=null;f.style.overflow=""}};
+  }
+}
+function flashTask(id){
+  const row=document.querySelector('#tkLists [data-a="to:'+id+'"]');
+  const r=row&&row.closest(".tk-row");if(!r)return;
+  r.classList.add("new");setTimeout(()=>r.classList.remove("new"),1400);
+  if(r.animate&&!reduced())r.animate([{opacity:0,transform:"translateY(-12px) scale(.96)"},{opacity:1,transform:"none"}],{duration:480,delay:140,easing:"cubic-bezier(.34,1.56,.5,1)",fill:"backwards"});
 }
 function refreshOlForm(){
   if(olRem)olRem.update(); /* domyślny termin mógł się zmienić w ustawieniach */
@@ -1917,7 +1955,7 @@ document.addEventListener("click",e=>{
   else if(k==="today"){sel=day0(new Date());mo=new Date(sel.getFullYear(),sel.getMonth(),1)}
   else if(k==="edit"){editMode=!editMode}
   else if(k==="tv"){tkView=v==="online"?"online":"onsite";lsSet(TV_KEY,tkView)}
-  else if(k==="ol"){olOpen=!olOpen;render();if(olOpen&&$("olf"))$("olf").elements.text.focus({preventScroll:false});return}
+  else if(k==="ol"){toggleOl(!olOpen);return}
   else if(k==="hd"){hideDone=!hideDone;lsSet(HD_KEY,hideDone?"1":"0")}
   else if(k==="tg"){toggleTask(v);return}
   else if(k==="to"){openTask(v);return}
