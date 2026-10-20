@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483272687,
+  "rev": 1792483275599,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -272,7 +272,7 @@
           "desc": "8-16:30 codziennie wykładowca jest na uczelni\npn-czw"
         },
         "l": {
-          "req": "zielone",
+          "req": "zielone technologie",
           "desc": ""
         }
       },
