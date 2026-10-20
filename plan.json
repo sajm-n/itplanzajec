@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483041582,
+  "rev": 1792483060686,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -253,7 +253,12 @@
       "name": "Wprowadzenie do informatyki technicznej",
       "desc": "",
       "req": "",
-      "forms": {},
+      "forms": {
+        "w": {
+          "req": "10 pytań",
+          "desc": ""
+        }
+      },
       "mac": "yes"
     },
     {
