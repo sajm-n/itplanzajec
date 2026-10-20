@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792482946392,
+  "rev": 1792482948566,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -263,7 +263,7 @@
       "req": "",
       "forms": {
         "w": {
-          "req": "Test z wykładów 10.25",
+          "req": "Test z wykładów 10.25 pytań",
           "desc": ""
         }
       },
