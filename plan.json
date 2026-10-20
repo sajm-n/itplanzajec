@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483354919,
+  "rev": 1792483357708,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -239,7 +239,7 @@
       "req": "",
       "forms": {
         "w": {
-          "req": "kilka pytań tekstowych i otwartych\nnapisać krótki kod",
+          "req": "kilka pytań tekstowych i otwartych\nnapisać krótki kod na kartce",
           "desc": ""
         }
       },
