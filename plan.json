@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483516251,
+  "rev": 1792483542675,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -303,7 +303,7 @@
       "req": "",
       "forms": {
         "c": {
-          "req": "2 kolosy\nłączna sumaryczna liczba punktów",
+          "req": "2 kolosy\nłączna sumaryczna liczba punktów\n< 50% = 2\n51%-60% = З\n61%-70% = 3,5\n71%-80% = 4\n81%-90%= 4,5\n> 90% = 5",
           "desc": ""
         }
       },
