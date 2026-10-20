@@ -1,6 +1,6 @@
 /* Service worker: aplikacja działa offline. Sieć ma pierwszeństwo, więc nowe wersje trafiają
    do telefonu przy najbliższym otwarciu z internetem; pamięć podręczna jest tylko zapasem. */
-const V = "plan-v6";
+const V = "plan-v7";
 const SHELL = ["./", "./index.html"];
 
 self.addEventListener("install", e => {
