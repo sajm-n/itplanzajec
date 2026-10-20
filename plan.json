@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483219330,
+  "rev": 1792483272687,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -270,6 +270,10 @@
         "w": {
           "req": "Test z wykładów 20-25 pytań\n1 temat do wyboru do końca października \nNie ma listy na wykladach",
           "desc": "8-16:30 codziennie wykładowca jest na uczelni\npn-czw"
+        },
+        "l": {
+          "req": "zielone",
+          "desc": ""
         }
       },
       "mac": "part"
