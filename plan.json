@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483089087,
+  "rev": 1792483091769,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -255,7 +255,7 @@
       "req": "",
       "forms": {
         "w": {
-          "req": "10 pytań abcd -",
+          "req": "10 pytań abcd - 1 pkt",
           "desc": ""
         }
       },
