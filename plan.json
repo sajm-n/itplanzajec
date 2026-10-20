@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792483452872,
+  "rev": 1792483454822,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -216,7 +216,7 @@
       "forms": {
         "w": {
           "req": "zaliczenie - jedno zadanie z jednego z 15 rozdziałów\njeden przykład do rozwiązania \nkrok po kroku jak się to wykonuje w tym charakterze jak to jest w podręczniku",
-          "desc": "126A tam gdzie sekretariat katedry od 15:30 w piątek"
+          "desc": "126A tam gdzie sekretariat katedry od 15:30 w piątek do 21"
         }
       },
       "mac": "yes"
