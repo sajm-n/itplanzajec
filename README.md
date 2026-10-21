@@ -3,10 +3,12 @@ Aplikacja do planu zajęć na kierunu Informatyka Techniczna na Politechnice Lub
 
 ## Komputer i iPad poziomo
 
-Na szerokim ekranie (od 900 px, orientacja pozioma) aplikacja przełącza się na układ desktopowy; w pionie i na telefonie wygląda jak dotąd:
+Na szerokim ekranie (od 900 px, orientacja pozioma) aplikacja przełącza się na układ desktopowy w stylu Kalendarza Google; w pionie i na telefonie wygląda jak dotąd:
 
-- boczne menu zamiast dolnego paska, a pod zakładkami mini-kalendarz miesiąca: kliknięcie dnia pokazuje jego tydzień (także z zakładek Zadania i Przedmioty), wybrany tydzień jest podświetlony z literą A/B, a kropki oznaczają dni z nieukończonymi zadaniami (czerwona: po terminie),
-- plan to zawsze siatka godzinowa tygodnia (sobota i niedziela pojawiają się tylko, gdy mają zajęcia), z linią bieżącej godziny, bez przełącznika Dzień / Cały tydzień,
+- boczne menu zamiast dolnego paska, maksymalnie wykorzystujące poziomy ekran dla siatki tygodnia,
+- kalendarz miesiąca chowa się do wyskakującego okienka po kliknięciu daty (zakresu tygodnia nad tabelą lub dzisiejszej daty pod tytułem): wybrany tydzień jest podświetlony z literą A/B, a kropki oznaczają dni z nieukończonymi zadaniami (czerwona: po terminie),
+- plan to siatka godzinowa tygodnia (sobota i niedziela pojawiają się tylko, gdy mają zajęcia), z pionowym paskiem progresu zajęć (jak w widoku mobilnym), oznaczeniami „Teraz” / „Następne” oraz linią bieżącej godziny,
+- po kliknięciu w dany przedmiot na planie widać prowadzącego, salę, rodzaj zajęć oraz szybki skrót do wymagań i notatek przedmiotu,
 - okna zajęć, zadań i ustawień wysuwają się jako panel z prawej strony,
 - skróty klawiszowe: ←/→ poprzedni/następny tydzień, T dziś, 1–3 zakładki, N nowe zadanie online,
 - instalacja jako aplikacja (PWA) z ikon 192/512 px.
