@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792611535993,
+  "rev": 1792611942767,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -443,20 +443,6 @@
         "m": "abs",
         "at": "2026-10-24T13:00"
       }
-    },
-    {
-      "id": "kmviimhkoik8ls",
-      "kind": "online",
-      "text": "test",
-      "sid": "kmva1lv76ygz0j",
-      "cid": "",
-      "date": "",
-      "due": "2026-10-22",
-      "time": "23:59",
-      "url": "",
-      "at": 1792611535993,
-      "note": "",
-      "done": false
     }
   ],
   "notif": {
