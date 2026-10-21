@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792581554322,
+  "rev": 1792581586251,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -207,7 +207,7 @@
       "req": "",
       "forms": {
         "w": {
-          "req": "",
+          "req": "można mieć swoje notatki",
           "desc": "piątek 11:30 - 13:00 ox 126\ne-mail: a.prus@pollub.pl"
         }
       },
