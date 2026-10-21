@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792531734869,
+  "rev": 1792581520787,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -205,7 +205,12 @@
       "name": "Bezpieczeństwo i higiena pracy",
       "desc": "",
       "req": "",
-      "forms": {},
+      "forms": {
+        "w": {
+          "req": "",
+          "desc": "piątek"
+        }
+      },
       "mac": ""
     },
     {
