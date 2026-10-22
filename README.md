@@ -7,7 +7,7 @@ Na szerokim ekranie (od 900 px, orientacja pozioma) aplikacja przełącza się n
 
 - boczne menu zamiast dolnego paska, maksymalnie wykorzystujące poziomy ekran dla siatki tygodnia,
 - kalendarz miesiąca chowa się do wyskakującego okienka po kliknięciu daty (zakresu tygodnia nad tabelą lub dzisiejszej daty pod tytułem): wybrany tydzień jest podświetlony z literą A/B, a kropki oznaczają dni z nieukończonymi zadaniami (czerwona: po terminie),
-- plan to siatka godzinowa tygodnia (sobota i niedziela pojawiają się tylko, gdy mają zajęcia), z pionowym paskiem progresu zajęć (jak w widoku mobilnym), oznaczeniami „Teraz” / „Następne” oraz linią bieżącej godziny,
+- plan to siatka godzinowa tygodnia (sobota i niedziela pojawiają się tylko, gdy mają zajęcia), ze wskaźnikiem bieżącej godziny (kropka z linią postępu dnia) oraz oznaczeniami „Teraz” / „Następne”,
 - po kliknięciu w dany przedmiot na planie widać prowadzącego, salę, rodzaj zajęć oraz szybki skrót do wymagań i notatek przedmiotu,
 - okna zajęć, zadań i ustawień wysuwają się jako panel z prawej strony,
 - skróty klawiszowe: ←/→ poprzedni/następny tydzień, T dziś, 1–3 zakładki, N nowe zadanie online,

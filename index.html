@@ -405,9 +405,6 @@ body.go .cg button.on{animation:daypop .4s cubic-bezier(.34,1.56,.5,1)}
   .wg-t span.l{transform:translateY(-100%);margin-top:-4px}
   .wg-c{position:relative;border-left:1px solid var(--bd);background-image:linear-gradient(to bottom,transparent calc(var(--hh) - 1px),color-mix(in srgb,var(--bd) 75%,transparent) calc(var(--hh) - 1px));background-size:100% var(--hh)}
   .wg-c.td{background-color:color-mix(in srgb,var(--ac) 6%,transparent)}
-  /* pasek progresu w kolumnie dnia (jak w widoku mobilnym) */
-  .wg-c .rail{left:5px;width:4px;z-index:2}
-  .wg-c .fill.live::after{box-shadow:0 0 0 3px var(--card)}
   .wb{position:absolute;box-sizing:border-box;padding:4px 7px;border-radius:9px;overflow:hidden;text-align:left;color:#17202e;font-size:12px;line-height:1.25;cursor:pointer;border:1px solid color-mix(in srgb,#17202e 16%,transparent);transition:box-shadow .2s,border-color .2s;z-index:1}
   .wb.w{background:var(--wyk)}.wb.l{background:var(--lab)}.wb.c2{background:var(--cw)}.wb.x{background:var(--oth)}
   .wb-top{display:flex;align-items:center;justify-content:space-between;gap:4px}
@@ -931,14 +928,7 @@ function weekGrid(mon,td,nm){
   const head='<div class="wg-h"><span></span>'+days.map(d=>'<div class="wg-d'+(same(d,td)?" td":"")+'" aria-label="'+esc(dlong(d))+'"><span>'+DOWS[wd(d)]+'</span><b>'+d.getDate()+'</b></div>').join("")+'</div>';
   const cols=days.map((d,i)=>{
     const st=same(d,td)?"t":(d<td?"p":"f"),live=st==="t"&&!pre(d);
-    const act=per[i].filter(x=>!x.off),nxItem=live?act.find(x=>mn(x.c.s)>nm):null,hasRail=act.length>0;
-    let rail="",dAttr="";
-    if(hasRail){
-      const fs=Math.min(...act.map(x=>mn(x.c.s))),le=Math.max(...act.map(x=>Math.max(mn(x.c.e),mn(x.c.s)+15)));
-      const rTop=(fs-lo)/60*WG_H+1,rH=Math.max(22,(le-fs)/60*WG_H-3);
-      rail='<div class="rail" style="top:'+rTop+'px;height:'+rH+'px" aria-hidden="true"><i class="fill"></i></div>';
-      dAttr=' data-k="w-'+d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+'" data-st="'+st+'" data-fs="'+fs+'" data-le="'+le+'"';
-    }
+    const act=per[i].filter(x=>!x.off),nxItem=live?act.find(x=>mn(x.c.s)>nm):null;
     const blocks=layoutDay(per[i]).map(o=>{
       const x=o.x,c=x.c;
       let cls="",b="";
@@ -947,12 +937,10 @@ function weekGrid(mon,td,nm){
         else if(st==="p"&&!pre(d))cls=" past";
       }
       const top=(o.s-lo)/60*WG_H+1,h=Math.max(22,(o.e-o.s)/60*WG_H-3),sh=h<42;
-      const lCss=hasRail?'calc(13px + (100% - 16px)*'+(o.l/o.n)+')':'calc('+(o.l*100/o.n)+'% + 2px)';
-      const wCss=hasRail?'calc((100% - 16px)/'+o.n+')':'calc('+(100/o.n)+'% - 4px)';
       const open=tasksOf(x.id,x.date).filter(t=>!t.done);
       const aria=(editMode?"Edytuj: ":"Szczegóły i zadania: ")+c.name+", "+fmtT(c.s)+"–"+fmtT(c.e)+(c.room?", "+c.room:"")+(c.person?", "+c.person:"")+(x.off?", odwołane":"")+(open.length?", nieukończone zadania: "+open.length:"");
       const tip=c.name+" · "+fmtT(c.s)+"–"+fmtT(c.e)+(c.room?" · "+c.room:"")+(c.person?" · "+c.person:"");
-      return '<div class="wb '+K[c.type]+(x.off?" offc":"")+cls+(sh?" sh":"")+'" style="top:'+top+'px;height:'+h+'px;left:'+lCss+';width:'+wCss+'" role="button" tabindex="0" data-cid="'+esc(x.id)+'" data-date="'+esc(x.date)+'" title="'+esc(tip)+'" aria-label="'+esc(aria)+'">'
+      return '<div class="wb '+K[c.type]+(x.off?" offc":"")+cls+(sh?" sh":"")+'" style="top:'+top+'px;height:'+h+'px;left:calc('+(o.l*100/o.n)+'% + 2px);width:calc('+(100/o.n)+'% - 4px)" role="button" tabindex="0" data-cid="'+esc(x.id)+'" data-date="'+esc(x.date)+'" title="'+esc(tip)+'" aria-label="'+esc(aria)+'">'
         +(open.length?'<i class="tkdot" aria-hidden="true"></i>':"")
         +'<div class="wb-top"><b>'+esc(fmtT(c.s))+'–'+esc(fmtT(c.e))+'</b>'+b+'</div>'
         +'<span class="wn">'+esc(c.name)+'</span>'
@@ -960,7 +948,7 @@ function weekGrid(mon,td,nm){
         +(c.person&&h>=64?'<span class="wp">'+esc(c.person)+'</span>':"")+'</div>';
     }).join("");
     const line=live&&nm>=lo&&nm<=hi?'<div class="wg-now" style="top:'+((nm-lo)/60*WG_H)+'px" aria-hidden="true"></div>':"";
-    return '<div class="wg-c'+(st==="t"?" td":"")+'"'+dAttr+' data-lo="'+lo+'" data-hi="'+hi+'" style="height:'+H+'px">'+rail+blocks+line+'</div>';
+    return '<div class="wg-c'+(st==="t"?" td":"")+'" data-lo="'+lo+'" data-hi="'+hi+'" style="height:'+H+'px">'+blocks+line+'</div>';
   }).join("");
   return '<div class="wg" style="--n:'+days.length+';--hh:'+WG_H+'px">'+head+'<div class="wg-b"><div class="wg-t" style="height:'+H+'px">'+lab+'</div>'+cols+'</div></div>';
 }
@@ -2279,26 +2267,6 @@ function updateProgress(){
         }
         live=true;
       }
-    }
-    if(!f.dataset.i){
-      f.dataset.i="1";
-      f.style.transition="none";
-      f.style.height=Math.min(lastFill[k]||0,end)+"px";
-      void f.offsetHeight;
-      f.style.transition="";
-    }
-    f.style.height=y+"px";
-    lastFill[k]=y;
-    f.classList.toggle("live",live);
-  });
-  document.querySelectorAll("#list .wg-c[data-fs]").forEach(col=>{
-    const r=col.querySelector(".rail"),f=col.querySelector(".fill");
-    if(!r||!f)return;
-    const fs=+col.dataset.fs,le=+col.dataset.le,end=r.offsetHeight,st=col.dataset.st,k=col.dataset.k;
-    let y=st==="p"?end:0,live=false;
-    if(st==="t"){
-      if(nm>=le)y=end;
-      else if(nm>fs){y=(nm-fs)/(le-fs)*end;live=true}
     }
     if(!f.dataset.i){
       f.dataset.i="1";
