@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1792751008484,
+  "rev": 1792751068702,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -182,11 +182,10 @@
       "id": "kmvktnv8jx8g7o",
       "name": "Przysposobienie bilbioteczne (grupa gla01 8gla02)",
       "type": "x",
-      "wd": 1,
-      "weeks": "all",
-      "s": "08:00",
-      "e": "09:30",
-      "room": "",
+      "date": "2026-11-17",
+      "s": "13:15",
+      "e": "14:45",
+      "room": "s. 11, WM",
       "person": ""
     }
   ],
