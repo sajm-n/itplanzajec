@@ -22,5 +22,13 @@
       "auth": "OAAEXgXz2mT_uKhXW1R2JA"
     },
     "added": 1792610968121
+  },
+  {
+    "endpoint": "https://web.push.apple.com/QKxoxfCy7tYbovteNGgiEqyAGNww86XXpANzvucW8ula18PJmlsWsWoYbMpPVGywyTtLWOJ_a3sekcc1fuwGlfBE678bAnHItiWLWVYETbxAOtdWlMJt6B44XFynDXLS8jfOaySvDM6vhS7af7YFfj_LQBpChfrKG11-17PeQkA",
+    "keys": {
+      "p256dh": "BIk1sbdYETRfstT0YMghCjRuRZbtHIRhLytZys2KheBi1RdsGPK4w32oCfOZeGbDWca2lChaGv8WV8-2Jp46Z40",
+      "auth": "E7BpplqgqiWciEUwrIdxkA"
+    },
+    "added": 1793202416977
   }
 ]
