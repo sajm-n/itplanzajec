@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1793304210670,
+  "rev": 1793318083183,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -422,24 +422,6 @@
       "rem": {
         "m": "abs",
         "at": "2026-10-20T11:15"
-      }
-    },
-    {
-      "id": "kmvgj1go9bb81y",
-      "kind": "onsite",
-      "text": "ogarnij kwantyfikatory i ogólne nazewnictwo",
-      "sid": "",
-      "cid": "c13",
-      "date": "2026-10-23",
-      "due": "2026-10-23",
-      "time": "15:50",
-      "url": "",
-      "at": 1792491334248,
-      "note": "",
-      "done": true,
-      "rem": {
-        "m": "abs",
-        "at": "2026-10-22T12:00"
       }
     },
     {
