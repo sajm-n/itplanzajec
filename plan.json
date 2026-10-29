@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1793234711462,
+  "rev": 1793234737056,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -473,6 +473,20 @@
         "m": "abs",
         "at": "2026-10-29T20:00"
       }
+    },
+    {
+      "id": "kmvstnulbk0oft",
+      "kind": "onsite",
+      "text": "Sprawozdanie Ćw. 1",
+      "sid": "",
+      "cid": "c07",
+      "date": "2026-11-03",
+      "due": "2026-11-03",
+      "time": "13:15",
+      "url": "",
+      "at": 1793234737055,
+      "note": "",
+      "done": false
     }
   ],
   "notif": {
