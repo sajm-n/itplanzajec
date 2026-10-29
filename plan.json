@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1793202403969,
+  "rev": 1793234711462,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -455,6 +455,24 @@
       "at": 1792949993278,
       "note": "",
       "done": true
+    },
+    {
+      "id": "kmvstnauewy0op",
+      "kind": "onsite",
+      "text": "Zadanie 2 z Word",
+      "sid": "",
+      "cid": "c14",
+      "date": "2026-10-30",
+      "due": "2026-10-30",
+      "time": "18:30",
+      "url": "",
+      "at": 1793234711462,
+      "note": "",
+      "done": false,
+      "rem": {
+        "m": "abs",
+        "at": "2026-10-29T20:00"
+      }
     }
   ],
   "notif": {
