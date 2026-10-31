@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1793318091717,
+  "rev": 1793453716714,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -453,6 +453,20 @@
       "time": "13:15",
       "url": "",
       "at": 1793234737055,
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmvwg1cdlqjogp",
+      "kind": "onsite",
+      "text": "Sprawozdanie LAB3",
+      "sid": "",
+      "cid": "c14",
+      "date": "2026-11-06",
+      "due": "2026-11-06",
+      "time": "18:30",
+      "url": "",
+      "at": 1793453716713,
       "note": "",
       "done": false
     }
