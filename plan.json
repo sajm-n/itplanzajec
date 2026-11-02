@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1793581841538,
+  "rev": 1793654439319,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -479,6 +479,20 @@
       "time": "18:30",
       "url": "",
       "at": 1793453716713,
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmvzrjixi9e2k0",
+      "kind": "onsite",
+      "text": "Zadania z Teams",
+      "sid": "",
+      "cid": "c04",
+      "date": "2026-11-03",
+      "due": "2026-11-03",
+      "time": "08:00",
+      "url": "",
+      "at": 1793654439318,
       "note": "",
       "done": false
     }
