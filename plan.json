@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1793666969788,
+  "rev": 1793691090617,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -495,6 +495,20 @@
       "at": 1793654439318,
       "note": "",
       "done": true
+    },
+    {
+      "id": "kmw0dd39475we1",
+      "kind": "onsite",
+      "text": "Praca na zajęciach",
+      "sid": "",
+      "cid": "c04",
+      "date": "2026-11-10",
+      "due": "2026-11-10",
+      "time": "08:00",
+      "url": "",
+      "at": 1793691090616,
+      "note": "",
+      "done": false
     }
   ],
   "notif": {
