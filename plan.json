@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1793914298207,
+  "rev": 1794083041869,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -535,6 +535,20 @@
       "time": "13:15",
       "url": "",
       "at": 1793814075313,
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmw6upyrwzm6c9",
+      "kind": "onsite",
+      "text": "poucz sie troche",
+      "sid": "",
+      "cid": "c13",
+      "date": "2026-11-13",
+      "due": "2026-11-13",
+      "time": "15:50",
+      "url": "",
+      "at": 1794083041868,
       "note": "",
       "done": false
     }
