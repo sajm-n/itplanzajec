@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "rev": 1794186353699,
+  "rev": 1794208960286,
   "start": "2026-10-05",
   "startWeek": "B",
   "classes": [
@@ -543,6 +543,20 @@
       "time": "15:50",
       "url": "",
       "at": 1794083041868,
+      "note": "",
+      "done": false
+    },
+    {
+      "id": "kmw8xou1qrk3dz",
+      "kind": "onsite",
+      "text": "kolos - 5 zadań (3 łatwe, 1 cięższe i 1 najcięższe)",
+      "sid": "",
+      "cid": "c01",
+      "date": "2026-11-16",
+      "due": "2026-11-16",
+      "time": "08:00",
+      "url": "",
+      "at": 1794208960286,
       "note": "",
       "done": false
     }
